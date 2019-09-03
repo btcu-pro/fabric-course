@@ -13,7 +13,11 @@
       - [安装 Docker 环境](#%e5%ae%89%e8%a3%85-docker-%e7%8e%af%e5%a2%83)
       - [在 Docker 里下载定制好了的 Fabric 镜像：](#%e5%9c%a8-docker-%e9%87%8c%e4%b8%8b%e8%bd%bd%e5%ae%9a%e5%88%b6%e5%a5%bd%e4%ba%86%e7%9a%84-fabric-%e9%95%9c%e5%83%8f)
     - [Linux 环境下直接安装](#linux-%e7%8e%af%e5%a2%83%e4%b8%8b%e7%9b%b4%e6%8e%a5%e5%ae%89%e8%a3%85)
+      - [安装其他环境：](#%e5%ae%89%e8%a3%85%e5%85%b6%e4%bb%96%e7%8e%af%e5%a2%83)
       - [安装 Golang](#%e5%ae%89%e8%a3%85-golang)
+      - [安装 gopm](#%e5%ae%89%e8%a3%85-gopm)
+      - [拉取 Fabric 源码](#%e6%8b%89%e5%8f%96-fabric-%e6%ba%90%e7%a0%81)
+      - [编译 `configtxgen` 工具：](#%e7%bc%96%e8%af%91-configtxgen-%e5%b7%a5%e5%85%b7)
 
 ## 0. Fabric 简介
 
@@ -125,6 +129,10 @@ docker pull hyperledger/fabric-peer \
 
 ### Linux 环境下直接安装
 
+#### 安装其他环境：
+参考：https://hyperledger-fabric-cn.readthedocs.io/zh/latest/prereqs.html
+其他都比较容易，按照步骤即可，这里详细介绍 Golang 的安装。
+
 #### 安装 Golang
 从官网下载最新版本：
 ```shell
@@ -166,7 +174,11 @@ go version go1.12.9 linux/amd64
 ```
 
 最后设置一下 GOPATH 环境变量，同样是修改 `~/.bashrc` 文件：
-创建一个新建目录，并指定它是 GOPATH：
+创建一个新建目录（这里是 `/home/flyq/workspaces/golang/gopath/`），并指定它是 GOPATH，然后在这个目录下再创建三个文件夹，分别命名为：`src`, `pkg`, `bin`，最后添加这两行到 `~/.bashrc`下面，同样需要注意修改对应路径：
+```.bashrc
+export GOPATH=/home/flyq/workspaces/golang/gopath/
+export PATH=$PATH:$GOPATH/bin
+```
 ![gopath](image/fabric18.png)
 
 
@@ -177,3 +189,51 @@ source ~/.bashrc
 go 环境已经安装并配置好了。
 
 
+#### 安装 gopm
+注：如果你的终端环境能翻墙，这步跳过。
+如果不能翻墙，那么就无法使用 go get 来获取对应的项目，这里推荐用 gopm get 来获取对于项目，因为它是无需翻墙的。
+
+拉去 `gopm` 代码:
+```shell
+cd $GOPATH/src
+mkdir -p github.com/gpmgo/
+cd ./github.com/gpmgo
+git clone https://github.com/gpmgo/gopm.git
+cd ./gopm
+go build
+ls
+```
+然后可以看到会生成一个可执行文件 `gopm`，把它复制到 `$GOPATH/bin` 下面即可：
+```shell
+ cp ./gopm $GOPATH/bin
+```
+
+接下来你就可以在任意路径下使用 `gopm get` 来代替 `go get` 了。
+
+
+#### 拉取 Fabric 源码
+```shell
+gopm get -g  github.com/hyperledger/fabric
+```
+过一阵子 `fabric` 的源码就会被下载到 `$GOPATH/src/github.com/hyperledger/fabric/` 下面了
+
+#### 编译 `configtxgen` 工具：
+```shell
+cd $GOPATH/src/github.com/hyperledger/fabric
+make configtxgen
+```
+最后 `log` 输出是：
+```shell
+.build/bin/configtxgen
+CGO_CFLAGS=" " GOBIN=/home/flyq/workspaces/golang/gopath/src/github.com/hyperledger/fabric/.build/bin go install -tags "" -ldflags "-X github.com/hyperledger/fabric/cmd/configtxgen/metadata.CommitSHA=" github.com/hyperledger/fabric/cmd/configtxgen
+Binary available as .build/bin/configtxgen
+```
+表示成功编译。
+执行 `./.build/bin/configtxgen --version` 会有以下输出:
+```shell
+configtxgen:
+ Version: 2.0.0
+ Commit SHA: development build
+ Go version: go1.12.9
+ OS/Arch: linux/amd64
+```
