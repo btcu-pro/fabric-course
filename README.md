@@ -29,6 +29,15 @@
     - [运行 `fabric-samples/` 里面的 `first-samples` 例子](#%e8%bf%90%e8%a1%8c-fabric-samples-%e9%87%8c%e9%9d%a2%e7%9a%84-first-samples-%e4%be%8b%e5%ad%90)
       - [生成必要组件](#%e7%94%9f%e6%88%90%e5%bf%85%e8%a6%81%e7%bb%84%e4%bb%b6)
       - [启动网络](#%e5%90%af%e5%8a%a8%e7%bd%91%e7%bb%9c)
+      - [关闭网络](#%e5%85%b3%e9%97%ad%e7%bd%91%e7%bb%9c)
+    - [自己启动 `Fabric` 网络](#%e8%87%aa%e5%b7%b1%e5%90%af%e5%8a%a8-fabric-%e7%bd%91%e7%bb%9c)
+      - [网络拓扑](#%e7%bd%91%e7%bb%9c%e6%8b%93%e6%89%91)
+      - [准备相关配置文件](#%e5%87%86%e5%a4%87%e7%9b%b8%e5%85%b3%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6)
+        - [生成身份证书以及组织关系：](#%e7%94%9f%e6%88%90%e8%ba%ab%e4%bb%bd%e8%af%81%e4%b9%a6%e4%bb%a5%e5%8f%8a%e7%bb%84%e7%bb%87%e5%85%b3%e7%b3%bb)
+        - [生成 Ordering 服务的创世区块](#%e7%94%9f%e6%88%90-ordering-%e6%9c%8d%e5%8a%a1%e7%9a%84%e5%88%9b%e4%b8%96%e5%8c%ba%e5%9d%97)
+        - [生成新建应用通道的配置交易](#%e7%94%9f%e6%88%90%e6%96%b0%e5%bb%ba%e5%ba%94%e7%94%a8%e9%80%9a%e9%81%93%e7%9a%84%e9%85%8d%e7%bd%ae%e4%ba%a4%e6%98%93)
+        - [生成锚节点配置更新文件](#%e7%94%9f%e6%88%90%e9%94%9a%e8%8a%82%e7%82%b9%e9%85%8d%e7%bd%ae%e6%9b%b4%e6%96%b0%e6%96%87%e4%bb%b6)
+      - [启动 Orderer 节点](#%e5%90%af%e5%8a%a8-orderer-%e8%8a%82%e7%82%b9)
 
 ## 0. Fabric 简介
 
@@ -525,5 +534,515 @@ Generate CCP files for Org1 and Org2
 ```
 
 #### 启动网络
+```shell
+./byfn.sh up
+Starting for channel 'mychannel' with CLI timeout of '10' seconds and CLI delay of '3' seconds
+Continue? [Y/n] y
+proceeding ...
+LOCAL_VERSION=1.4.3
+DOCKER_IMAGE_VERSION=1.4.3
+./byfn.sh: line 175: docker-compose: command not found
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+Error: No such container: cli
+ERROR !!!! Test failed
+```
+
+嗯，通过脚本启动网络有问题，看问题是没有安装 `docker-compose`:
+安装它：
+```shell
+sudo apt update
+
+sudo apt upgrade
+
+sudo apt install docker-compose
+```
+然后再次启动网络：
+```shell
+./byfn.sh up
+Starting for channel 'mychannel' with CLI timeout of '10' seconds and CLI delay of '3' seconds
+Continue? [Y/n] y
+proceeding ...
+LOCAL_VERSION=1.4.3
+DOCKER_IMAGE_VERSION=1.4.3
+Creating network "net_byfn" with the default driver
+Creating volume "net_peer0.org2.example.com" with default driver
+Creating volume "net_peer1.org2.example.com" with default driver
+Creating volume "net_peer1.org1.example.com" with default driver
+Creating volume "net_peer0.org1.example.com" with default driver
+Creating volume "net_orderer.example.com" with default driver
+Creating peer0.org2.example.com ... 
+Creating orderer.example.com ... 
+Creating peer0.org1.example.com ... 
+Creating peer1.org1.example.com ... 
+Creating peer0.org2.example.com
+Creating orderer.example.com
+Creating peer1.org2.example.com ... 
+Creating peer0.org1.example.com
+Creating peer1.org1.example.com
+Creating peer0.org2.example.com ... done
+Creating cli ... 
+Creating cli ... done
+CONTAINER ID        IMAGE                               COMMAND             CREATED             STATUS                  PORTS                      NAMES
+ef37d3268a41        hyperledger/fabric-tools:latest     "/bin/bash"         1 second ago        Up Less than a second                              cli
+5848b4d0bd60        hyperledger/fabric-peer:latest      "peer node start"   6 seconds ago       Up 1 second             0.0.0.0:10051->10051/tcp   peer1.org2.example.com
+7a92dbd104d4        hyperledger/fabric-peer:latest      "peer node start"   7 seconds ago       Up 3 seconds            0.0.0.0:7051->7051/tcp     peer0.org1.example.com
+5544489250f8        hyperledger/fabric-peer:latest      "peer node start"   7 seconds ago       Up 3 seconds            0.0.0.0:8051->8051/tcp     peer1.org1.example.com
+2666ab4b2c4a        hyperledger/fabric-orderer:latest   "orderer"           7 seconds ago       Up 2 seconds            0.0.0.0:7050->7050/tcp     orderer.example.com
+76eb349a9faa        hyperledger/fabric-peer:latest      "peer node start"   7 seconds ago       Up Less than a second   0.0.0.0:9051->9051/tcp     peer0.org2.example.com
+
+ ____    _____      _      ____    _____ 
+/ ___|  |_   _|    / \    |  _ \  |_   _|
+\___ \    | |     / _ \   | |_) |   | |  
+ ___) |   | |    / ___ \  |  _ <    | |  
+|____/    |_|   /_/   \_\ |_| \_\   |_|  
+
+Build your first network (BYFN) end-to-end test
+
+Channel name : mychannel
+Creating channel...
++ peer channel create -o orderer.example.com:7050 -c mychannel -f ./channel-artifacts/channel.tx --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
++ res=0
++ set +x
+2019-09-06 04:23:44.847 UTC [channelCmd] InitCmdFactory -> INFO 001 Endorser and orderer connections initialized
+2019-09-06 04:23:44.887 UTC [cli.common] readBlock -> INFO 002 Received block: 0
+===================== Channel 'mychannel' created ===================== 
+
+Having all peers join the channel...
++ peer channel join -b mychannel.block
++ res=0
++ set +x
+2019-09-06 04:23:44.979 UTC [channelCmd] InitCmdFactory -> INFO 001 Endorser and orderer connections initialized
+2019-09-06 04:23:44.997 UTC [channelCmd] executeJoin -> INFO 002 Successfully submitted proposal to join channel
+===================== peer0.org1 joined channel 'mychannel' ===================== 
+
++ peer channel join -b mychannel.block
++ res=0
++ set +x
+2019-09-06 04:23:48.117 UTC [channelCmd] InitCmdFactory -> INFO 001 Endorser and orderer connections initialized
+2019-09-06 04:23:48.136 UTC [channelCmd] executeJoin -> INFO 002 Successfully submitted proposal to join channel
+===================== peer1.org1 joined channel 'mychannel' ===================== 
+
++ peer channel join -b mychannel.block
++ res=0
++ set +x
+2019-09-06 04:23:51.237 UTC [channelCmd] InitCmdFactory -> INFO 001 Endorser and orderer connections initialized
+2019-09-06 04:23:51.268 UTC [channelCmd] executeJoin -> INFO 002 Successfully submitted proposal to join channel
+===================== peer0.org2 joined channel 'mychannel' ===================== 
+
++ peer channel join -b mychannel.block
++ res=0
++ set +x
+2019-09-06 04:23:54.378 UTC [channelCmd] InitCmdFactory -> INFO 001 Endorser and orderer connections initialized
+2019-09-06 04:23:54.400 UTC [channelCmd] executeJoin -> INFO 002 Successfully submitted proposal to join channel
+===================== peer1.org2 joined channel 'mychannel' ===================== 
+
+Updating anchor peers for org1...
++ peer channel update -o orderer.example.com:7050 -c mychannel -f ./channel-artifacts/Org1MSPanchors.tx --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
++ res=0
++ set +x
+2019-09-06 04:23:57.497 UTC [channelCmd] InitCmdFactory -> INFO 001 Endorser and orderer connections initialized
+2019-09-06 04:23:57.507 UTC [channelCmd] update -> INFO 002 Successfully submitted channel update
+===================== Anchor peers updated for org 'Org1MSP' on channel 'mychannel' ===================== 
++ peer channel update -o orderer.example.com:7050 -c mychannel -f ./channel-artifacts/Org2MSPanchors.tx --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+
+Updating anchor peers for org2...
++ res=0
++ set +x
+2019-09-06 04:24:00.569 UTC [channelCmd] InitCmdFactory -> INFO 001 Endorser and orderer connections initialized
+2019-09-06 04:24:00.580 UTC [channelCmd] update -> INFO 002 Successfully submitted channel update
+===================== Anchor peers updated for org 'Org2MSP' on channel 'mychannel' ===================== 
+
+Installing chaincode on peer0.org1...
++ peer chaincode install -n mycc -v 1.0 -l golang -p github.com/chaincode/chaincode_example02/go/
++ res=0
++ set +x
+2019-09-06 04:24:03.670 UTC [chaincodeCmd] checkChaincodeCmdParams -> INFO 001 Using default escc
+2019-09-06 04:24:03.670 UTC [chaincodeCmd] checkChaincodeCmdParams -> INFO 002 Using default vscc
+2019-09-06 04:24:04.363 UTC [chaincodeCmd] install -> INFO 003 Installed remotely response:<status:200 payload:"OK" > 
+===================== Chaincode is installed on peer0.org1 ===================== 
+
+Install chaincode on peer0.org2...
++ peer chaincode install -n mycc -v 1.0 -l golang -p github.com/chaincode/chaincode_example02/go/
++ res=0
++ set +x
+2019-09-06 04:24:04.465 UTC [chaincodeCmd] checkChaincodeCmdParams -> INFO 001 Using default escc
+2019-09-06 04:24:04.465 UTC [chaincodeCmd] checkChaincodeCmdParams -> INFO 002 Using default vscc
+2019-09-06 04:24:04.642 UTC [chaincodeCmd] install -> INFO 003 Installed remotely response:<status:200 payload:"OK" > 
+===================== Chaincode is installed on peer0.org2 ===================== 
+
+Instantiating chaincode on peer0.org2...
++ peer chaincode instantiate -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc -l golang -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P 'AND ('\''Org1MSP.peer'\'','\''Org2MSP.peer'\'')'
++ res=0
++ set +x
+2019-09-06 04:24:04.704 UTC [chaincodeCmd] checkChaincodeCmdParams -> INFO 001 Using default escc
+2019-09-06 04:24:04.704 UTC [chaincodeCmd] checkChaincodeCmdParams -> INFO 002 Using default vscc
+===================== Chaincode is instantiated on peer0.org2 on channel 'mychannel' ===================== 
+
+Querying chaincode on peer0.org1...
+===================== Querying on peer0.org1 on channel 'mychannel'... ===================== 
+Attempting to Query peer0.org1 ...3 secs
++ peer chaincode query -C mychannel -n mycc -c '{"Args":["query","a"]}'
++ res=0
++ set +x
+
+100
+===================== Query successful on peer0.org1 on channel 'mychannel' ===================== 
+Sending invoke transaction on peer0.org1 peer0.org2...
++ peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"Args":["invoke","a","b","10"]}'
++ res=0
++ set +x
+2019-09-06 04:24:33.517 UTC [chaincodeCmd] chaincodeInvokeOrQuery -> INFO 001 Chaincode invoke successful. result: status:200 
+===================== Invoke transaction successful on peer0.org1 peer0.org2 on channel 'mychannel' ===================== 
+
+Installing chaincode on peer1.org2...
++ peer chaincode install -n mycc -v 1.0 -l golang -p github.com/chaincode/chaincode_example02/go/
++ res=0
++ set +x
+2019-09-06 04:24:33.582 UTC [chaincodeCmd] checkChaincodeCmdParams -> INFO 001 Using default escc
+2019-09-06 04:24:33.582 UTC [chaincodeCmd] checkChaincodeCmdParams -> INFO 002 Using default vscc
+2019-09-06 04:24:33.771 UTC [chaincodeCmd] install -> INFO 003 Installed remotely response:<status:200 payload:"OK" > 
+===================== Chaincode is installed on peer1.org2 ===================== 
+
+Querying chaincode on peer1.org2...
+===================== Querying on peer1.org2 on channel 'mychannel'... ===================== 
++ peer chaincode query -C mychannel -n mycc -c '{"Args":["query","a"]}'
+Attempting to Query peer1.org2 ...3 secs
++ res=0
++ set +x
+
+90
+===================== Query successful on peer1.org2 on channel 'mychannel' ===================== 
+
+========= All GOOD, BYFN execution completed =========== 
 
 
+ _____   _   _   ____   
+| ____| | \ | | |  _ \  
+|  _|   |  \| | | | | | 
+| |___  | |\  | | |_| | 
+|_____| |_| \_| |____/  
+
+```
+好的，恭喜你已经成功启动网络。你可以自己用编辑器打开 `byfn.sh`，然后配合 `log`，查看启动一个网络是怎么搞的。
+
+你可以在 https://hyperledger-fabric-cn.readthedocs.io/zh/latest/build_network.html#bring-up-the-network 查看更多的启动网络的附加命令，比如如果你想使用 `Kafka` 服务，就可以这样启动：
+```shell
+./byfn.sh up -o kafka
+```
+
+查看有哪些容器：
+```shell
+docker ps
+CONTAINER ID        IMAGE                                                                                                  COMMAND                  CREATED              STATUS              PORTS                      NAMES
+54a6e6e707de        dev-peer1.org2.example.com-mycc-1.0-26c2ef32838554aac4f7ad6f100aca865e87959c9a126e86d764c8d01f8346ab   "chaincode -peer.add…"   9 seconds ago        Up 8 seconds                                   dev-peer1.org2.example.com-mycc-1.0
+f6851e88d739        dev-peer0.org1.example.com-mycc-1.0-384f11f484b9302df90b453200cfb25174305fce8f53f4e94d45ee3b6cab0ce9   "chaincode -peer.add…"   23 seconds ago       Up 22 seconds                                  dev-peer0.org1.example.com-mycc-1.0
+a7b47556ac81        dev-peer0.org2.example.com-mycc-1.0-15b571b3ce849066b7ec74497da3b27e54e0df1345daff3951b94245ce09c42b   "chaincode -peer.add…"   35 seconds ago       Up 34 seconds                                  dev-peer0.org2.example.com-mycc-1.0
+7c1a4dc09da7        hyperledger/fabric-tools:latest                                                                        "/bin/bash"              About a minute ago   Up About a minute                              cli
+11c4772f8227        hyperledger/fabric-orderer:latest                                                                      "orderer"                About a minute ago   Up About a minute   0.0.0.0:7050->7050/tcp     orderer.example.com
+dfef331ac5bb        hyperledger/fabric-peer:latest                                                                         "peer node start"        About a minute ago   Up About a minute   0.0.0.0:8051->8051/tcp     peer1.org1.example.com
+b43fa626ea19        hyperledger/fabric-peer:latest                                                                         "peer node start"        About a minute ago   Up About a minute   0.0.0.0:10051->10051/tcp   peer1.org2.example.com
+5a05ea5fd6a6        hyperledger/fabric-peer:latest                                                                         "peer node start"        About a minute ago   Up About a minute   0.0.0.0:7051->7051/tcp     peer0.org1.example.com
+5aac5493716d        hyperledger/fabric-peer:latest                                                                         "peer node start"        About a minute ago   Up About a minute   0.0.0.0:9051->9051/tcp     peer0.org2.example.com
+```
+可以看出里面有四个 `peer` 节点，一个 `orderer` 节点，一个 `cli` 节点，其中 `cli` 主要用于管理员来操作整个网络的。然后还要几个关于链码（chaincode）的节点。
+
+然后你就可以进入到 `cli` 节点来操作整个网络了：
+```shell
+docker exec -it cli /bin/bash
+
+root@7c1a4dc09da7:/opt/gopath/src/github.com/hyperledger/fabric/peer# ls
+channel-artifacts  crypto  log.txt  mychannel.block  scripts
+```
+具体怎么操作整个课程，后续会讲解，这里就不涉及了。
+
+
+#### 关闭网络
+关闭网络并清理掉对应的容器：
+```shell
+./byfn.sh down 
+Stopping for channel 'mychannel' with CLI timeout of '10' seconds and CLI delay of '3' seconds
+Continue? [Y/n] y
+proceeding ...
+WARNING: The BYFN_CA2_PRIVATE_KEY variable is not set. Defaulting to a blank string.
+WARNING: The BYFN_CA1_PRIVATE_KEY variable is not set. Defaulting to a blank string.
+Stopping cli                    ... done
+Stopping peer1.org2.example.com ... done
+Stopping peer0.org1.example.com ... done
+Stopping peer1.org1.example.com ... done
+Stopping orderer.example.com    ... done
+Stopping peer0.org2.example.com ... done
+Removing cli                    ... done
+Removing peer1.org2.example.com ... done
+Removing peer0.org1.example.com ... done
+Removing peer1.org1.example.com ... done
+Removing orderer.example.com    ... done
+Removing peer0.org2.example.com ... done
+Removing network net_byfn
+Removing volume net_peer0.org3.example.com
+WARNING: Volume net_peer0.org3.example.com not found.
+Removing volume net_peer1.org3.example.com
+WARNING: Volume net_peer1.org3.example.com not found.
+Removing volume net_orderer2.example.com
+WARNING: Volume net_orderer2.example.com not found.
+Removing volume net_orderer.example.com
+Removing volume net_peer0.org2.example.com
+Removing volume net_peer0.org1.example.com
+Removing volume net_peer1.org1.example.com
+Removing volume net_peer1.org2.example.com
+Removing volume net_orderer5.example.com
+WARNING: Volume net_orderer5.example.com not found.
+Removing volume net_orderer4.example.com
+WARNING: Volume net_orderer4.example.com not found.
+Removing volume net_orderer3.example.com
+WARNING: Volume net_orderer3.example.com not found.
+815fc43618f4
+8e5e8672366d
+67755603d83f
+Untagged: dev-peer1.org2.example.com-mycc-1.0-26c2ef32838554aac4f7ad6f100aca865e87959c9a126e86d764c8d01f8346ab:latest
+Deleted: sha256:61a7d44d973d82cf7cd5aded215e14104dec9c3adc1bf79265bf4c36b5086c4e
+Deleted: sha256:a5ee113a7703d45296eb13aed25fd45eb4df34297320c074ecca7f14ffbd689d
+Deleted: sha256:edabe38ce554d11694b5e247855fda54b438e2ffbd212b97b999c97ec0019f29
+Deleted: sha256:f24f72a853faa78ac072989a9c2e20109ab19043bf5e84738fa03634edafe6e2
+Untagged: dev-peer0.org1.example.com-mycc-1.0-384f11f484b9302df90b453200cfb25174305fce8f53f4e94d45ee3b6cab0ce9:latest
+Deleted: sha256:fbb1ddba1e33b349e39194af75585c58e7f1803303d92c91bc9161ac25b1a4cc
+Deleted: sha256:35fb2c489e320777e4cb9d61de39712187bdbd121a23669d8055dda45cafd42d
+Deleted: sha256:4ad5fbf7bd7a66ef62555e6ea8beac04ea7eb08e8216588c06cd360c08711d5a
+Deleted: sha256:220f2a5e3e3630858a2f6b5aa8ead6eaf67732b7e4a02d11381b0a42fcf35e11
+Untagged: dev-peer0.org2.example.com-mycc-1.0-15b571b3ce849066b7ec74497da3b27e54e0df1345daff3951b94245ce09c42b:latest
+Deleted: sha256:a93b5774dbd687380c67f5486023a97d0b35fd43d068df536fedbdb327acab0f
+Deleted: sha256:b0bb1cead8b9e6acbb41bc1165c540806d06154360d4cc87214bb6981eb66514
+Deleted: sha256:ffa4bbe1acee1b18fcf5cf4f196feb36842ab4ba3c061c406f0021d4eeb69cc0
+Deleted: sha256:2f5e59ecb2031eb1c27a5c3ba284c3fc603acb4c2deb5332cf4c0230e424e5c9
+```
+查看容器：
+```shell
+docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+```
+发现那些节点都已经清理完毕。
+
+
+### 自己启动 `Fabric` 网络
+上面通过脚本启动一个网络，已经初步体验了整个流程。但是脚本隐藏了很多细节，让你有点不知道自己在干嘛，下面通过一步一步启动网络来熟练整个流程：
+
+#### 网络拓扑
+同样的，这次我们自己启动一个 Fabric 网络，它包含一个 Order 节点和四个 Peer 节点，以及一个管理节点来生成网络。
+
+四个 Peer 节点分属于同一个管理域（example.com）下的两个组织 Org1 和 Org2，这两个组织都加入同一个应用通道（business-channel）中，每个组织中的第一个节点（peer0节点）作为锚节点和其他组织进行通信，所有节点通过域名都可以相互访问。之前不是提到过 Fabric 里面的 channel 概念吗，这个管理域也就是一个应用 channel。
+
+架构图：
+![channel](image/fabric19.jpg)
+
+#### 准备相关配置文件
+Fabric网络在启动之前，需要提前生成一些用于启动的配置文件，主要包括MSP相关文件（msp/*）、TLS相关文件（tls/*）、系统通道初始区块（orderer.genesis.block）、新建应用通道交易文件（businesschannel.tx）、锚节点配置更新交易文件Org1MSPanchors.tx和Org2MSPanchors.tx）等。
+
+各个文件的功能如下所示：
+![channel](image/fabric20.png)
+
+##### 生成身份证书以及组织关系：
+
+Fabric网络提供的是联盟链服务，联盟由多个组织构成，组织中的成员提供了节点服务来维护网络，并且通过身份来进行权限管理。因此，首先需要对各个组织和成员的关系进行规划，分别生成对应的身份证书文件，并部署到其对应的节点上。
+
+用户可以通过PKI服务（如使用fabric-ca）或者OpenSSL工具来手动生成各个实体的证书和私钥。但当组织结构比较复杂时，这种手动生成的方式容易出错，并且效率不高。
+
+Fabric项目提供了cryptogen工具（基于crypto标准库）实现自动化生成。这一过程首先依赖crypto-config.yaml配置文件。crypto-config.yaml配置文件的结构十分简单，支持定义两种类型（OrdererOrgs和PeerOrgs）的若干组织。每个组织中又可以定义多个节点（Spec）和用户（User）。
+
+一个示例的crypto-config.yaml配置文件内容如下，其中定义了一个OrdererOrgs类型的组织Orderer（包括一个节点orderer.example.com），以及两个PeerOrgs类型的组织Org1和Org2（分别包括2个节点和1个普通用户）。
+
+对应命令：
+```shell
+cd ~/fabric-samples/first-network
+
+cryptogen generate --config=./crypto-config.yaml --output ./crypto-config
+org1.example.com
+org2.example.com
+
+ls ./crypto-config
+ordererOrganizations/  peerOrganizations/
+```
+
+##### 生成 Ordering 服务的创世区块
+Orderer节点在启动时，可以指定使用提前生成的初始区块文件作为系统通道的初始配置。
+
+初始区块中包括了Ordering服务的相关配置信息以及联盟信息。
+
+初始区块可以使用configtxgen工具进行生成。生成过程需要依赖/etc/hyperledger/fabric/configtx.yaml文件。configtx.yaml配置文件定义了整个网络中的相关配置和拓扑结构信息。
+
+编写configtx.yaml配置文件可以参考Fabric代码中（如examples/e2e_cli路径下或sampleconfig路径下）的示例。
+
+该配置文件定义了两个模板：TwoOrgsOrdererGenesis和TwoOrgsChannel，其中前者可以用来生成Ordering服务的初始区块文件。通过如下命令指定使用configtx.yaml文件中定义的TwoOrgsOrdererGenesis模板，来生成Ordering服务系统通道的初始区块文件。
+
+注意这里排序服务类型采用了简单的solo模式，生产环境中可以采用kafka集群服务：
+```shell
+configtxgen -profile TwoOrgsOrdererGenesis -outputBlock ./orderer.genesis.block
+2019-09-05 22:07:58.104 PDT [common.tools.configtxgen] main -> WARN 001 Omitting the channel ID for configtxgen for output operations is deprecated.  Explicitly passing the channel ID will be required in the future, defaulting to 'testchainid'.
+2019-09-05 22:07:58.104 PDT [common.tools.configtxgen] main -> INFO 002 Loading configuration
+2019-09-05 22:07:58.168 PDT [common.tools.configtxgen.localconfig] completeInitialization -> INFO 003 orderer type: solo
+2019-09-05 22:07:58.168 PDT [common.tools.configtxgen.localconfig] Load -> INFO 004 Loaded configuration: /home/flyq/fabric-samples/first-network/configtx.yaml
+2019-09-05 22:07:58.230 PDT [common.tools.configtxgen.localconfig] completeInitialization -> INFO 005 orderer type: solo
+2019-09-05 22:07:58.230 PDT [common.tools.configtxgen.localconfig] LoadTopLevel -> INFO 006 Loaded configuration: /home/flyq/fabric-samples/first-network/configtx.yaml
+2019-09-05 22:07:58.236 PDT [common.tools.configtxgen] doOutputBlock -> INFO 007 Generating genesis block
+2019-09-05 22:07:58.236 PDT [common.tools.configtxgen] doOutputBlock -> INFO 008 Writing genesis block
+```
+然后当前目录多了一个刚生成的 `orderer.genesis.block` 文件。
+
+##### 生成新建应用通道的配置交易
+```shell
+configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./businesschannel.tx -channelID businesschannel
+
+2019-09-05 22:27:10.142 PDT [common.tools.configtxgen] main -> INFO 001 Loading configuration
+2019-09-05 22:27:10.203 PDT [common.tools.configtxgen.localconfig] Load -> INFO 002 Loaded configuration: /home/flyq/fabric-samples/first-network/configtx.yaml
+2019-09-05 22:27:10.261 PDT [common.tools.configtxgen.localconfig] completeInitialization -> INFO 003 orderer type: solo
+2019-09-05 22:27:10.261 PDT [common.tools.configtxgen.localconfig] LoadTopLevel -> INFO 004 Loaded configuration: /home/flyq/fabric-samples/first-network/configtx.yaml
+2019-09-05 22:27:10.261 PDT [common.tools.configtxgen] doOutputChannelCreateTx -> INFO 005 Generating new channel configtx
+2019-09-05 22:27:10.264 PDT [common.tools.configtxgen] doOutputChannelCreateTx -> INFO 006 Writing new channel tx
+```
+然后当前目录多了一个刚生成的 `businesschannel.tx` 文件。
+
+##### 生成锚节点配置更新文件
+```
+configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./Org1MSPanchors.tx -channelID businesschannel -asOrg Org1MSP
+
+configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./Org2MSPanchors.tx -channelID businesschannel -asOrg Org2MSP
+
+```
+对应的 log 差不多，其中一个是：
+```s
+2019-09-05 22:31:04.608 PDT [common.tools.configtxgen] main -> INFO 001 Loading configuration
+2019-09-05 22:31:04.674 PDT [common.tools.configtxgen.localconfig] Load -> INFO 002 Loaded configuration: /home/flyq/fabric-samples/first-network/configtx.yaml
+2019-09-05 22:31:04.732 PDT [common.tools.configtxgen.localconfig] completeInitialization -> INFO 003 orderer type: solo
+2019-09-05 22:31:04.732 PDT [common.tools.configtxgen.localconfig] LoadTopLevel -> INFO 004 Loaded configuration: /home/flyq/fabric-samples/first-network/configtx.yaml
+2019-09-05 22:31:04.732 PDT [common.tools.configtxgen] doOutputAnchorPeersUpdate -> INFO 005 Generating anchor peer update
+2019-09-05 22:31:04.732 PDT [common.tools.configtxgen] doOutputAnchorPeersUpdate -> INFO 006 Writing anchor peer update
+```
+然后当前目录多了两个文件： `Org1MSPanchors.tx`，`Org2MSPanchors.tx`
+
+#### 启动 Orderer 节点
+把 orderer 的配置文件复制过来：
+```shell
+cd ~/fabric-samples/first-network
+
+cp ../config/orderer.yaml ./
+
+cp -r crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/ ./
+
+```
+启动节点：
+```shell
+
+orderer start 
+2019-09-05 23:39:13.791 PDT [localconfig] completeInitialization -> INFO 001 Kafka.Version unset, setting to 0.10.2.0
+2019-09-05 23:39:13.801 PDT [orderer.common.server] prettyPrintStruct -> INFO 002 Orderer config values:
+	General.LedgerType = "file"
+	General.ListenAddress = "127.0.0.1"
+	General.ListenPort = 7050
+	General.TLS.Enabled = false
+	General.TLS.PrivateKey = "/home/flyq/fabric-samples/first-network/tls/server.key"
+	General.TLS.Certificate = "/home/flyq/fabric-samples/first-network/tls/server.crt"
+	General.TLS.RootCAs = [/home/flyq/fabric-samples/first-network/tls/ca.crt]
+	General.TLS.ClientAuthRequired = false
+	General.TLS.ClientRootCAs = []
+	General.Cluster.ListenAddress = ""
+	General.Cluster.ListenPort = 0
+	General.Cluster.ServerCertificate = ""
+	General.Cluster.ServerPrivateKey = ""
+	General.Cluster.ClientCertificate = ""
+	General.Cluster.ClientPrivateKey = ""
+	General.Cluster.RootCAs = []
+	General.Cluster.DialTimeout = 5s
+	General.Cluster.RPCTimeout = 7s
+	General.Cluster.ReplicationBufferSize = 20971520
+	General.Cluster.ReplicationPullTimeout = 5s
+	General.Cluster.ReplicationRetryTimeout = 5s
+	General.Cluster.ReplicationBackgroundRefreshInterval = 5m0s
+	General.Cluster.ReplicationMaxRetries = 12
+	General.Cluster.SendBufferSize = 10
+	General.Cluster.CertExpirationWarningThreshold = 168h0m0s
+	General.Cluster.TLSHandshakeTimeShift = 0s
+	General.Keepalive.ServerMinInterval = 1m0s
+	General.Keepalive.ServerInterval = 2h0m0s
+	General.Keepalive.ServerTimeout = 20s
+	General.ConnectionTimeout = 0s
+	General.GenesisMethod = "provisional"
+	General.GenesisProfile = "SampleInsecureSolo"
+	General.SystemChannel = "test-system-channel-name"
+	General.GenesisFile = "/home/flyq/fabric-samples/first-network/genesisblock"
+	General.Profile.Enabled = false
+	General.Profile.Address = "0.0.0.0:6060"
+	General.LocalMSPDir = "/home/flyq/fabric-samples/first-network/msp"
+	General.LocalMSPID = "SampleOrg"
+	General.BCCSP.ProviderName = "SW"
+	General.BCCSP.SwOpts.SecLevel = 256
+	General.BCCSP.SwOpts.HashFamily = "SHA2"
+	General.BCCSP.SwOpts.Ephemeral = false
+	General.BCCSP.SwOpts.FileKeystore.KeyStorePath = "/home/flyq/fabric-samples/first-network/msp/keystore"
+	General.BCCSP.SwOpts.DummyKeystore =
+	General.BCCSP.SwOpts.InmemKeystore =
+	General.BCCSP.PluginOpts =
+	General.Authentication.TimeWindow = 15m0s
+	General.Authentication.NoExpirationChecks = false
+	FileLedger.Location = "/var/hyperledger/production/orderer"
+	FileLedger.Prefix = "hyperledger-fabric-ordererledger"
+	RAMLedger.HistorySize = 1000
+	Kafka.Retry.ShortInterval = 5s
+	Kafka.Retry.ShortTotal = 10m0s
+	Kafka.Retry.LongInterval = 5m0s
+	Kafka.Retry.LongTotal = 12h0m0s
+	Kafka.Retry.NetworkTimeouts.DialTimeout = 10s
+	Kafka.Retry.NetworkTimeouts.ReadTimeout = 10s
+	Kafka.Retry.NetworkTimeouts.WriteTimeout = 10s
+	Kafka.Retry.Metadata.RetryMax = 3
+	Kafka.Retry.Metadata.RetryBackoff = 250ms
+	Kafka.Retry.Producer.RetryMax = 3
+	Kafka.Retry.Producer.RetryBackoff = 100ms
+	Kafka.Retry.Consumer.RetryBackoff = 2s
+	Kafka.Verbose = false
+	Kafka.Version = 0.10.2.0
+	Kafka.TLS.Enabled = false
+	Kafka.TLS.PrivateKey = ""
+	Kafka.TLS.Certificate = ""
+	Kafka.TLS.RootCAs = []
+	Kafka.TLS.ClientAuthRequired = false
+	Kafka.TLS.ClientRootCAs = []
+	Kafka.SASLPlain.Enabled = false
+	Kafka.SASLPlain.User = ""
+	Kafka.SASLPlain.Password = ""
+	Kafka.Topic.ReplicationFactor = 3
+	Debug.BroadcastTraceDir = ""
+	Debug.DeliverTraceDir = ""
+	Consensus = map[WALDir:/var/hyperledger/production/orderer/etcdraft/wal SnapDir:/var/hyperledger/production/orderer/etcdraft/snapshot]
+	Operations.ListenAddress = "127.0.0.1:8443"
+	Operations.TLS.Enabled = false
+	Operations.TLS.PrivateKey = ""
+	Operations.TLS.Certificate = ""
+	Operations.TLS.RootCAs = []
+	Operations.TLS.ClientAuthRequired = false
+	Operations.TLS.ClientRootCAs = []
+	Metrics.Provider = "disabled"
+	Metrics.Statsd.Network = "udp"
+	Metrics.Statsd.Address = "127.0.0.1:8125"
+	Metrics.Statsd.WriteInterval = 30s
+	Metrics.Statsd.Prefix = ""
+2019-09-05 23:39:13.869 PDT [common.tools.configtxgen.localconfig] Load -> PANI 003 Could not find profile:  SampleInsecureSolo
+panic: Could not find profile:  SampleInsecureSolo
+
+goroutine 1 [running]:
+github.com/hyperledger/fabric/vendor/go.uber.org/zap/zapcore.(*CheckedEntry).Write(0xc000245810, 0x0, 0x0, 0x0)
+	/w/workspace/fabric-release-jobs-x86_64/gopath/src/github.com/hyperledger/fabric/vendor/go.uber.org/zap/zapcore/entry.go:229 +0x515
+github.com/hyperledger/fabric/vendor/go.uber.org/zap.(*SugaredLogger).log(0xc00013e240, 0xc0005c3804, 0xc00040aa50, 0x2b, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/w/workspace/fabric-release-jobs-x86_64/gopath/src/github.com/hyperledger/fabric/vendor/go.uber.org/zap/sugar.go:234 +0xf6
+github.com/hyperledger/fabric/vendor/go.uber.org/zap.(*SugaredLogger).Panicf(0xc00013e240, 0xc00040aa50, 0x2b, 0x0, 0x0, 0x0)
+	/w/workspace/fabric-release-jobs-x86_64/gopath/src/github.com/hyperledger/fabric/vendor/go.uber.org/zap/sugar.go:159 +0x79
+github.com/hyperledger/fabric/common/flogging.(*FabricLogger).Panic(0xc00013e248, 0xc0005c39d0, 0x2, 0x2)
+	/w/workspace/fabric-release-jobs-x86_64/gopath/src/github.com/hyperledger/fabric/common/flogging/zap.go:73 +0x75
+github.com/hyperledger/fabric/common/tools/configtxgen/localconfig.Load(0xc0002629c0, 0x12, 0x0, 0x0, 0x0, 0xc0005c3b08)
+	/w/workspace/fabric-release-jobs-x86_64/gopath/src/github.com/hyperledger/fabric/common/tools/configtxgen/localconfig/config.go:288 +0x76d
+github.com/hyperledger/fabric/orderer/common/server.extractBootstrapBlock(0xc0004a4900, 0x0)
+	/w/workspace/fabric-release-jobs-x86_64/gopath/src/github.com/hyperledger/fabric/orderer/common/server/main.go:530 +0x124
+github.com/hyperledger/fabric/orderer/common/server.Start(0x146e0c3, 0x5, 0xc0004a4900)
+	/w/workspace/fabric-release-jobs-x86_64/gopath/src/github.com/hyperledger/fabric/orderer/common/server/main.go:96 +0x43
+github.com/hyperledger/fabric/orderer/common/server.Main()
+	/w/workspace/fabric-release-jobs-x86_64/gopath/src/github.com/hyperledger/fabric/orderer/common/server/main.go:91 +0x1ce
+main.main()
+	/w/workspace/fabric-release-jobs-x86_64/gopath/src/github.com/hyperledger/fabric/orderer/main.go:15 +0x20
+```
