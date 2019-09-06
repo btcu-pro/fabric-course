@@ -1,29 +1,29 @@
-# BTCU_Fabric
+# `BTCU_Fabric`
 
-## Constents
-- [BTCU_Fabric](#btcufabric)
-  - [Constents](#constents)
-  - [0. Fabric 简介](#0-fabric-%e7%ae%80%e4%bb%8b)
+## `Constents`
+- [`BTCU_Fabric`](#btcufabric)
+  - [`Constents`](#constents)
+  - [0. `Fabric` 简介](#0-fabric-%e7%ae%80%e4%bb%8b)
     - [超级账本背景](#%e8%b6%85%e7%ba%a7%e8%b4%a6%e6%9c%ac%e8%83%8c%e6%99%af)
-    - [Fabric 背景](#fabric-%e8%83%8c%e6%99%af)
-    - [Fabric 架构简介](#fabric-%e6%9e%b6%e6%9e%84%e7%ae%80%e4%bb%8b)
+    - [`Fabric` 背景](#fabric-%e8%83%8c%e6%99%af)
+    - [`Fabric` 架构简介](#fabric-%e6%9e%b6%e6%9e%84%e7%ae%80%e4%bb%8b)
   - [1. 开发环境搭建（Docker、Windows、Linux）](#1-%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%badockerwindowslinux)
     - [Docker 简介](#docker-%e7%ae%80%e4%bb%8b)
-    - [通过 Windows 下载 Docker 镜像来得到 Fabric 环境](#%e9%80%9a%e8%bf%87-windows-%e4%b8%8b%e8%bd%bd-docker-%e9%95%9c%e5%83%8f%e6%9d%a5%e5%be%97%e5%88%b0-fabric-%e7%8e%af%e5%a2%83)
+    - [通过 `Windows` 下载 `Docker` 镜像来得到 `Fabric` 环境](#%e9%80%9a%e8%bf%87-windows-%e4%b8%8b%e8%bd%bd-docker-%e9%95%9c%e5%83%8f%e6%9d%a5%e5%be%97%e5%88%b0-fabric-%e7%8e%af%e5%a2%83)
       - [安装 Docker 环境](#%e5%ae%89%e8%a3%85-docker-%e7%8e%af%e5%a2%83)
-      - [在 Docker 里下载定制好了的 Fabric 镜像：](#%e5%9c%a8-docker-%e9%87%8c%e4%b8%8b%e8%bd%bd%e5%ae%9a%e5%88%b6%e5%a5%bd%e4%ba%86%e7%9a%84-fabric-%e9%95%9c%e5%83%8f)
-    - [Linux 环境下直接安装](#linux-%e7%8e%af%e5%a2%83%e4%b8%8b%e7%9b%b4%e6%8e%a5%e5%ae%89%e8%a3%85)
+      - [在 `Docker` 里下载定制好了的 `Fabric` 镜像：](#%e5%9c%a8-docker-%e9%87%8c%e4%b8%8b%e8%bd%bd%e5%ae%9a%e5%88%b6%e5%a5%bd%e4%ba%86%e7%9a%84-fabric-%e9%95%9c%e5%83%8f)
+    - [`Linux` 环境下直接安装](#linux-%e7%8e%af%e5%a2%83%e4%b8%8b%e7%9b%b4%e6%8e%a5%e5%ae%89%e8%a3%85)
       - [安装其他环境：](#%e5%ae%89%e8%a3%85%e5%85%b6%e4%bb%96%e7%8e%af%e5%a2%83)
-      - [安装 Golang](#%e5%ae%89%e8%a3%85-golang)
-      - [安装 gopm](#%e5%ae%89%e8%a3%85-gopm)
-      - [拉取 Fabric 源码](#%e6%8b%89%e5%8f%96-fabric-%e6%ba%90%e7%a0%81)
+      - [安装 `Golang`](#%e5%ae%89%e8%a3%85-golang)
+      - [安装 `gopm`](#%e5%ae%89%e8%a3%85-gopm)
+      - [拉取 `Fabric` 源码](#%e6%8b%89%e5%8f%96-fabric-%e6%ba%90%e7%a0%81)
       - [编译安装 `peer` 组件：](#%e7%bc%96%e8%af%91%e5%ae%89%e8%a3%85-peer-%e7%bb%84%e4%bb%b6)
       - [编译安装 `fabric-order` 组件：](#%e7%bc%96%e8%af%91%e5%ae%89%e8%a3%85-fabric-order-%e7%bb%84%e4%bb%b6)
       - [编译安装 `fabric-ca` 组件](#%e7%bc%96%e8%af%91%e5%ae%89%e8%a3%85-fabric-ca-%e7%bb%84%e4%bb%b6)
       - [编译其他辅助工具：](#%e7%bc%96%e8%af%91%e5%85%b6%e4%bb%96%e8%be%85%e5%8a%a9%e5%b7%a5%e5%85%b7)
     - [`Linux` 下通过 `Docker` 安装：](#linux-%e4%b8%8b%e9%80%9a%e8%bf%87-docker-%e5%ae%89%e8%a3%85)
       - [通过脚本安装（推荐，因为下载的镜像更多，并且还会生成一个 `fabric-samples/` 文件夹，有一个示例）：](#%e9%80%9a%e8%bf%87%e8%84%9a%e6%9c%ac%e5%ae%89%e8%a3%85%e6%8e%a8%e8%8d%90%e5%9b%a0%e4%b8%ba%e4%b8%8b%e8%bd%bd%e7%9a%84%e9%95%9c%e5%83%8f%e6%9b%b4%e5%a4%9a%e5%b9%b6%e4%b8%94%e8%bf%98%e4%bc%9a%e7%94%9f%e6%88%90%e4%b8%80%e4%b8%aa-fabric-samples-%e6%96%87%e4%bb%b6%e5%a4%b9%e6%9c%89%e4%b8%80%e4%b8%aa%e7%a4%ba%e4%be%8b)
-      - [安装 Docker](#%e5%ae%89%e8%a3%85-docker)
+      - [安装 `Docker`](#%e5%ae%89%e8%a3%85-docker)
       - [下载 `Docker` 镜像](#%e4%b8%8b%e8%bd%bd-docker-%e9%95%9c%e5%83%8f)
   - [2、案例运行与使用模拟](#2%e6%a1%88%e4%be%8b%e8%bf%90%e8%a1%8c%e4%b8%8e%e4%bd%bf%e7%94%a8%e6%a8%a1%e6%8b%9f)
     - [运行 `fabric-samples/` 里面的 `first-samples` 例子](#%e8%bf%90%e8%a1%8c-fabric-samples-%e9%87%8c%e9%9d%a2%e7%9a%84-first-samples-%e4%be%8b%e5%ad%90)
@@ -34,85 +34,85 @@
       - [网络拓扑](#%e7%bd%91%e7%bb%9c%e6%8b%93%e6%89%91)
       - [准备相关配置文件](#%e5%87%86%e5%a4%87%e7%9b%b8%e5%85%b3%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6)
         - [生成身份证书以及组织关系：](#%e7%94%9f%e6%88%90%e8%ba%ab%e4%bb%bd%e8%af%81%e4%b9%a6%e4%bb%a5%e5%8f%8a%e7%bb%84%e7%bb%87%e5%85%b3%e7%b3%bb)
-        - [生成 Ordering 服务的创世区块](#%e7%94%9f%e6%88%90-ordering-%e6%9c%8d%e5%8a%a1%e7%9a%84%e5%88%9b%e4%b8%96%e5%8c%ba%e5%9d%97)
+        - [生成 `Ordering` 服务的创世区块](#%e7%94%9f%e6%88%90-ordering-%e6%9c%8d%e5%8a%a1%e7%9a%84%e5%88%9b%e4%b8%96%e5%8c%ba%e5%9d%97)
         - [生成新建应用通道的配置交易](#%e7%94%9f%e6%88%90%e6%96%b0%e5%bb%ba%e5%ba%94%e7%94%a8%e9%80%9a%e9%81%93%e7%9a%84%e9%85%8d%e7%bd%ae%e4%ba%a4%e6%98%93)
         - [生成锚节点配置更新文件](#%e7%94%9f%e6%88%90%e9%94%9a%e8%8a%82%e7%82%b9%e9%85%8d%e7%bd%ae%e6%9b%b4%e6%96%b0%e6%96%87%e4%bb%b6)
-      - [启动 Orderer 节点](#%e5%90%af%e5%8a%a8-orderer-%e8%8a%82%e7%82%b9)
+      - [启动 `Orderer` 节点](#%e5%90%af%e5%8a%a8-orderer-%e8%8a%82%e7%82%b9)
 
-## 0. Fabric 简介
+## 0. `Fabric` 简介
 
 ### 超级账本背景
 
-超级账本(Hyperledger)项目是首个面向企业应用场景的开源分布式账本平台。
+超级账本(`Hyperledger`)项目是首个面向企业应用场景的开源分布式账本平台。
 
-2015 年 12 月，由开源世界的旗舰组织 Linux 基金会牵头，30 家初始企业成员（包括 IBM、Intel、摩根大通、思科、R3 等），共同宣布了 Hyperledger 联合项目成立。超级账本项目为透明、公开、去中心化的企业级分布式账本技术提供开源参考实现，并推动区块链和分布式账本相关协议、规范和标准的发展。
+2015 年 12 月，由开源世界的旗舰组织 Linux 基金会牵头，30 家初始企业成员（包括 `IBM`、`Intel`、摩根大通、思科、`R3` 等），共同宣布了 `Hyperledger` 联合项目成立。超级账本项目为透明、公开、去中心化的企业级分布式账本技术提供开源参考实现，并推动区块链和分布式账本相关协议、规范和标准的发展。
 
-作为一个联合项目（collaborative project），超级账本由面向不同目的和场景的子项目构成。目前包括 Fabric、Sawtooth、Iroha、Blockchain Explorer、Cello、Indy、Composer、Burrow 等 8 大顶级项目。
+作为一个联合项目(`collaborative project`)，超级账本由面向不同目的和场景的子项目构成。目前包括 `Fabric`、`Sawtooth`、`Iroha`、`Blockchain Explorer`、`Cello`、`Indy`、`Composer`、`Burrow` 等 8 大顶级项目。
 
-这次课程将专注于 Fabric。
+这次课程将专注于 `Fabric`。
 
-### Fabric 背景
+### `Fabric` 背景
 
-Fabric 是最早加入到超级账本项目中的顶级项目，Fabric 由 IBM、DAH 等企业于 2015 年底提交到社区。该项目的定位是面向企业的分布式账本平台，创新地引入了权限管理支持，设计上支持可插拔、可扩展，是首个面向联盟链场景的开源项目。
-Fabric 基于 Go 语言实现，目前已经发布了 1.4 版本，同时包括 Fabric CA、Fabric SDK 等多个子项目。
+`Fabric` 是最早加入到超级账本项目中的顶级项目，`Fabric `由 IBM、DAH 等企业于 2015 年底提交到社区。该项目的定位是面向企业的分布式账本平台，创新地引入了权限管理支持，设计上支持可插拔、可扩展，是首个面向联盟链场景的开源项目。
+`Fabric` 基于 `Go` 语言实现，目前已经发布了 1.4 版本，同时包括 `Fabric CA`、`Fabric SDK`m等多个子项目。
 
-GitHub 地址: https://github.com/hyperledger/fabric/
+`GitHub` 地址: https://github.com/hyperledger/fabric/
 
-### Fabric 架构简介
+### `Fabric` 架构简介
 
 4 种不同种类的服务节点：
-* 背书节点（Endorser）：负责对交易的提案（proposal）进行检查和背书，计算交易执行结果；
-* 确认节点（Committer）：负责在接受交易结果前再次检查合法性，接受合法交易对账本的修改，并写入区块链结构；
-* 排序节点（Order）：对所有发往网络中的交易进行排序，将排序后的交易按照配置中的约定整理为区块，之后提交给确认节点进行处理；
-* 证书节点（CA）：负责对网络中所有的证书进行管理，提供标准的 PKI 服务。
+* 背书节点（`Endorser`）：负责对交易的提案（`proposal`）进行检查和背书，计算交易执行结果；
+* 确认节点（`Committer`）：负责在接受交易结果前再次检查合法性，接受合法交易对账本的修改，并写入区块链结构；
+* 排序节点（`Order`）：对所有发往网络中的交易进行排序，将排序后的交易按照配置中的约定整理为区块，之后提交给确认节点进行处理；
+* 证书节点（`CA`）：负责对网络中所有的证书进行管理，提供标准的 `PKI` 服务。
 
 一笔交易的典型流程图：
 ![fabric 交易流程](image/fabric02.jpg)
 
 2 种通道：
-* 系统通道（system channel）唯一，独立。负责管理网络中的各种配置信息，并完成对其他应用通道（application channel）的创建。
-* 应用通道（application channel）可以有多个。供用户发送交易使用。
+* 系统通道（`system channel`）唯一，独立。负责管理网络中的各种配置信息，并完成对其他应用通道（application channel）的创建。
+* 应用通道（`application channel`）可以有多个。供用户发送交易使用。
 
-启动一个 Fabric 网络的主要步骤：
-1. 预备网络内各项配置，包括网络中成员的组织结构和对应的身份证书（使用 cryptogen 工具完成）；生成系统通道的初始配置区块文件，新建应用通道的配置更新交易文件以及可能需要的锚节点配置更新交易文件（使用 configtxgen 工具完成）。
+启动一个 `Fabric` 网络的主要步骤：
+1. 预备网络内各项配置，包括网络中成员的组织结构和对应的身份证书（使用 `cryptogen` 工具完成）；生成系统通道的初始配置区块文件，新建应用通道的配置更新交易文件以及可能需要的锚节点配置更新交易文件（使用 `configtxgen` 工具完成）。
 2. 使用系统通道的初始配置区块文件启动排序节点，排序节点启动后自动按照指定配置创建系统通道。
-3. 不同的组织按照预置角色分别启动 Peer 节点。这个时候网络不存在应用通道，Peer 节点也并没有加入网络中。
+3. 不同的组织按照预置角色分别启动 `Peer` 节点。这个时候网络不存在应用通道，`Peer` 节点也并没有加入网络中。
 4. 使用新建应用通道的配置更新交易文件，向系统通道发送交易，创建新的应用通道。
-5. 让对应的 Peer 节点加入所创建的应用通道中，此时 Peer 节点加入网络，可以转变接受交易了。
-6. 用户通过客户端向网络中安装注册链码（chaincode），链码容器启动成功后用户即可对链码进行调用，将交易发送到网络中去。
+5. 让对应的 `Peer` 节点加入所创建的应用通道中，此时 `Peer` 节点加入网络，可以转变接受交易了。
+6. 用户通过客户端向网络中安装注册链码（`chaincode`），链码容器启动成功后用户即可对链码进行调用，将交易发送到网络中去。
 
 ## 1. 开发环境搭建（Docker、Windows、Linux）
 
 ### Docker 简介
 
-[Docker](https://www.docker.com/) 是一类虚拟化技术，类似虚拟机，安装好 Docker 这个软件后，可以在 Docker 里面运行一些定制好了的镜像，比如今天我们用到的就是在 Linux 操作系统里安装了 Fabric 环境的镜像，这样就省去了直接安装 Fabric 的麻烦。更多的镜像可以参考 [Docker Hub](https://hub.docker.com/)。然后本身 Docker 这个软件支持 Mac、Windows 和 Linux，因此也是一个很好的跨平台工具。
+[`Docker`](https://www.docker.com/) 是一类虚拟化技术，类似虚拟机，安装好 `Docker` 这个软件后，可以在 `Docker` 里面运行一些定制好了的镜像，比如今天我们用到的就是在 `Linux` 操作系统里安装了 `Fabric` 环境的镜像，这样就省去了直接安装 `Fabric` 的麻烦。更多的镜像可以参考 [`Docker Hub`](https://hub.docker.com/)。然后本身 Docker 这个软件支持 `Mac`、`Windows` 和 `Linux`，因此也是一个很好的跨平台工具。
 
-### 通过 Windows 下载 Docker 镜像来得到 Fabric 环境
+### 通过 `Windows` 下载 `Docker` 镜像来得到 `Fabric` 环境
 
 参考：https://docs.docker.com/docker-for-windows/install/ 
 （参考表示下面的具体安装文档是参考这个链接 + 实际情况得到的，因此一般来讲可以直接根据下面的步骤操作即可，下同）
 
 #### 安装 Docker 环境
 
-从官网这个[链接](https://hub.docker.com/search?q=&type=edition&offering=community)进去，然后下拉，找到 Docker Desktop for Windows，点击下载。
+从官网这个[链接](https://hub.docker.com/search?q=&type=edition&offering=community)进去，然后下拉，找到 `Docker Desktop for Windows`，点击下载。
 ![下载Docker软件](./image/fabric03.png)
 
 这里显示需要先登录：
 ![需要登录](./image/fabric04.png)
 
-如果之前有账户的直接登录，没有的就点击 Sign Up：
+如果之前有账户的直接登录，没有的就点击 `Sign Up`：
 ![登录界面](image/fabric05.png)
 
 登录之后就可以直接下载了（建议把下载链接放在迅雷里面，在浏览器里面下载 10k 左右，迅雷里面 10M）：
 ![下载界面](image/fabric06.png)
 
-安装时发现需要 Windows 10 的专业板或者企业版本：
+安装时发现需要 `Windows 10` 的专业板或者企业版本：
 ![家庭版无法安装](image/fabric08.png)
 
 然后查询发现本系统是家庭版：
 ![Windows版本](image/fabric07.png)
 
-因此需要安装 docker-toolbox:
+因此需要安装 `docker-toolbox`:
 在 https://github.com/docker/toolbox/releases ：
 ![下载 toolbox](image/fabric09.png)
 
@@ -124,12 +124,12 @@ GitHub 地址: https://github.com/hyperledger/fabric/
 
 总结：Windows 10 安装 Docker 有两种情况，如果版本是 Windows 10 专业版或者企业版，可以直接通过 `Docker for Windows Installer.exe` 安装，否则可以通过 `DockerToolbox-19.03.1.exe` 安装。
 
-#### 在 Docker 里下载定制好了的 Fabric 镜像：
+#### 在 `Docker` 里下载定制好了的 `Fabric` 镜像：
 
 Fabric 有多个镜像，下面是对应的依赖关系：  
 ![images](image/fabric12.png)  
 
-这里需要安装的是 fabric-peer, fabric-orderer, fabric-ca, fabric-tools, fabric-ccenv。  
+这里需要安装的是 `fabric-peer`, `fabric-orderer`, `fabric-ca`, `fabric-tools`, `fabric-ccenv`。  
 更多的镜像参考：  
 https://hub.docker.com/search?q=hyperledger&type=image 
 ![image_web](image/fabric13.png)  
@@ -147,13 +147,13 @@ docker pull hyperledger/fabric-peer \
 ![pull_linux](image/fabric15.png)   
 到这里，Windows 下的 Docker 环境配置好了
 
-### Linux 环境下直接安装
+### `Linux` 环境下直接安装
 
 #### 安装其他环境：
 参考：https://hyperledger-fabric-cn.readthedocs.io/zh/latest/prereqs.html
 其他都比较容易，按照步骤即可，下面就详细介绍 Golang 的安装。
 
-#### 安装 Golang
+#### 安装 `Golang`
 从官网下载最新版本：
 ```shell
 curl -O https://dl.google.com/go/go1.12.9.linux-amd64.tar.gz
@@ -193,7 +193,7 @@ $ go version
 go version go1.12.9 linux/amd64
 ```
 
-最后设置一下 GOPATH 环境变量，同样是修改 `~/.bashrc` 文件：
+最后设置一下 `GOPATH` 环境变量，同样是修改 `~/.bashrc` 文件：
 创建一个新建目录（这里是 `/home/flyq/workspaces/golang/gopath/`），并指定它是 GOPATH，然后在这个目录下再创建三个文件夹，分别命名为：`src`, `pkg`, `bin`，最后添加这两行到 `~/.bashrc`下面，同样需要注意修改对应路径：
 ```.bashrc
 export GOPATH=/home/flyq/workspaces/golang/gopath/
@@ -209,9 +209,9 @@ source ~/.bashrc
 go 环境已经安装并配置好了。
 
 
-#### 安装 gopm
+#### 安装 `gopm`
 注：如果你的终端环境能翻墙，这步跳过。
-如果不能翻墙，那么就无法使用 go get 来获取对应的项目，这里推荐用 gopm get 来获取对于项目，因为它是无需翻墙的。
+如果不能翻墙，那么就无法使用 `go get` 来获取对应的项目，这里推荐用 `gopm get` 来获取对于项目，因为它是无需翻墙的。
 
 拉去 `gopm` 代码:
 ```shell
@@ -231,7 +231,7 @@ ls
 接下来你就可以在任意路径下使用 `gopm get` 来代替 `go get` 了。
 
 
-#### 拉取 Fabric 源码
+#### 拉取 `Fabric` 源码
 ```shell
 gopm get -g  github.com/hyperledger/fabric
 ```
@@ -273,7 +273,7 @@ $ peer version
 cd $GOPATH/src/github.com/hyperledger/fabric/
 make orderer
 ```
-log:
+`log`:
 ```shell
 .build/bin/orderer
 CGO_CFLAGS=" " GOBIN=/home/flyq/workspaces/golang/gopath/src/github.com/hyperledger/fabric/.build/bin go install -tags "" -ldflags "-X github.com/hyperledger/fabric/common/metadata.Version=2.0.0 -X github.com/hyperledger/fabric/common/metadata.CommitSHA= -X github.com/hyperledger/fabric/common/metadata.BaseVersion=0.4.15 -X github.com/hyperledger/fabric/common/metadata.BaseDockerLabel=org.hyperledger.fabric -X github.com/hyperledger/fabric/common/metadata.DockerNamespace=hyperledger -X github.com/hyperledger/fabric/common/metadata.BaseDockerNamespace=hyperledger" github.com/hyperledger/fabric/orderer
@@ -396,7 +396,7 @@ hyperledger/fabric-couchdb       latest              8de128a55539        5 month
 
 
 另一种：
-#### 安装 Docker
+#### 安装 `Docker`
 打开一个终端（同时按下 Ctrl、Alt、t 这三个键）：
 以下命令按条执行：
 ```shell
@@ -828,26 +828,26 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 #### 网络拓扑
 同样的，这次我们自己启动一个 Fabric 网络，它包含一个 Order 节点和四个 Peer 节点，以及一个管理节点来生成网络。
 
-四个 Peer 节点分属于同一个管理域（example.com）下的两个组织 Org1 和 Org2，这两个组织都加入同一个应用通道（business-channel）中，每个组织中的第一个节点（peer0节点）作为锚节点和其他组织进行通信，所有节点通过域名都可以相互访问。之前不是提到过 Fabric 里面的 channel 概念吗，这个管理域也就是一个应用 channel。
+四个 `Peer` 节点分属于同一个管理域（`example.com`）下的两个组织 `Org1` 和 `Org2`，这两个组织都加入同一个应用通道（`business-channel`）中，每个组织中的第一个节点（`peer0`节点）作为锚节点和其他组织进行通信，所有节点通过域名都可以相互访问。之前不是提到过 `Fabric` 里面的 `channel` 概念吗，这个管理域也就是一个应用 `channel`。
 
 架构图：
 ![channel](image/fabric19.jpg)
 
 #### 准备相关配置文件
-Fabric网络在启动之前，需要提前生成一些用于启动的配置文件，主要包括MSP相关文件（msp/*）、TLS相关文件（tls/*）、系统通道初始区块（orderer.genesis.block）、新建应用通道交易文件（businesschannel.tx）、锚节点配置更新交易文件Org1MSPanchors.tx和Org2MSPanchors.tx）等。
+`Fabric` 网络在启动之前，需要提前生成一些用于启动的配置文件，主要包括MSP相关文件（`msp/*`）、TLS相关文件（`tls/*`）、系统通道初始区块（`orderer.genesis.block`）、新建应用通道交易文件（`businesschannel.tx`）、锚节点配置更新交易文件 `Org1MSPanchors.tx` 和 `Org2MSPanchors.tx`）等。
 
 各个文件的功能如下所示：
 ![channel](image/fabric20.png)
 
 ##### 生成身份证书以及组织关系：
 
-Fabric网络提供的是联盟链服务，联盟由多个组织构成，组织中的成员提供了节点服务来维护网络，并且通过身份来进行权限管理。因此，首先需要对各个组织和成员的关系进行规划，分别生成对应的身份证书文件，并部署到其对应的节点上。
+`Fabric` 网络提供的是联盟链服务，联盟由多个组织构成，组织中的成员提供了节点服务来维护网络，并且通过身份来进行权限管理。因此，首先需要对各个组织和成员的关系进行规划，分别生成对应的身份证书文件，并部署到其对应的节点上。
 
-用户可以通过PKI服务（如使用fabric-ca）或者OpenSSL工具来手动生成各个实体的证书和私钥。但当组织结构比较复杂时，这种手动生成的方式容易出错，并且效率不高。
+用户可以通过PKI服务（如使用 `fabric-ca`）或者OpenSSL工具来手动生成各个实体的证书和私钥。但当组织结构比较复杂时，这种手动生成的方式容易出错，并且效率不高。
 
-Fabric项目提供了cryptogen工具（基于crypto标准库）实现自动化生成。这一过程首先依赖crypto-config.yaml配置文件。crypto-config.yaml配置文件的结构十分简单，支持定义两种类型（OrdererOrgs和PeerOrgs）的若干组织。每个组织中又可以定义多个节点（Spec）和用户（User）。
+`Fabric` 项目提供了 `cryptogen` 工具（基于 `crypto` 标准库）实现自动化生成。这一过程首先依赖 `crypto-config.yaml` 配置文件。`crypto-config.yaml` 配置文件的结构十分简单，支持定义两种类型（`OrdererOrgs` 和 `PeerOrgs`）的若干组织。每个组织中又可以定义多个节点（`Spec`）和用户（`User`）。
 
-一个示例的crypto-config.yaml配置文件内容如下，其中定义了一个OrdererOrgs类型的组织Orderer（包括一个节点orderer.example.com），以及两个PeerOrgs类型的组织Org1和Org2（分别包括2个节点和1个普通用户）。
+一个示例的 `crypto-config.yaml` 配置文件内容如下，其中定义了一个 `OrdererOrgs` 类型的组织 `Orderer`（包括一个节点 `orderer.example.com`），以及两个 `PeerOrgs` 类型的组织 `Org1` 和 `Org2`（分别包括2个节点和1个普通用户）。
 
 对应命令：
 ```shell
@@ -861,18 +861,18 @@ ls ./crypto-config
 ordererOrganizations/  peerOrganizations/
 ```
 
-##### 生成 Ordering 服务的创世区块
-Orderer节点在启动时，可以指定使用提前生成的初始区块文件作为系统通道的初始配置。
+##### 生成 `Ordering` 服务的创世区块
+`Orderer` 节点在启动时，可以指定使用提前生成的初始区块文件作为系统通道的初始配置。
 
-初始区块中包括了Ordering服务的相关配置信息以及联盟信息。
+初始区块中包括了 `Ordering` 服务的相关配置信息以及联盟信息。
 
-初始区块可以使用configtxgen工具进行生成。生成过程需要依赖/etc/hyperledger/fabric/configtx.yaml文件。configtx.yaml配置文件定义了整个网络中的相关配置和拓扑结构信息。
+初始区块可以使用 `configtxgen` 工具进行生成。生成过程需要依赖 `/etc/hyperledger/fabric/configtx.yaml` 文件。`configtx.yaml` 配置文件定义了整个网络中的相关配置和拓扑结构信息。
 
-编写configtx.yaml配置文件可以参考Fabric代码中（如examples/e2e_cli路径下或sampleconfig路径下）的示例。
+编写 `configtx.yaml` 配置文件可以参考 `Fabric` 代码中（如 `examples/e2e_cli` 路径下或 `sampleconfig` 路径下）的示例。
 
-该配置文件定义了两个模板：TwoOrgsOrdererGenesis和TwoOrgsChannel，其中前者可以用来生成Ordering服务的初始区块文件。通过如下命令指定使用configtx.yaml文件中定义的TwoOrgsOrdererGenesis模板，来生成Ordering服务系统通道的初始区块文件。
+该配置文件定义了两个模板：`TwoOrgsOrdererGenesis` 和 `TwoOrgsChannel`，其中前者可以用来生成 `Ordering` 服务的初始区块文件。通过如下命令指定使用 `configtx.yaml` 文件中定义的 `TwoOrgsOrdererGenesis` 模板，来生成 `Ordering` 服务系统通道的初始区块文件。
 
-注意这里排序服务类型采用了简单的solo模式，生产环境中可以采用kafka集群服务：
+注意这里排序服务类型采用了简单的 `solo` 模式，生产环境中可以采用 `kafka` 集群服务：
 ```shell
 configtxgen -profile TwoOrgsOrdererGenesis -outputBlock ./orderer.genesis.block
 2019-09-05 22:07:58.104 PDT [common.tools.configtxgen] main -> WARN 001 Omitting the channel ID for configtxgen for output operations is deprecated.  Explicitly passing the channel ID will be required in the future, defaulting to 'testchainid'.
@@ -917,7 +917,7 @@ configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./Org2MSPanchors.tx
 ```
 然后当前目录多了两个文件： `Org1MSPanchors.tx`，`Org2MSPanchors.tx`
 
-#### 启动 Orderer 节点
+#### 启动 `Orderer` 节点
 把 orderer 的配置文件复制过来：
 ```shell
 cd ~/fabric-samples/first-network
@@ -1046,3 +1046,4 @@ github.com/hyperledger/fabric/orderer/common/server.Main()
 main.main()
 	/w/workspace/fabric-release-jobs-x86_64/gopath/src/github.com/hyperledger/fabric/orderer/main.go:15 +0x20
 ```
+还有一些配置有问题。因此，推荐大家直接用 `Docker` 。。。
