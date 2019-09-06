@@ -26,7 +26,9 @@
       - [安装 Docker](#%e5%ae%89%e8%a3%85-docker)
       - [下载 `Docker` 镜像](#%e4%b8%8b%e8%bd%bd-docker-%e9%95%9c%e5%83%8f)
   - [2、案例运行与使用模拟](#2%e6%a1%88%e4%be%8b%e8%bf%90%e8%a1%8c%e4%b8%8e%e4%bd%bf%e7%94%a8%e6%a8%a1%e6%8b%9f)
-    - [](#)
+    - [运行 `fabric-samples/` 里面的 `first-samples` 例子](#%e8%bf%90%e8%a1%8c-fabric-samples-%e9%87%8c%e9%9d%a2%e7%9a%84-first-samples-%e4%be%8b%e5%ad%90)
+      - [生成必要组件](#%e7%94%9f%e6%88%90%e5%bf%85%e8%a6%81%e7%bb%84%e4%bb%b6)
+      - [启动网络](#%e5%90%af%e5%8a%a8%e7%bd%91%e7%bb%9c)
 
 ## 0. Fabric 简介
 
@@ -381,6 +383,7 @@ hyperledger/fabric-kafka         latest              b4ab82bbaf2f        5 month
 hyperledger/fabric-couchdb       0.4.15              8de128a55539        5 months ago        1.5GB
 hyperledger/fabric-couchdb       latest              8de128a55539        5 months ago        1.5GB
 ```
+并且下面还会出现一个 `fabric-samples/` 文件夹。
 
 
 另一种：
@@ -425,7 +428,7 @@ hyperledger/fabric-ccenv         latest              3d31661a812a        9 days 
 hyperledger/fabric-orderer       latest              b666a6ebbe09        9 days ago          173MB
 hyperledger/fabric-peer          latest              fa87ccaed0ef        9 days ago          179MB
 ```
-表示大部分的镜像都下载好了。
+表示大部分的镜像都下载好了，这里只是安装了几个主要的镜像，如果想安装其他镜像，参考上面。
 
 
 
@@ -435,5 +438,92 @@ hyperledger/fabric-peer          latest              fa87ccaed0ef        9 days 
 
 ## 2、案例运行与使用模拟
 
-### 
+### 运行 `fabric-samples/` 里面的 `first-samples` 例子
+参考：https://hyperledger-fabric-cn.readthedocs.io/zh/latest/build_network.html
+
+如果是基于脚本安装的 Docker 环境，可以直接在脚本命令找到 `fabric-samples/` 文件夹。如果是其他途径安装的环境，直接运行：
+```shell
+gopm get -g github.com/hyperledger/fabric-samples
+
+cd $GOPATH/src/github.com/hyperledger/fabric-samples
+
+cd ./fabric-samples
+```
+来下载 `fabric-samples/` 文件夹。   
+
+
+不过如果仔细对比就会发现，如果是用脚本生成的，`fabric-samples` 下面多了一个 `/bin` 目录，里面有之前我们编译，安装的像 `peer` 等二进制可以执行文件:
+```shell
+ls ./fabric-samples/bin/
+configtxgen    cryptogen  fabric-ca-client  orderer
+configtxlator  discover   idemixgen         peer
+```
+
+#### 生成必要组件
+```shell
+ls
+
+$ ./byfn.sh generate
+Generating certs and genesis block for channel 'mychannel' with CLI timeout of '10' seconds and CLI delay of '3' seconds
+Continue? [Y/n] y
+proceeding ...
+/home/flyq/workspaces/golang/gopath//bin/cryptogen # 注：可以看出，脚本里面调用的是我之前编译安装的，而不是 ./bin/ 目录下的
+
+##########################################################
+##### Generate certificates using cryptogen tool #########
+##########################################################
++ cryptogen generate --config=./crypto-config.yaml
+org1.example.com
+org2.example.com
++ res=0
++ set +x
+
+Generate CCP files for Org1 and Org2
+/home/flyq/workspaces/golang/gopath//bin/configtxgen
+##########################################################
+#########  Generating Orderer Genesis block ##############
+##########################################################
+2019-09-05 19:43:08.978 PDT [common.tools.configtxgen] main -> INFO 001 Loading configuration
+2019-09-05 19:43:09.005 PDT [common.tools.configtxgen.localconfig] completeInitialization -> INFO 002 orderer type: etcdraft
+2019-09-05 19:43:09.005 PDT [common.tools.configtxgen.localconfig] completeInitialization -> INFO 003 Orderer.EtcdRaft.Options unset, setting to tick_interval:"500ms" election_tick:10 heartbeat_tick:1 max_inflight_blocks:5 snapshot_interval_size:20971520 
+2019-09-05 19:43:09.005 PDT [common.tools.configtxgen.localconfig] Load -> INFO 004 Loaded configuration: /home/flyq/workspaces/golang/gopath/src/github.com/hyperledger/fabric-samples/first-network/configtx.yaml
+2019-09-05 19:43:09.007 PDT [common.tools.configtxgen] doOutputBlock -> INFO 005 Generating genesis block
+2019-09-05 19:43:09.007 PDT [common.tools.configtxgen] doOutputBlock -> INFO 006 Writing genesis block
+
+#################################################################
+### Generating channel configuration transaction 'channel.tx' ###
+#################################################################
++ configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID mychannel
+2019-09-05 19:43:09.037 PDT [common.tools.configtxgen] main -> INFO 001 Loading configuration
+2019-09-05 19:43:09.062 PDT [common.tools.configtxgen.localconfig] Load -> INFO 002 Loaded configuration: /home/flyq/workspaces/golang/gopath/src/github.com/hyperledger/fabric-samples/first-network/configtx.yaml
+2019-09-05 19:43:09.062 PDT [common.tools.configtxgen] doOutputChannelCreateTx -> INFO 003 Generating new channel configtx
+2019-09-05 19:43:09.065 PDT [common.tools.configtxgen] doOutputChannelCreateTx -> INFO 004 Writing new channel tx
++ res=0
++ set +x
+
+#################################################################
+#######    Generating anchor peer update for Org1MSP   ##########
+#################################################################
++ configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org1MSPanchors.tx -channelID mychannel -asOrg Org1MSP
+2019-09-05 19:43:09.095 PDT [common.tools.configtxgen] main -> INFO 001 Loading configuration
+2019-09-05 19:43:09.125 PDT [common.tools.configtxgen.localconfig] Load -> INFO 002 Loaded configuration: /home/flyq/workspaces/golang/gopath/src/github.com/hyperledger/fabric-samples/first-network/configtx.yaml
+2019-09-05 19:43:09.126 PDT [common.tools.configtxgen] doOutputAnchorPeersUpdate -> INFO 003 Generating anchor peer update
+2019-09-05 19:43:09.127 PDT [common.tools.configtxgen] doOutputAnchorPeersUpdate -> INFO 004 Writing anchor peer update
++ res=0
++ set +x
+
+#################################################################
+#######    Generating anchor peer update for Org2MSP   ##########
+#################################################################
++ configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org2MSPanchors.tx -channelID mychannel -asOrg Org2MSP
+2019-09-05 19:43:09.156 PDT [common.tools.configtxgen] main -> INFO 001 Loading configuration
+2019-09-05 19:43:09.183 PDT [common.tools.configtxgen.localconfig] Load -> INFO 002 Loaded configuration: /home/flyq/workspaces/golang/gopath/src/github.com/hyperledger/fabric-samples/first-network/configtx.yaml
+2019-09-05 19:43:09.183 PDT [common.tools.configtxgen] doOutputAnchorPeersUpdate -> INFO 003 Generating anchor peer update
+2019-09-05 19:43:09.185 PDT [common.tools.configtxgen] doOutputAnchorPeersUpdate -> INFO 004 Writing anchor peer update
++ res=0
++ set +x
+```
+
+#### 启动网络
+
 
