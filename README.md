@@ -455,8 +455,6 @@ hyperledger/fabric-peer          latest              fa87ccaed0ef        9 days 
 gopm get -g github.com/hyperledger/fabric-samples
 
 cd $GOPATH/src/github.com/hyperledger/fabric-samples
-
-cd ./fabric-samples
 ```
 来下载 `fabric-samples/` 文件夹。   
 
