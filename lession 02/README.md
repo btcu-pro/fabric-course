@@ -13,6 +13,10 @@
 		- [`Linux` 环境搭建](#linux-%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba)
 			- [下载 `VMware player` 以及 `Ubuntu 18.04`](#%e4%b8%8b%e8%bd%bd-vmware-player-%e4%bb%a5%e5%8f%8a-ubuntu-1804)
 			- [安装 VMware Player 和 Ubuntu 18.04](#%e5%ae%89%e8%a3%85-vmware-player-%e5%92%8c-ubuntu-1804)
+		- [`Linux` 下通过 `Docker` 安装：](#linux-%e4%b8%8b%e9%80%9a%e8%bf%87-docker-%e5%ae%89%e8%a3%85)
+			- [安装 `Docker`](#%e5%ae%89%e8%a3%85-docker)
+			- [通过脚本安装（推荐，因为下载的镜像更多，并且还会生成一个 `fabric-samples/` 文件夹，有一个示例）：](#%e9%80%9a%e8%bf%87%e8%84%9a%e6%9c%ac%e5%ae%89%e8%a3%85%e6%8e%a8%e8%8d%90%e5%9b%a0%e4%b8%ba%e4%b8%8b%e8%bd%bd%e7%9a%84%e9%95%9c%e5%83%8f%e6%9b%b4%e5%a4%9a%e5%b9%b6%e4%b8%94%e8%bf%98%e4%bc%9a%e7%94%9f%e6%88%90%e4%b8%80%e4%b8%aa-fabric-samples-%e6%96%87%e4%bb%b6%e5%a4%b9%e6%9c%89%e4%b8%80%e4%b8%aa%e7%a4%ba%e4%be%8b)
+			- [下载 `Docker` 镜像](#%e4%b8%8b%e8%bd%bd-docker-%e9%95%9c%e5%83%8f)
 		- [通过 `Windows` 下载 `Docker` 镜像来得到 `Fabric` 环境](#%e9%80%9a%e8%bf%87-windows-%e4%b8%8b%e8%bd%bd-docker-%e9%95%9c%e5%83%8f%e6%9d%a5%e5%be%97%e5%88%b0-fabric-%e7%8e%af%e5%a2%83)
 			- [安装 Docker 环境](#%e5%ae%89%e8%a3%85-docker-%e7%8e%af%e5%a2%83)
 			- [在 `Docker` 里下载定制好了的 `Fabric` 镜像：](#%e5%9c%a8-docker-%e9%87%8c%e4%b8%8b%e8%bd%bd%e5%ae%9a%e5%88%b6%e5%a5%bd%e4%ba%86%e7%9a%84-fabric-%e9%95%9c%e5%83%8f)
@@ -25,10 +29,6 @@
 			- [编译安装 `fabric-order` 组件：](#%e7%bc%96%e8%af%91%e5%ae%89%e8%a3%85-fabric-order-%e7%bb%84%e4%bb%b6)
 			- [编译安装 `fabric-ca` 组件](#%e7%bc%96%e8%af%91%e5%ae%89%e8%a3%85-fabric-ca-%e7%bb%84%e4%bb%b6)
 			- [编译其他辅助工具：](#%e7%bc%96%e8%af%91%e5%85%b6%e4%bb%96%e8%be%85%e5%8a%a9%e5%b7%a5%e5%85%b7)
-		- [`Linux` 下通过 `Docker` 安装：](#linux-%e4%b8%8b%e9%80%9a%e8%bf%87-docker-%e5%ae%89%e8%a3%85)
-			- [通过脚本安装（推荐，因为下载的镜像更多，并且还会生成一个 `fabric-samples/` 文件夹，有一个示例）：](#%e9%80%9a%e8%bf%87%e8%84%9a%e6%9c%ac%e5%ae%89%e8%a3%85%e6%8e%a8%e8%8d%90%e5%9b%a0%e4%b8%ba%e4%b8%8b%e8%bd%bd%e7%9a%84%e9%95%9c%e5%83%8f%e6%9b%b4%e5%a4%9a%e5%b9%b6%e4%b8%94%e8%bf%98%e4%bc%9a%e7%94%9f%e6%88%90%e4%b8%80%e4%b8%aa-fabric-samples-%e6%96%87%e4%bb%b6%e5%a4%b9%e6%9c%89%e4%b8%80%e4%b8%aa%e7%a4%ba%e4%be%8b)
-			- [安装 `Docker`](#%e5%ae%89%e8%a3%85-docker)
-			- [下载 `Docker` 镜像](#%e4%b8%8b%e8%bd%bd-docker-%e9%95%9c%e5%83%8f)
 	- [2、案例运行与使用模拟](#2%e6%a1%88%e4%be%8b%e8%bf%90%e8%a1%8c%e4%b8%8e%e4%bd%bf%e7%94%a8%e6%a8%a1%e6%8b%9f)
 		- [运行 `fabric-samples/` 里面的 `first-samples` 例子](#%e8%bf%90%e8%a1%8c-fabric-samples-%e9%87%8c%e9%9d%a2%e7%9a%84-first-samples-%e4%be%8b%e5%ad%90)
 			- [生成必要组件](#%e7%94%9f%e6%88%90%e5%bf%85%e8%a6%81%e7%bb%84%e4%bb%b6)
@@ -124,6 +124,89 @@ http://releases.ubuntu.com/18.04/ 选择 64-bit PC (AMD64) desktop image 版本
 
 注意两点，一个是需要在 Boot 里面设置 Intel Vitual Technology；一个是尽量给 Ubuntu 分配大一点内存。这两个都在视频里面提到了。
 
+### `Linux` 下通过 `Docker` 安装：
+
+`Linux` 下通过 `Docker` 安装有两个途径，一个是官方提供了一个脚本，直接运行那个脚本。但是运行脚本可能出错（网络原因之类的），另一种是安装 Docker 后下载对应镜像。
+
+#### 安装 `Docker`
+打开一个终端（同时按下 Ctrl、Alt、t 这三个键）：
+以下命令按条执行：
+```shell
+sudo apt update
+
+sudo apt upgrade
+
+sudo apt install docker.io
+
+sudo systemctl start docker
+
+sudo systemctl enable docker
+
+docker --version
+```
+最后 `log`:
+```shell
+Docker version 18.09.7, build 2d0083d
+```
+这个根据你安装的 `Docker` 版本，可能有点不同，没什么影响。
+
+#### 通过脚本安装（推荐，因为下载的镜像更多，并且还会生成一个 `fabric-samples/` 文件夹，有一个示例）：
+参考：https://hyperledger-fabric.readthedocs.io/en/latest/install.html
+
+```shell
+curl -sSL http://bit.ly/2ysbOFE | bash -s
+```
+上面那个命令的链接需要翻墙，我下载下来了：[bootstrap.sh](./script/bootstrap.sh)，如果那个命令无法成功运行，就下载这个脚本，然后运行：
+```shell
+bash bootstrap.sh
+```
+最后 `log` 输出：
+```shell
+===> List out hyperledger docker images
+hyperledger/fabric-tools         1.4.3               18ed4db0cd57        9 days ago          1.55GB
+hyperledger/fabric-tools         latest              18ed4db0cd57        9 days ago          1.55GB
+hyperledger/fabric-ca            1.4.3               c18a0d3cc958        9 days ago          253MB
+hyperledger/fabric-ca            latest              c18a0d3cc958        9 days ago          253MB
+hyperledger/fabric-ccenv         1.4.3               3d31661a812a        9 days ago          1.45GB
+hyperledger/fabric-ccenv         latest              3d31661a812a        9 days ago          1.45GB
+hyperledger/fabric-orderer       1.4.3               b666a6ebbe09        9 days ago          173MB
+hyperledger/fabric-orderer       latest              b666a6ebbe09        9 days ago          173MB
+hyperledger/fabric-peer          1.4.3               fa87ccaed0ef        9 days ago          179MB
+hyperledger/fabric-peer          latest              fa87ccaed0ef        9 days ago          179MB
+hyperledger/fabric-javaenv       1.4.3               5ba5ba09db8f        5 weeks ago         1.76GB
+hyperledger/fabric-javaenv       latest              5ba5ba09db8f        5 weeks ago         1.76GB
+hyperledger/fabric-zookeeper     0.4.15              20c6045930c8        5 months ago        1.43GB
+hyperledger/fabric-zookeeper     latest              20c6045930c8        5 months ago        1.43GB
+hyperledger/fabric-kafka         0.4.15              b4ab82bbaf2f        5 months ago        1.44GB
+hyperledger/fabric-kafka         latest              b4ab82bbaf2f        5 months ago        1.44GB
+hyperledger/fabric-couchdb       0.4.15              8de128a55539        5 months ago        1.5GB
+hyperledger/fabric-couchdb       latest              8de128a55539        5 months ago        1.5GB
+```
+并且下面还会出现一个 `fabric-samples/` 文件夹。
+
+
+另一种：
+
+#### 下载 `Docker` 镜像
+```shell
+docker pull hyperledger/fabric-peer \
+    && docker pull hyperledger/fabric-orderer \
+    && docker pull hyperledger/fabric-ca \
+    && docker pull hyperledger/fabric-tools \
+    && docker pull hyperledger/fabric-ccenv
+```
+最后检测：
+```shell
+docker images
+
+REPOSITORY                       TAG                 IMAGE ID            CREATED             SIZE
+hyperledger/fabric-tools         latest              18ed4db0cd57        9 days ago          1.55GB
+hyperledger/fabric-ca            latest              c18a0d3cc958        9 days ago          253MB
+hyperledger/fabric-ccenv         latest              3d31661a812a        9 days ago          1.45GB
+hyperledger/fabric-orderer       latest              b666a6ebbe09        9 days ago          173MB
+hyperledger/fabric-peer          latest              fa87ccaed0ef        9 days ago          179MB
+```
+表示大部分的镜像都下载好了，这里只是安装了几个主要的镜像，如果想安装其他镜像，参考上面。
 
 ### 通过 `Windows` 下载 `Docker` 镜像来得到 `Fabric` 环境
 
@@ -393,94 +476,6 @@ configtxgen:
  OS/Arch: linux/amd64
 ```
 这样，在 Linux 环境下安装好了 `Fabric` 对应环境。
-
-
-### `Linux` 下通过 `Docker` 安装：
-`Linux` 下通过 `Docker` 安装有两个途径，一个是官方提供了一个脚本，直接运行那个脚本。但是运行脚本可能出错（网络原因之类的），另一种是安装 Docker 后下载对应镜像。
-
-#### 通过脚本安装（推荐，因为下载的镜像更多，并且还会生成一个 `fabric-samples/` 文件夹，有一个示例）：
-参考：https://hyperledger-fabric.readthedocs.io/en/latest/install.html
-
-```shell
-curl -sSL http://bit.ly/2ysbOFE | bash -s
-```
-上面那个命令的链接需要翻墙，我下载下来了：[bootstrap.sh](./script/bootstrap.sh)，如果那个命令无法成功运行，就下载这个脚本，然后运行：
-```shell
-bash bootstrap.sh
-```
-最后 `log` 输出：
-```shell
-===> List out hyperledger docker images
-hyperledger/fabric-tools         1.4.3               18ed4db0cd57        9 days ago          1.55GB
-hyperledger/fabric-tools         latest              18ed4db0cd57        9 days ago          1.55GB
-hyperledger/fabric-ca            1.4.3               c18a0d3cc958        9 days ago          253MB
-hyperledger/fabric-ca            latest              c18a0d3cc958        9 days ago          253MB
-hyperledger/fabric-ccenv         1.4.3               3d31661a812a        9 days ago          1.45GB
-hyperledger/fabric-ccenv         latest              3d31661a812a        9 days ago          1.45GB
-hyperledger/fabric-orderer       1.4.3               b666a6ebbe09        9 days ago          173MB
-hyperledger/fabric-orderer       latest              b666a6ebbe09        9 days ago          173MB
-hyperledger/fabric-peer          1.4.3               fa87ccaed0ef        9 days ago          179MB
-hyperledger/fabric-peer          latest              fa87ccaed0ef        9 days ago          179MB
-hyperledger/fabric-javaenv       1.4.3               5ba5ba09db8f        5 weeks ago         1.76GB
-hyperledger/fabric-javaenv       latest              5ba5ba09db8f        5 weeks ago         1.76GB
-hyperledger/fabric-zookeeper     0.4.15              20c6045930c8        5 months ago        1.43GB
-hyperledger/fabric-zookeeper     latest              20c6045930c8        5 months ago        1.43GB
-hyperledger/fabric-kafka         0.4.15              b4ab82bbaf2f        5 months ago        1.44GB
-hyperledger/fabric-kafka         latest              b4ab82bbaf2f        5 months ago        1.44GB
-hyperledger/fabric-couchdb       0.4.15              8de128a55539        5 months ago        1.5GB
-hyperledger/fabric-couchdb       latest              8de128a55539        5 months ago        1.5GB
-```
-并且下面还会出现一个 `fabric-samples/` 文件夹。
-
-
-另一种：
-#### 安装 `Docker`
-打开一个终端（同时按下 Ctrl、Alt、t 这三个键）：
-以下命令按条执行：
-```shell
-sudo apt update
-
-sudo apt upgrade
-
-sudo apt install docker.io
-
-sudo systemctl start docker
-
-sudo systemctl enable docker
-
-docker --version
-```
-最后 `log`:
-```shell
-Docker version 18.09.7, build 2d0083d
-```
-这个根据你安装的 `Docker` 版本，可能有点不同，没什么影响。
-
-#### 下载 `Docker` 镜像
-```shell
-docker pull hyperledger/fabric-peer \
-    && docker pull hyperledger/fabric-orderer \
-    && docker pull hyperledger/fabric-ca \
-    && docker pull hyperledger/fabric-tools \
-    && docker pull hyperledger/fabric-ccenv
-```
-最后检测：
-```shell
-docker images
-
-REPOSITORY                       TAG                 IMAGE ID            CREATED             SIZE
-hyperledger/fabric-tools         latest              18ed4db0cd57        9 days ago          1.55GB
-hyperledger/fabric-ca            latest              c18a0d3cc958        9 days ago          253MB
-hyperledger/fabric-ccenv         latest              3d31661a812a        9 days ago          1.45GB
-hyperledger/fabric-orderer       latest              b666a6ebbe09        9 days ago          173MB
-hyperledger/fabric-peer          latest              fa87ccaed0ef        9 days ago          179MB
-```
-表示大部分的镜像都下载好了，这里只是安装了几个主要的镜像，如果想安装其他镜像，参考上面。
-
-
-
-
-
 
 
 ## 2、案例运行与使用模拟
