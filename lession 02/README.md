@@ -2,42 +2,46 @@
 
 ## `Constents`
 - [`BTCU_Fabric`](#btcufabric)
-  - [`Constents`](#constents)
-  - [0. `Fabric` 简介](#0-fabric-%e7%ae%80%e4%bb%8b)
-    - [超级账本背景](#%e8%b6%85%e7%ba%a7%e8%b4%a6%e6%9c%ac%e8%83%8c%e6%99%af)
-    - [`Fabric` 背景](#fabric-%e8%83%8c%e6%99%af)
-    - [`Fabric` 架构简介](#fabric-%e6%9e%b6%e6%9e%84%e7%ae%80%e4%bb%8b)
-  - [1. 开发环境搭建（Docker、Windows、Linux）](#1-%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%badockerwindowslinux)
-    - [Docker 简介](#docker-%e7%ae%80%e4%bb%8b)
-    - [通过 `Windows` 下载 `Docker` 镜像来得到 `Fabric` 环境](#%e9%80%9a%e8%bf%87-windows-%e4%b8%8b%e8%bd%bd-docker-%e9%95%9c%e5%83%8f%e6%9d%a5%e5%be%97%e5%88%b0-fabric-%e7%8e%af%e5%a2%83)
-      - [安装 Docker 环境](#%e5%ae%89%e8%a3%85-docker-%e7%8e%af%e5%a2%83)
-      - [在 `Docker` 里下载定制好了的 `Fabric` 镜像：](#%e5%9c%a8-docker-%e9%87%8c%e4%b8%8b%e8%bd%bd%e5%ae%9a%e5%88%b6%e5%a5%bd%e4%ba%86%e7%9a%84-fabric-%e9%95%9c%e5%83%8f)
-    - [`Linux` 环境下直接安装](#linux-%e7%8e%af%e5%a2%83%e4%b8%8b%e7%9b%b4%e6%8e%a5%e5%ae%89%e8%a3%85)
-      - [安装其他环境：](#%e5%ae%89%e8%a3%85%e5%85%b6%e4%bb%96%e7%8e%af%e5%a2%83)
-      - [安装 `Golang`](#%e5%ae%89%e8%a3%85-golang)
-      - [安装 `gopm`](#%e5%ae%89%e8%a3%85-gopm)
-      - [拉取 `Fabric` 源码](#%e6%8b%89%e5%8f%96-fabric-%e6%ba%90%e7%a0%81)
-      - [编译安装 `peer` 组件：](#%e7%bc%96%e8%af%91%e5%ae%89%e8%a3%85-peer-%e7%bb%84%e4%bb%b6)
-      - [编译安装 `fabric-order` 组件：](#%e7%bc%96%e8%af%91%e5%ae%89%e8%a3%85-fabric-order-%e7%bb%84%e4%bb%b6)
-      - [编译安装 `fabric-ca` 组件](#%e7%bc%96%e8%af%91%e5%ae%89%e8%a3%85-fabric-ca-%e7%bb%84%e4%bb%b6)
-      - [编译其他辅助工具：](#%e7%bc%96%e8%af%91%e5%85%b6%e4%bb%96%e8%be%85%e5%8a%a9%e5%b7%a5%e5%85%b7)
-    - [`Linux` 下通过 `Docker` 安装：](#linux-%e4%b8%8b%e9%80%9a%e8%bf%87-docker-%e5%ae%89%e8%a3%85)
-      - [通过脚本安装（推荐，因为下载的镜像更多，并且还会生成一个 `fabric-samples/` 文件夹，有一个示例）：](#%e9%80%9a%e8%bf%87%e8%84%9a%e6%9c%ac%e5%ae%89%e8%a3%85%e6%8e%a8%e8%8d%90%e5%9b%a0%e4%b8%ba%e4%b8%8b%e8%bd%bd%e7%9a%84%e9%95%9c%e5%83%8f%e6%9b%b4%e5%a4%9a%e5%b9%b6%e4%b8%94%e8%bf%98%e4%bc%9a%e7%94%9f%e6%88%90%e4%b8%80%e4%b8%aa-fabric-samples-%e6%96%87%e4%bb%b6%e5%a4%b9%e6%9c%89%e4%b8%80%e4%b8%aa%e7%a4%ba%e4%be%8b)
-      - [安装 `Docker`](#%e5%ae%89%e8%a3%85-docker)
-      - [下载 `Docker` 镜像](#%e4%b8%8b%e8%bd%bd-docker-%e9%95%9c%e5%83%8f)
-  - [2、案例运行与使用模拟](#2%e6%a1%88%e4%be%8b%e8%bf%90%e8%a1%8c%e4%b8%8e%e4%bd%bf%e7%94%a8%e6%a8%a1%e6%8b%9f)
-    - [运行 `fabric-samples/` 里面的 `first-samples` 例子](#%e8%bf%90%e8%a1%8c-fabric-samples-%e9%87%8c%e9%9d%a2%e7%9a%84-first-samples-%e4%be%8b%e5%ad%90)
-      - [生成必要组件](#%e7%94%9f%e6%88%90%e5%bf%85%e8%a6%81%e7%bb%84%e4%bb%b6)
-      - [启动网络](#%e5%90%af%e5%8a%a8%e7%bd%91%e7%bb%9c)
-      - [关闭网络](#%e5%85%b3%e9%97%ad%e7%bd%91%e7%bb%9c)
-    - [自己启动 `Fabric` 网络](#%e8%87%aa%e5%b7%b1%e5%90%af%e5%8a%a8-fabric-%e7%bd%91%e7%bb%9c)
-      - [网络拓扑](#%e7%bd%91%e7%bb%9c%e6%8b%93%e6%89%91)
-      - [准备相关配置文件](#%e5%87%86%e5%a4%87%e7%9b%b8%e5%85%b3%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6)
-        - [生成身份证书以及组织关系：](#%e7%94%9f%e6%88%90%e8%ba%ab%e4%bb%bd%e8%af%81%e4%b9%a6%e4%bb%a5%e5%8f%8a%e7%bb%84%e7%bb%87%e5%85%b3%e7%b3%bb)
-        - [生成 `Ordering` 服务的创世区块](#%e7%94%9f%e6%88%90-ordering-%e6%9c%8d%e5%8a%a1%e7%9a%84%e5%88%9b%e4%b8%96%e5%8c%ba%e5%9d%97)
-        - [生成新建应用通道的配置交易](#%e7%94%9f%e6%88%90%e6%96%b0%e5%bb%ba%e5%ba%94%e7%94%a8%e9%80%9a%e9%81%93%e7%9a%84%e9%85%8d%e7%bd%ae%e4%ba%a4%e6%98%93)
-        - [生成锚节点配置更新文件](#%e7%94%9f%e6%88%90%e9%94%9a%e8%8a%82%e7%82%b9%e9%85%8d%e7%bd%ae%e6%9b%b4%e6%96%b0%e6%96%87%e4%bb%b6)
-      - [启动 `Orderer` 节点](#%e5%90%af%e5%8a%a8-orderer-%e8%8a%82%e7%82%b9)
+	- [`Constents`](#constents)
+	- [0. `Fabric` 简介](#0-fabric-%e7%ae%80%e4%bb%8b)
+		- [超级账本背景](#%e8%b6%85%e7%ba%a7%e8%b4%a6%e6%9c%ac%e8%83%8c%e6%99%af)
+		- [`Fabric` 背景](#fabric-%e8%83%8c%e6%99%af)
+		- [`Fabric` 架构简介](#fabric-%e6%9e%b6%e6%9e%84%e7%ae%80%e4%bb%8b)
+	- [1. 开发环境搭建（Docker、Windows、Linux）](#1-%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%badockerwindowslinux)
+		- [Docker 简介](#docker-%e7%ae%80%e4%bb%8b)
+		- [Default 默认推荐方式](#default-%e9%bb%98%e8%ae%a4%e6%8e%a8%e8%8d%90%e6%96%b9%e5%bc%8f)
+		- [`Linux` 环境搭建](#linux-%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba)
+			- [下载 `VMware player` 以及 `Ubuntu 18.04`](#%e4%b8%8b%e8%bd%bd-vmware-player-%e4%bb%a5%e5%8f%8a-ubuntu-1804)
+			- [安装 VMware Player 和 Ubuntu 18.04](#%e5%ae%89%e8%a3%85-vmware-player-%e5%92%8c-ubuntu-1804)
+		- [通过 `Windows` 下载 `Docker` 镜像来得到 `Fabric` 环境](#%e9%80%9a%e8%bf%87-windows-%e4%b8%8b%e8%bd%bd-docker-%e9%95%9c%e5%83%8f%e6%9d%a5%e5%be%97%e5%88%b0-fabric-%e7%8e%af%e5%a2%83)
+			- [安装 Docker 环境](#%e5%ae%89%e8%a3%85-docker-%e7%8e%af%e5%a2%83)
+			- [在 `Docker` 里下载定制好了的 `Fabric` 镜像：](#%e5%9c%a8-docker-%e9%87%8c%e4%b8%8b%e8%bd%bd%e5%ae%9a%e5%88%b6%e5%a5%bd%e4%ba%86%e7%9a%84-fabric-%e9%95%9c%e5%83%8f)
+		- [`Linux` 环境下直接安装](#linux-%e7%8e%af%e5%a2%83%e4%b8%8b%e7%9b%b4%e6%8e%a5%e5%ae%89%e8%a3%85)
+			- [安装其他环境：](#%e5%ae%89%e8%a3%85%e5%85%b6%e4%bb%96%e7%8e%af%e5%a2%83)
+			- [安装 `Golang`](#%e5%ae%89%e8%a3%85-golang)
+			- [安装 `gopm`](#%e5%ae%89%e8%a3%85-gopm)
+			- [拉取 `Fabric` 源码](#%e6%8b%89%e5%8f%96-fabric-%e6%ba%90%e7%a0%81)
+			- [编译安装 `peer` 组件：](#%e7%bc%96%e8%af%91%e5%ae%89%e8%a3%85-peer-%e7%bb%84%e4%bb%b6)
+			- [编译安装 `fabric-order` 组件：](#%e7%bc%96%e8%af%91%e5%ae%89%e8%a3%85-fabric-order-%e7%bb%84%e4%bb%b6)
+			- [编译安装 `fabric-ca` 组件](#%e7%bc%96%e8%af%91%e5%ae%89%e8%a3%85-fabric-ca-%e7%bb%84%e4%bb%b6)
+			- [编译其他辅助工具：](#%e7%bc%96%e8%af%91%e5%85%b6%e4%bb%96%e8%be%85%e5%8a%a9%e5%b7%a5%e5%85%b7)
+		- [`Linux` 下通过 `Docker` 安装：](#linux-%e4%b8%8b%e9%80%9a%e8%bf%87-docker-%e5%ae%89%e8%a3%85)
+			- [通过脚本安装（推荐，因为下载的镜像更多，并且还会生成一个 `fabric-samples/` 文件夹，有一个示例）：](#%e9%80%9a%e8%bf%87%e8%84%9a%e6%9c%ac%e5%ae%89%e8%a3%85%e6%8e%a8%e8%8d%90%e5%9b%a0%e4%b8%ba%e4%b8%8b%e8%bd%bd%e7%9a%84%e9%95%9c%e5%83%8f%e6%9b%b4%e5%a4%9a%e5%b9%b6%e4%b8%94%e8%bf%98%e4%bc%9a%e7%94%9f%e6%88%90%e4%b8%80%e4%b8%aa-fabric-samples-%e6%96%87%e4%bb%b6%e5%a4%b9%e6%9c%89%e4%b8%80%e4%b8%aa%e7%a4%ba%e4%be%8b)
+			- [安装 `Docker`](#%e5%ae%89%e8%a3%85-docker)
+			- [下载 `Docker` 镜像](#%e4%b8%8b%e8%bd%bd-docker-%e9%95%9c%e5%83%8f)
+	- [2、案例运行与使用模拟](#2%e6%a1%88%e4%be%8b%e8%bf%90%e8%a1%8c%e4%b8%8e%e4%bd%bf%e7%94%a8%e6%a8%a1%e6%8b%9f)
+		- [运行 `fabric-samples/` 里面的 `first-samples` 例子](#%e8%bf%90%e8%a1%8c-fabric-samples-%e9%87%8c%e9%9d%a2%e7%9a%84-first-samples-%e4%be%8b%e5%ad%90)
+			- [生成必要组件](#%e7%94%9f%e6%88%90%e5%bf%85%e8%a6%81%e7%bb%84%e4%bb%b6)
+			- [启动网络](#%e5%90%af%e5%8a%a8%e7%bd%91%e7%bb%9c)
+			- [关闭网络](#%e5%85%b3%e9%97%ad%e7%bd%91%e7%bb%9c)
+		- [自己启动 `Fabric` 网络](#%e8%87%aa%e5%b7%b1%e5%90%af%e5%8a%a8-fabric-%e7%bd%91%e7%bb%9c)
+			- [网络拓扑](#%e7%bd%91%e7%bb%9c%e6%8b%93%e6%89%91)
+			- [准备相关配置文件](#%e5%87%86%e5%a4%87%e7%9b%b8%e5%85%b3%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6)
+				- [生成身份证书以及组织关系：](#%e7%94%9f%e6%88%90%e8%ba%ab%e4%bb%bd%e8%af%81%e4%b9%a6%e4%bb%a5%e5%8f%8a%e7%bb%84%e7%bb%87%e5%85%b3%e7%b3%bb)
+				- [生成 `Ordering` 服务的创世区块](#%e7%94%9f%e6%88%90-ordering-%e6%9c%8d%e5%8a%a1%e7%9a%84%e5%88%9b%e4%b8%96%e5%8c%ba%e5%9d%97)
+				- [生成新建应用通道的配置交易](#%e7%94%9f%e6%88%90%e6%96%b0%e5%bb%ba%e5%ba%94%e7%94%a8%e9%80%9a%e9%81%93%e7%9a%84%e9%85%8d%e7%bd%ae%e4%ba%a4%e6%98%93)
+				- [生成锚节点配置更新文件](#%e7%94%9f%e6%88%90%e9%94%9a%e8%8a%82%e7%82%b9%e9%85%8d%e7%bd%ae%e6%9b%b4%e6%96%b0%e6%96%87%e4%bb%b6)
+			- [启动 `Orderer` 节点](#%e5%90%af%e5%8a%a8-orderer-%e8%8a%82%e7%82%b9)
 
 ## 0. `Fabric` 简介
 
@@ -86,6 +90,40 @@
 ### Docker 简介
 
 [`Docker`](https://www.docker.com/) 是一类虚拟化技术，类似虚拟机，安装好 `Docker` 这个软件后，可以在 `Docker` 里面运行一些定制好了的镜像，比如今天我们用到的就是在 `Linux` 操作系统里安装了 `Fabric` 环境的镜像，这样就省去了直接安装 `Fabric` 的麻烦。更多的镜像可以参考 [`Docker Hub`](https://hub.docker.com/)。然后本身 Docker 这个软件支持 `Mac`、`Windows` 和 `Linux`，因此也是一个很好的跨平台工具。
+
+### Default 默认推荐方式
+
+下面有好几种环境，个人最推荐的是在 Linux 环境中通过下载对应 `Docker` 镜像来得到 `Fabric` 环境，这样坑最少。
+具体按步骤完成下面这三步就行了：  
+* [`Linux` 环境搭建](#linux-%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba)
+* [安装 `Docker`](#%e5%ae%89%e8%a3%85-docker)
+* [通过脚本安装（推荐，因为下载的镜像更多，并且还会生成一个 `fabric-samples/` 文件夹，有一个示例）：](#%e9%80%9a%e8%bf%87%e8%84%9a%e6%9c%ac%e5%ae%89%e8%a3%85%e6%8e%a8%e8%8d%90%e5%9b%a0%e4%b8%ba%e4%b8%8b%e8%bd%bd%e7%9a%84%e9%95%9c%e5%83%8f%e6%9b%b4%e5%a4%9a%e5%b9%b6%e4%b8%94%e8%bf%98%e4%bc%9a%e7%94%9f%e6%88%90%e4%b8%80%e4%b8%aa-fabric-samples-%e6%96%87%e4%bb%b6%e5%a4%b9%e6%9c%89%e4%b8%80%e4%b8%aa%e7%a4%ba%e4%be%8b)
+
+### `Linux` 环境搭建
+
+这里介绍通过在 `Windows` 操作系统下安装 `VMware play` 来得到 `Linux` 环境。
+
+#### 下载 `VMware player` 以及 `Ubuntu 18.04`
+下面有三种方式下载，看哪种快就用哪种。
+
+官网：
+VMware Workstation 15.5.0 Player for Windows 64-bit Operating Systems:  
+ https://my.vmware.com/en/web/vmware/free#desktop_end_user_computing/vmware_workstation_player/15_0  
+
+Ubuntu 18.04:   
+http://releases.ubuntu.com/18.04/ 选择 64-bit PC (AMD64) desktop image 版本
+
+百度云：  
+链接: https://pan.baidu.com/s/1x-ZnaT1sbFRH5rQJWmfcog 提取码: nt38 在 fabric course/software 文件夹下面
+
+微云：  
+链接：https://share.weiyun.com/52cMzs8 密码：hkf7mt
+
+#### 安装 VMware Player 和 Ubuntu 18.04
+就是一路点击下一步，安装好 VMware Player，然后启动 VMware Player，并创建虚拟机。可以参考 fabric course/安装虚拟机大概流程 里面的视频。视频在上面的百度云以及微云以及 [video](./video/) 里面都有。  
+
+注意两点，一个是需要在 Boot 里面设置 Intel Vitual Technology；一个是尽量给 Ubuntu 分配大一点内存。这两个都在视频里面提到了。
+
 
 ### 通过 `Windows` 下载 `Docker` 镜像来得到 `Fabric` 环境
 
