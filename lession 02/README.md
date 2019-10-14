@@ -101,12 +101,12 @@
 
 ### `Linux` 环境搭建
 
-这里介绍通过在 `Windows` 操作系统下安装 `VMware play` 来得到 `Linux` 环境。
+这里介绍通过在 `Windows` 操作系统下安装 `VMware player` 来得到 `Linux` 环境。
 
 #### 下载 `VMware player` 以及 `Ubuntu 18.04`
 下面有三种方式下载，看哪种快就用哪种。
 
-官网：
+官网：  
 VMware Workstation 15.5.0 Player for Windows 64-bit Operating Systems:  
  https://my.vmware.com/en/web/vmware/free#desktop_end_user_computing/vmware_workstation_player/15_0  
 
