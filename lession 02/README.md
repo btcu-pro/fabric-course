@@ -16,16 +16,20 @@
 			- [下载 `VMware player` 以及 `Ubuntu 16.04`](#%e4%b8%8b%e8%bd%bd-vmware-player-%e4%bb%a5%e5%8f%8a-ubuntu-1604)
 			- [安装 VMware Player 和 Ubuntu 16.04](#%e5%ae%89%e8%a3%85-vmware-player-%e5%92%8c-ubuntu-1604)
 		- [`Linux` 下通过 `Docker` 安装：](#linux-%e4%b8%8b%e9%80%9a%e8%bf%87-docker-%e5%ae%89%e8%a3%85)
+			- [更新软件源](#%e6%9b%b4%e6%96%b0%e8%bd%af%e4%bb%b6%e6%ba%90)
+			- [安装 cURL:](#%e5%ae%89%e8%a3%85-curl)
+			- [安装 `Golang`](#%e5%ae%89%e8%a3%85-golang)
+			- [安装 `gopm`](#%e5%ae%89%e8%a3%85-gopm)
 			- [安装 `Docker`](#%e5%ae%89%e8%a3%85-docker)
-			- [通过脚本安装（推荐，因为下载的镜像更多，并且还会生成一个 `fabric-samples/` 文件夹，有一个示例）：](#%e9%80%9a%e8%bf%87%e8%84%9a%e6%9c%ac%e5%ae%89%e8%a3%85%e6%8e%a8%e8%8d%90%e5%9b%a0%e4%b8%ba%e4%b8%8b%e8%bd%bd%e7%9a%84%e9%95%9c%e5%83%8f%e6%9b%b4%e5%a4%9a%e5%b9%b6%e4%b8%94%e8%bf%98%e4%bc%9a%e7%94%9f%e6%88%90%e4%b8%80%e4%b8%aa-fabric-samples-%e6%96%87%e4%bb%b6%e5%a4%b9%e6%9c%89%e4%b8%80%e4%b8%aa%e7%a4%ba%e4%be%8b)
-			- [下载 `Docker` 镜像](#%e4%b8%8b%e8%bd%bd-docker-%e9%95%9c%e5%83%8f)
+			- [安装 `Docker-compose`](#%e5%ae%89%e8%a3%85-docker-compose)
+			- [通过脚本安装（推荐，因为下载的镜像更全更多，并且还会生成一个 `fabric-samples/` 文件夹，有一个示例）：](#%e9%80%9a%e8%bf%87%e8%84%9a%e6%9c%ac%e5%ae%89%e8%a3%85%e6%8e%a8%e8%8d%90%e5%9b%a0%e4%b8%ba%e4%b8%8b%e8%bd%bd%e7%9a%84%e9%95%9c%e5%83%8f%e6%9b%b4%e5%85%a8%e6%9b%b4%e5%a4%9a%e5%b9%b6%e4%b8%94%e8%bf%98%e4%bc%9a%e7%94%9f%e6%88%90%e4%b8%80%e4%b8%aa-fabric-samples-%e6%96%87%e4%bb%b6%e5%a4%b9%e6%9c%89%e4%b8%80%e4%b8%aa%e7%a4%ba%e4%be%8b)
 		- [通过 `Windows` 下载 `Docker` 镜像来得到 `Fabric` 环境](#%e9%80%9a%e8%bf%87-windows-%e4%b8%8b%e8%bd%bd-docker-%e9%95%9c%e5%83%8f%e6%9d%a5%e5%be%97%e5%88%b0-fabric-%e7%8e%af%e5%a2%83)
 			- [安装 Docker 环境](#%e5%ae%89%e8%a3%85-docker-%e7%8e%af%e5%a2%83)
 			- [在 `Docker` 里下载定制好了的 `Fabric` 镜像：](#%e5%9c%a8-docker-%e9%87%8c%e4%b8%8b%e8%bd%bd%e5%ae%9a%e5%88%b6%e5%a5%bd%e4%ba%86%e7%9a%84-fabric-%e9%95%9c%e5%83%8f)
 		- [`Linux` 环境下直接安装](#linux-%e7%8e%af%e5%a2%83%e4%b8%8b%e7%9b%b4%e6%8e%a5%e5%ae%89%e8%a3%85)
 			- [安装其他环境：](#%e5%ae%89%e8%a3%85%e5%85%b6%e4%bb%96%e7%8e%af%e5%a2%83)
-			- [安装 `Golang`](#%e5%ae%89%e8%a3%85-golang)
-			- [安装 `gopm`](#%e5%ae%89%e8%a3%85-gopm)
+			- [安装 `Golang`](#%e5%ae%89%e8%a3%85-golang-1)
+			- [安装 `gopm`](#%e5%ae%89%e8%a3%85-gopm-1)
 			- [拉取 `Fabric` 源码](#%e6%8b%89%e5%8f%96-fabric-%e6%ba%90%e7%a0%81)
 			- [编译安装 `peer` 组件：](#%e7%bc%96%e8%af%91%e5%ae%89%e8%a3%85-peer-%e7%bb%84%e4%bb%b6)
 			- [编译安装 `fabric-order` 组件：](#%e7%bc%96%e8%af%91%e5%ae%89%e8%a3%85-fabric-order-%e7%bb%84%e4%bb%b6)
@@ -132,7 +136,7 @@ http://releases.ubuntu.com/16.04/ 选择 64-bit PC (AMD64) desktop image 版本�
 链接：https://share.weiyun.com/52cMzs8 密码：hkf7mt
 
 #### 安装 VMware Player 和 Ubuntu 16.04
-就是一路点击下一步，安装好 VMware Player，然后启动 VMware Player，并创建虚拟机。可以参考 fabric course/安装虚拟机大概流程 里面的视频。视频在上面的百度云以及微云以及 [video](./video/) 里面都有。视频里面我说需要分配 60G 的磁盘空间，这是为了以后考虑，这次课程结束以后，如果把这个虚拟机当中学习工作环境，可能还需要安装其他软件等等，所以给了它60G。但是如果只是这次课程的话 20 G 就足够了。
+就是一路点击下一步，安装好 VMware Player，然后启动 VMware Player，并创建虚拟机。可以参考 fabric course/安装虚拟机大概流程 里面的视频。视频在上面的百度云以及微云以及 [video](./video/) 里面都有。视频里面我说需要分配 60G 的磁盘空间，这是为了考虑这次课程结束以后，如果把这个虚拟机当中学习工作环境，可能还需要安装其他软件等等，所以给了它 60G。但是如果只是这次课程的话 20G 就足够了。
 如果 C 盘的空间不够的话，如下图，可以点击 浏览，选择其他磁盘：
 ![install](image/fabric21.PNG)
 
@@ -140,7 +144,99 @@ http://releases.ubuntu.com/16.04/ 选择 64-bit PC (AMD64) desktop image 版本�
 
 ### `Linux` 下通过 `Docker` 安装：
 
-`Linux` 下通过 `Docker` 安装有两个途径，一个是官方提供了一个脚本，直接运行那个脚本。但是运行脚本可能出错（网络原因之类的），另一种是安装 Docker 后下载对应镜像。
+
+#### 更新软件源
+分条执行
+```shell
+sudo apt update
+
+sudo apt upgrade
+```
+#### 安装 cURL:
+```shell
+sudo apt install curl
+```
+
+#### 安装 `Golang`
+
+从官网下载最新版本：
+```shell
+curl -O https://dl.google.com/go/go1.10.3.linux-amd64.tar.gz
+```
+解压：
+```shell
+tar -xvf go1.10.3.linux-amd64.tar.gz 
+```
+得到 `./go/` 文件夹：
+```shell
+$ ls go/
+api      bin              CONTRIBUTORS  favicon.ico  LICENSE  PATENTS  README.md   src   VERSION
+AUTHORS  CONTRIBUTING.md  doc           lib          misc     pkg      robots.txt  test
+```
+这个文件夹里面就有 go 语言的配套环境了，然后设置当前用户的环境变量。
+
+用编辑器打开 ~/.bashrc 文件，比如我是用 gedit:
+```shell
+$ gedit ~/.bashrc
+```
+在最后一行添加：
+```shell
+export PATH=$PATH:/home/flyq/workspaces/golang/go/bin/
+```
+主要，添加的这行每个人的路径不同，因此这行代码也不同，如下图，需要根据自己电脑环境对应目录的路径得到：
+![dir](image/fabric16.png)
+![dir2](image/fabric17.png)
+
+然后保存好，更新一下：
+```shell 
+source ~/.bashrc
+```
+
+运行`go version`出现以下结果即表示安装成功：
+```shell
+$ go version 
+go version go1.10.3 linux/amd64
+```
+
+最后设置一下 `GOPATH` 环境变量，同样是修改 `~/.bashrc` 文件：
+创建一个新建目录（这里是 `/home/flyq/workspaces/golang/gopath/`），并指定它是 GOPATH，然后在这个目录下再创建三个文件夹，分别命名为：`src`, `pkg`, `bin`，最后添加这两行到 `~/.bashrc`下面，同样需要注意修改对应路径：
+```.bashrc
+export GOPATH=/home/flyq/workspaces/golang/gopath/
+export PATH=$PATH:$GOPATH/bin/
+```
+![gopath](image/fabric18.png)
+
+
+然后保存好，更新一下：
+```shell 
+source ~/.bashrc
+```
+go 环境已经安装并配置好了。
+
+
+#### 安装 `gopm`
+注：如果你的终端环境能翻墙，这步跳过。
+如果不能翻墙，那么就无法使用 `go get` 来获取对应的项目，这里推荐用 `gopm get` 来获取对于项目，因为它是无需翻墙的。
+
+拉去 `gopm` 代码:
+```shell
+cd $GOPATH/src
+mkdir -p github.com/gpmgo/
+cd ./github.com/gpmgo
+git clone https://github.com/gpmgo/gopm.git
+cd ./gopm
+go build
+ls
+```
+然后可以看到会生成一个可执行文件 `gopm`，把它复制到 `$GOPATH/bin` 下面即可：
+```shell
+ cp ./gopm $GOPATH/bin
+```
+
+接下来你就可以在任意路径下使用 `gopm get` 来代替 `go get` 了。
+
+
+
 
 #### 安装 `Docker`
 打开一个终端（同时按下 Ctrl、Alt、t 这三个键）：
@@ -162,9 +258,14 @@ docker --version
 ```shell
 Docker version 18.09.7, build 2d0083d
 ```
-这个根据你安装的 `Docker` 版本，可能有点不同，没什么影响。
+#### 安装 `Docker-compose`
+```shell
+sudo apt install docker-compose
 
-#### 通过脚本安装（推荐，因为下载的镜像更多，并且还会生成一个 `fabric-samples/` 文件夹，有一个示例）：
+docker-compose --version
+```
+
+#### 通过脚本安装（推荐，因为下载的镜像更全更多，并且还会生成一个 `fabric-samples/` 文件夹，有一个示例）：
 
 
 参考：https://hyperledger-fabric.readthedocs.io/en/latest/install.html
@@ -176,17 +277,17 @@ bash bootstrap.sh
 最后 `log` 输出：
 ```shell
 ===> List out hyperledger docker images
-hyperledger/fabric-tools         1.4.3               18ed4db0cd57        9 days ago          1.55GB
+hyperledger/fabric-tools         1.2.1               18ed4db0cd57        9 days ago          1.55GB
 hyperledger/fabric-tools         latest              18ed4db0cd57        9 days ago          1.55GB
-hyperledger/fabric-ca            1.4.3               c18a0d3cc958        9 days ago          253MB
+hyperledger/fabric-ca            1.2.1               c18a0d3cc958        9 days ago          253MB
 hyperledger/fabric-ca            latest              c18a0d3cc958        9 days ago          253MB
-hyperledger/fabric-ccenv         1.4.3               3d31661a812a        9 days ago          1.45GB
+hyperledger/fabric-ccenv         1.2.1               3d31661a812a        9 days ago          1.45GB
 hyperledger/fabric-ccenv         latest              3d31661a812a        9 days ago          1.45GB
-hyperledger/fabric-orderer       1.4.3               b666a6ebbe09        9 days ago          173MB
+hyperledger/fabric-orderer       1.2.1               b666a6ebbe09        9 days ago          173MB
 hyperledger/fabric-orderer       latest              b666a6ebbe09        9 days ago          173MB
-hyperledger/fabric-peer          1.4.3               fa87ccaed0ef        9 days ago          179MB
+hyperledger/fabric-peer          1.2.1               fa87ccaed0ef        9 days ago          179MB
 hyperledger/fabric-peer          latest              fa87ccaed0ef        9 days ago          179MB
-hyperledger/fabric-javaenv       1.4.3               5ba5ba09db8f        5 weeks ago         1.76GB
+hyperledger/fabric-javaenv       1.2.1               5ba5ba09db8f        5 weeks ago         1.76GB
 hyperledger/fabric-javaenv       latest              5ba5ba09db8f        5 weeks ago         1.76GB
 hyperledger/fabric-zookeeper     0.4.15              20c6045930c8        5 months ago        1.43GB
 hyperledger/fabric-zookeeper     latest              20c6045930c8        5 months ago        1.43GB
@@ -196,34 +297,16 @@ hyperledger/fabric-couchdb       0.4.15              8de128a55539        5 month
 hyperledger/fabric-couchdb       latest              8de128a55539        5 months ago        1.5GB
 ```
 并且下面还会出现一个 `fabric-samples/` 文件夹。
+到这里环境已经搭建好了。  
 
 
-另一种：
 
-#### 下载 `Docker` 镜像
-```shell
-docker pull hyperledger/fabric-peer \
-    && docker pull hyperledger/fabric-orderer \
-    && docker pull hyperledger/fabric-ca \
-    && docker pull hyperledger/fabric-tools \
-    && docker pull hyperledger/fabric-ccenv
-```
-最后检测：
-```shell
-docker images
 
-REPOSITORY                       TAG                 IMAGE ID            CREATED             SIZE
-hyperledger/fabric-tools         latest              18ed4db0cd57        9 days ago          1.55GB
-hyperledger/fabric-ca            latest              c18a0d3cc958        9 days ago          253MB
-hyperledger/fabric-ccenv         latest              3d31661a812a        9 days ago          1.45GB
-hyperledger/fabric-orderer       latest              b666a6ebbe09        9 days ago          173MB
-hyperledger/fabric-peer          latest              fa87ccaed0ef        9 days ago          179MB
-```
-表示大部分的镜像都下载好了，这里只是安装了几个主要的镜像，如果想安装其他镜像，参考上面。
 
 ### 通过 `Windows` 下载 `Docker` 镜像来得到 `Fabric` 环境
+这里最后有问题，而且是之前做的教程，Fabric 版本是 1.4.x，因此不推荐，仅作参考。
 
-参考：https://docs.docker.com/docker-for-windows/install/ 
+参考：https://docs.docker.com/docker-for-windows/install/  
 （参考表示下面的具体安装文档是参考这个链接 + 实际情况得到的，因此一般来讲可以直接根据下面的步骤操作即可，下同）
 
 #### 安装 Docker 环境
