@@ -258,6 +258,15 @@ docker --version
 ```shell
 Docker version 18.09.7, build 2d0083d
 ```
+运行:
+```shell
+docker images
+```
+如果报错：
+```shell
+Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get http://%2Fvar%2Frun%2Fdocker.sock/v1.39/images/json: dial unix /var/run/docker.sock: connect: permission denied
+```
+参考：
 #### 安装 `Docker-compose`
 ```shell
 sudo apt install docker-compose
