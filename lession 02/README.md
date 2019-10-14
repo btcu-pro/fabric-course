@@ -10,9 +10,11 @@
 	- [1. 开发环境搭建（Docker、Windows、Linux）](#1-%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%badockerwindowslinux)
 		- [Docker 简介](#docker-%e7%ae%80%e4%bb%8b)
 		- [Default 默认推荐方式](#default-%e9%bb%98%e8%ae%a4%e6%8e%a8%e8%8d%90%e6%96%b9%e5%bc%8f)
+			- [这里我们统一环境：](#%e8%bf%99%e9%87%8c%e6%88%91%e4%bb%ac%e7%bb%9f%e4%b8%80%e7%8e%af%e5%a2%83)
 		- [`Linux` 环境搭建](#linux-%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba)
-			- [下载 `VMware player` 以及 `Ubuntu 18.04`](#%e4%b8%8b%e8%bd%bd-vmware-player-%e4%bb%a5%e5%8f%8a-ubuntu-1804)
-			- [安装 VMware Player 和 Ubuntu 18.04](#%e5%ae%89%e8%a3%85-vmware-player-%e5%92%8c-ubuntu-1804)
+			- [要求](#%e8%a6%81%e6%b1%82)
+			- [下载 `VMware player` 以及 `Ubuntu 16.04`](#%e4%b8%8b%e8%bd%bd-vmware-player-%e4%bb%a5%e5%8f%8a-ubuntu-1604)
+			- [安装 VMware Player 和 Ubuntu 16.04](#%e5%ae%89%e8%a3%85-vmware-player-%e5%92%8c-ubuntu-1604)
 		- [`Linux` 下通过 `Docker` 安装：](#linux-%e4%b8%8b%e9%80%9a%e8%bf%87-docker-%e5%ae%89%e8%a3%85)
 			- [安装 `Docker`](#%e5%ae%89%e8%a3%85-docker)
 			- [通过脚本安装（推荐，因为下载的镜像更多，并且还会生成一个 `fabric-samples/` 文件夹，有一个示例）：](#%e9%80%9a%e8%bf%87%e8%84%9a%e6%9c%ac%e5%ae%89%e8%a3%85%e6%8e%a8%e8%8d%90%e5%9b%a0%e4%b8%ba%e4%b8%8b%e8%bd%bd%e7%9a%84%e9%95%9c%e5%83%8f%e6%9b%b4%e5%a4%9a%e5%b9%b6%e4%b8%94%e8%bf%98%e4%bc%9a%e7%94%9f%e6%88%90%e4%b8%80%e4%b8%aa-fabric-samples-%e6%96%87%e4%bb%b6%e5%a4%b9%e6%9c%89%e4%b8%80%e4%b8%aa%e7%a4%ba%e4%be%8b)
@@ -94,7 +96,14 @@
 ### Default 默认推荐方式
 
 下面有好几种环境，个人最推荐的是在 Linux 环境中通过下载对应 `Docker` 镜像来得到 `Fabric` 环境，这样坑最少。
-具体按步骤完成下面这三步就行了（如果是 `Mac` 系统，就跳过第 1 步）：  
+
+#### 这里我们统一环境：
+* Ubuntu 16.04 + Docker version 18.09.7 + Fabric 1.2.1
+
+如果是 Mac，则只需在 `Mac` 下安装 Docker version 18.09.7 + Fabric 1.2.1
+
+具体步骤：（如果是 `Mac` 系统，就跳过第 1 步）：  
+
 1. [`Linux` 环境搭建](#linux-%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba)
 2. [安装 `Docker`](#%e5%ae%89%e8%a3%85-docker)
 3. [通过脚本安装（推荐，因为下载的镜像更多，并且还会生成一个 `fabric-samples/` 文件夹，有一个示例）：](#%e9%80%9a%e8%bf%87%e8%84%9a%e6%9c%ac%e5%ae%89%e8%a3%85%e6%8e%a8%e8%8d%90%e5%9b%a0%e4%b8%ba%e4%b8%8b%e8%bd%bd%e7%9a%84%e9%95%9c%e5%83%8f%e6%9b%b4%e5%a4%9a%e5%b9%b6%e4%b8%94%e8%bf%98%e4%bc%9a%e7%94%9f%e6%88%90%e4%b8%80%e4%b8%aa-fabric-samples-%e6%96%87%e4%bb%b6%e5%a4%b9%e6%9c%89%e4%b8%80%e4%b8%aa%e7%a4%ba%e4%be%8b)
@@ -102,25 +111,30 @@
 ### `Linux` 环境搭建
 
 这里介绍通过在 `Windows` 操作系统下安装 `VMware player` 来得到 `Linux` 环境。
+#### 要求
+至少有 8G 内存（我曾在 4G 内存笔记本上安装虚拟机，开一个虚拟机然后开一个 Chrome 浏览器，基本电脑就很卡顿了）。如果没有 8G 内存的电脑，就去买一个阿里云或者腾讯云？学生还有优惠。或者用 Windows 10 的SubLinux 功能，自行搜索。
 
-#### 下载 `VMware player` 以及 `Ubuntu 18.04`
+#### 下载 `VMware player` 以及 `Ubuntu 16.04`
 下面有三种方式下载，看哪种快就用哪种。
 
 官网：  
 VMware Workstation 15.5.0 Player for Windows 64-bit Operating Systems:  
  https://my.vmware.com/en/web/vmware/free#desktop_end_user_computing/vmware_workstation_player/15_0  
 
-Ubuntu 18.04:   
-http://releases.ubuntu.com/18.04/ 选择 64-bit PC (AMD64) desktop image 版本
+Ubuntu 16.04:   
+http://releases.ubuntu.com/16.04/ 选择 64-bit PC (AMD64) desktop image 版本（因为我的机器是 64 位，如果你的机器是 32 位系统，请下载 32 位的）。
 
 百度云：  
-链接: https://pan.baidu.com/s/1x-ZnaT1sbFRH5rQJWmfcog 提取码: nt38 在 fabric course/software 文件夹下面
+链接: https://pan.baidu.com/s/1x-ZnaT1sbFRH5rQJWmfcog 提取码: nt38  
+在 fabric course/software 文件夹下面
 
 微云：  
 链接：https://share.weiyun.com/52cMzs8 密码：hkf7mt
 
-#### 安装 VMware Player 和 Ubuntu 18.04
-就是一路点击下一步，安装好 VMware Player，然后启动 VMware Player，并创建虚拟机。可以参考 fabric course/安装虚拟机大概流程 里面的视频。视频在上面的百度云以及微云以及 [video](./video/) 里面都有。  
+#### 安装 VMware Player 和 Ubuntu 16.04
+就是一路点击下一步，安装好 VMware Player，然后启动 VMware Player，并创建虚拟机。可以参考 fabric course/安装虚拟机大概流程 里面的视频。视频在上面的百度云以及微云以及 [video](./video/) 里面都有。视频里面我说需要分配 60G 的磁盘空间，这是为了以后考虑，这次课程结束以后，如果把这个虚拟机当中学习工作环境，可能还需要安装其他软件等等，所以给了它60G。但是如果只是这次课程的话 20 G 就足够了。
+如果 C 盘的空间不够的话，如下图，可以点击 浏览，选择其他磁盘：
+![install](image/fabric21.PNG)
 
 注意两点，一个是需要在 Boot 里面设置 Intel Vitual Technology；一个是尽量给 Ubuntu 分配大一点内存。这两个都在视频里面提到了。
 
@@ -151,12 +165,11 @@ Docker version 18.09.7, build 2d0083d
 这个根据你安装的 `Docker` 版本，可能有点不同，没什么影响。
 
 #### 通过脚本安装（推荐，因为下载的镜像更多，并且还会生成一个 `fabric-samples/` 文件夹，有一个示例）：
+
+
 参考：https://hyperledger-fabric.readthedocs.io/en/latest/install.html
 
-```shell
-curl -sSL http://bit.ly/2ysbOFE | bash -s
-```
-上面那个命令的链接需要翻墙，我下载下来了：[bootstrap.sh](./script/bootstrap.sh)，如果那个命令无法成功运行，就下载这个脚本，然后运行：
+这里需要注意一下，目前官方给的脚本使用的是 Fabric 1.4.3，而我们统一使用 1.2.1，因此直接用我修改了的脚本： [bootstrap.sh](./script/bootstrap.sh)，然后运行：
 ```shell
 bash bootstrap.sh
 ```
