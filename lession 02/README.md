@@ -295,7 +295,7 @@ docker-compose --version
 
 参考：https://hyperledger-fabric.readthedocs.io/en/latest/install.html
 
-这里需要注意一下，目前官方给的脚本使用的是 Fabric 1.4.3，而我们统一使用 1.2.0，而且官方那个的脚本下载需要翻墙，这里我把它下载到这里了： [bootstrap.sh](./script/bootstrap.sh)。  
+这里需要注意一下，目前官方给的脚本使用的是 Fabric 1.4.3，而我们统一使用 1.2.0，而且官方那个的脚本下载需要翻墙，这里我把它下载到这里了，并且做了定制改造： [bootstrap.sh](./script/bootstrap.sh)。  
 
 为了方便后期管理，在当前登录用户的HOME目录下创建一个空目录并进入该目录
 ```shell
@@ -321,34 +321,40 @@ chmod +x bootstrap.sh
 ```
 ##### 执行 bootstrap.sh
 ```sh
-sudo ./bootstrap.sh 1.2.0
+./bootstrap.sh
 ```
 
 > 确定网络稳定，否则会导致各种问题，例如下载到一半时网络超时，下载失败等等；由于Docker的各种镜像文件下载时间较长，所以请耐心等待。
 
-下载完成后，查看相关输出内容；如果下载有失败的镜像, 可再次执行 $ sudo ./bootstrap.sh 1.2.0 命令重新下载。
+下载完成后，查看相关输出内容；如果下载有失败的镜像, 可再次执行 `./bootstrap.sh`  命令重新下载。
 
 > 重新执行脚本命令对于已下载的Docker镜像文件不会再次重新下载。
 
 最后 `log` 输出：
 ```shell
+
 ===> List out hyperledger docker images
-hyperledger/fabric-ca          1.2.0       66cc132bd09c    4 weeks ago     252 MB
-hyperledger/fabric-ca          latest      66cc132bd09c    4 weeks ago     252 MB
-hyperledger/fabric-tools       1.2.0       379602873003    4 weeks ago     1.51 GB
-hyperledger/fabric-tools       latest      379602873003    4 weeks ago     1.51 GB
-hyperledger/fabric-ccenv       1.2.0       6acf31e2d9a4    4 weeks ago     1.43 GB
-hyperledger/fabric-ccenv       latest      6acf31e2d9a4    4 weeks ago     1.43 GB
-hyperledger/fabric-orderer     1.2.0       4baf7789a8ec    4 weeks ago     152 MB
-hyperledger/fabric-orderer     latest      4baf7789a8ec    4 weeks ago     152 MB
-hyperledger/fabric-peer        1.2.0       82c262e65984    4 weeks ago     159 MB
-hyperledger/fabric-peer        latest      82c262e65984    4 weeks ago     159 MB
-hyperledger/fabric-zookeeper   0.4.10      2b51158f3898    5 weeks ago     1.44 GB
-hyperledger/fabric-zookeeper   latest      2b51158f3898    5 weeks ago     1.44 GB
-hyperledger/fabric-kafka       0.4.10      936aef6db0e6    5 weeks ago     1.45 GB
-hyperledger/fabric-kafka       latest      936aef6db0e6    5 weeks ago     1.45 GB
-hyperledger/fabric-couchdb     0.4.10      3092eca241fc    5 weeks ago     1.61 GB
-hyperledger/fabric-couchdb     latest      3092eca241fc    5 weeks ago     1.61 GB
+hyperledger/fabric-ca          1.2.0               66cc132bd09c        15 months ago       252MB
+hyperledger/fabric-ca          latest              66cc132bd09c        15 months ago       252MB
+hyperledger/fabric-tools       1.2.0               379602873003        15 months ago       1.51GB
+hyperledger/fabric-tools       latest              379602873003        15 months ago       1.51GB
+hyperledger/fabric-ccenv       1.2.0               6acf31e2d9a4        15 months ago       1.43GB
+hyperledger/fabric-ccenv       latest              6acf31e2d9a4        15 months ago       1.43GB
+hyperledger/fabric-orderer     1.2.0               4baf7789a8ec        15 months ago       152MB
+hyperledger/fabric-orderer     latest              4baf7789a8ec        15 months ago       152MB
+hyperledger/fabric-peer        1.2.0               82c262e65984        15 months ago       159MB
+hyperledger/fabric-peer        latest              82c262e65984        15 months ago       159MB
+hyperledger/fabric-zookeeper   0.4.10              2b51158f3898        15 months ago       1.44GB
+hyperledger/fabric-zookeeper   latest              2b51158f3898        15 months ago       1.44GB
+hyperledger/fabric-kafka       0.4.10              936aef6db0e6        15 months ago       1.45GB
+hyperledger/fabric-kafka       latest              936aef6db0e6        15 months ago       1.45GB
+hyperledger/fabric-couchdb     0.4.10              3092eca241fc        15 months ago       1.61GB
+hyperledger/fabric-couchdb     latest              3092eca241fc        15 months ago       1.61GB
+hyperledger/fabric-baseimage   0.4.10              62513965e238        15 months ago       1.39GB
+hyperledger/fabric-baseimage   latest              62513965e238        15 months ago       1.39GB
+hyperledger/fabric-baseos      0.4.10              52190e831002        15 months ago       132MB
+hyperledger/fabric-baseos      latest              52190e831002        15 months ago       132MB
+
 ```
 并且目录下面还会出现一个 `fabric-samples/` 文件夹。
 查看下载的镜像：
