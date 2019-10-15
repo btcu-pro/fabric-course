@@ -735,7 +735,7 @@ configtxgen:
 ### 运行 `fabric-samples/` 里面的 `first-samples` 例子
 参考：https://hyperledger-fabric-cn.readthedocs.io/zh/latest/build_network.html
 
-如果是基于脚本安装的 Docker 环境，可以直接在脚本命令找到 `fabric-samples/` 文件夹。如果是其他途径安装的环境，直接运行：
+如果是基于脚本安装的 Docker 环境，可以直接在运行脚本命令的目录找到 `fabric-samples/` 文件夹，直接进入这个文件夹即可。如果是其他途径安装的环境，直接运行：
 ```shell
 gopm get -g github.com/hyperledger/fabric-samples
 
@@ -753,9 +753,9 @@ configtxlator  discover   idemixgen         peer
 
 #### 生成必要组件
 ```shell
-ls
+cd  first-network/
 
-$ ./byfn.sh generate
+sudo ./byfn.sh generate
 Generating certs and genesis block for channel 'mychannel' with CLI timeout of '10' seconds and CLI delay of '3' seconds
 Continue? [Y/n] y
 proceeding ...
@@ -818,7 +818,7 @@ Generate CCP files for Org1 and Org2
 
 #### 启动网络
 ```shell
-./byfn.sh up
+sudo ./byfn.sh up
 Starting for channel 'mychannel' with CLI timeout of '10' seconds and CLI delay of '3' seconds
 Continue? [Y/n] y
 proceeding ...
@@ -831,7 +831,7 @@ ERROR !!!! Test failed
 ```
 
 嗯，通过脚本启动网络有问题，看问题是没有安装 `docker-compose`:
-安装它：
+安装它(如果之前安装了 `docker-compose` 应该就不会遇到这个问题)：
 ```shell
 sudo apt update
 
@@ -841,7 +841,7 @@ sudo apt install docker-compose
 ```
 然后再次启动网络：
 ```shell
-./byfn.sh up
+sudo ./byfn.sh up
 Starting for channel 'mychannel' with CLI timeout of '10' seconds and CLI delay of '3' seconds
 Continue? [Y/n] y
 proceeding ...
@@ -1008,7 +1008,44 @@ Attempting to Query peer1.org2 ...3 secs
 ```
 好的，恭喜你已经成功启动网络。你可以自己用编辑器打开 `byfn.sh`，然后配合 `log`，查看启动一个网络是怎么搞的。
 
-你可以在 https://hyperledger-fabric-cn.readthedocs.io/zh/latest/build_network.html#bring-up-the-network 查看更多的启动网络的附加命令，比如如果你想使用 `Kafka` 服务，就可以这样启动：
+你可以在 https://hyperledger-fabric-cn.readthedocs.io/zh/latest/build_network.html#bring-up-the-network 查看更多的启动网络的附加命令，
+或者运行 `./byfn.sh --help`
+```shell
+ ./byfn.sh --help
+Usage: 
+  byfn.sh <mode> [-c <channel name>] [-t <timeout>] [-d <delay>] [-f <docker-compose-file>] [-s <dbtype>] [-l <language>] [-i <imagetag>] [-v]
+    <mode> - one of 'up', 'down', 'restart', 'generate' or 'upgrade'
+      - 'up' - bring up the network with docker-compose up
+      - 'down' - clear the network with docker-compose down
+      - 'restart' - restart the network
+      - 'generate' - generate required certificates and genesis block
+      - 'upgrade'  - upgrade the network from version 1.1.x to 1.2.x
+    -c <channel name> - channel name to use (defaults to "mychannel")
+    -t <timeout> - CLI timeout duration in seconds (defaults to 10)
+    -d <delay> - delay duration in seconds (defaults to 3)
+    -f <docker-compose-file> - specify which docker-compose file use (defaults to docker-compose-cli.yaml)
+    -s <dbtype> - the database backend to use: goleveldb (default) or couchdb
+    -l <language> - the chaincode language: golang (default) or node
+    -i <imagetag> - the tag to be used to launch the network (defaults to "latest")
+    -v - verbose mode
+  byfn.sh -h (print this message)
+
+Typically, one would first generate the required certificates and 
+genesis block, then bring up the network. e.g.:
+
+	byfn.sh generate -c mychannel
+	byfn.sh up -c mychannel -s couchdb
+        byfn.sh up -c mychannel -s couchdb -i 1.2.x
+	byfn.sh up -l node
+	byfn.sh down -c mychannel
+        byfn.sh upgrade -c mychannel
+
+Taking all defaults:
+	byfn.sh generate
+	byfn.sh up
+	byfn.sh down
+```
+比如如果你想使用 `Kafka` 服务，就可以这样启动：
 ```shell
 ./byfn.sh up -o kafka
 ```
@@ -1036,7 +1073,8 @@ docker exec -it cli /bin/bash
 root@7c1a4dc09da7:/opt/gopath/src/github.com/hyperledger/fabric/peer# ls
 channel-artifacts  crypto  log.txt  mychannel.block  scripts
 ```
-具体怎么操作整个课程，后续会讲解，这里就不涉及了。
+在具体怎么操作整个课程，后续会讲解，这里就不涉及了。
+到这里就以及启动一个 fabric 网络了。
 
 
 #### 关闭网络
@@ -1097,6 +1135,8 @@ Deleted: sha256:b0bb1cead8b9e6acbb41bc1165c540806d06154360d4cc87214bb6981eb66514
 Deleted: sha256:ffa4bbe1acee1b18fcf5cf4f196feb36842ab4ba3c061c406f0021d4eeb69cc0
 Deleted: sha256:2f5e59ecb2031eb1c27a5c3ba284c3fc603acb4c2deb5332cf4c0230e424e5c9
 ```
+关闭网络之后， 将 `kill` 容器，删除加密文件，并从`Docker Registry`中删除链码镜像。
+
 查看容器：
 ```shell
 docker ps -a
@@ -1104,6 +1144,7 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 ```
 发现那些节点都已经清理完毕。
 
+> 请在网络不再使用时，务必关闭网络，以防止后期启动网络时造成的错误。
 
 ### 自己启动 `Fabric` 网络
 上面通过脚本启动一个网络，已经初步体验了整个流程。但是脚本隐藏了很多细节，让你有点不知道自己在干嘛，下面通过一步一步启动网络来熟练整个流程：
@@ -1329,4 +1370,4 @@ github.com/hyperledger/fabric/orderer/common/server.Main()
 main.main()
 	/w/workspace/fabric-release-jobs-x86_64/gopath/src/github.com/hyperledger/fabric/orderer/main.go:15 +0x20
 ```
-还有一些配置有问题。因此，推荐大家直接用 `Docker` 。。。
+还有一些配置有问题。因此，推荐大家直接用 `Docker` 方式启动 。。。
