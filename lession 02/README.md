@@ -26,6 +26,7 @@
 				- [新建文件bootstrap.sh并添加内容](#%e6%96%b0%e5%bb%ba%e6%96%87%e4%bb%b6bootstrapsh%e5%b9%b6%e6%b7%bb%e5%8a%a0%e5%86%85%e5%ae%b9)
 				- [赋予 bootstrap.sh 可执行权限并运行](#%e8%b5%8b%e4%ba%88-bootstrapsh-%e5%8f%af%e6%89%a7%e8%a1%8c%e6%9d%83%e9%99%90%e5%b9%b6%e8%bf%90%e8%a1%8c)
 				- [执行 bootstrap.sh](#%e6%89%a7%e8%a1%8c-bootstrapsh)
+				- [如果多次运行都无法下载好。。。](#%e5%a6%82%e6%9e%9c%e5%a4%9a%e6%ac%a1%e8%bf%90%e8%a1%8c%e9%83%bd%e6%97%a0%e6%b3%95%e4%b8%8b%e8%bd%bd%e5%a5%bd)
 		- [通过 `Windows` 下载 `Docker` 镜像来得到 `Fabric` 环境](#%e9%80%9a%e8%bf%87-windows-%e4%b8%8b%e8%bd%bd-docker-%e9%95%9c%e5%83%8f%e6%9d%a5%e5%be%97%e5%88%b0-fabric-%e7%8e%af%e5%a2%83)
 			- [安装 Docker 环境](#%e5%ae%89%e8%a3%85-docker-%e7%8e%af%e5%a2%83)
 			- [在 `Docker` 里下载定制好了的 `Fabric` 镜像：](#%e5%9c%a8-docker-%e9%87%8c%e4%b8%8b%e8%bd%bd%e5%ae%9a%e5%88%b6%e5%a5%bd%e4%ba%86%e7%9a%84-fabric-%e9%95%9c%e5%83%8f)
@@ -383,7 +384,13 @@ hyperledger/fabric-baseos      0.4.10              52190e831002        15 months
 hyperledger/fabric-baseos      latest              52190e831002        15 months ago       132MB
 ```
 
-如果多次运行都无法下载好，那就直接运行下面的命令来拉去镜像：
+##### 如果多次运行都无法下载好。。。
+肯定是墙的问题，那就直接运行下面的命令：
+
+因为如果去查看 `bootstrap.sh`，其实这个脚本也就做了这三件事:
+1. 下载 `fabric-samples/` 这个仓库，并指定对应的分支，我们同样这么做：`git clone -b master https://github.com/hyperledger/fabric-samples.git && cd fabric-samples && git checkout v1.2.0 && cd fabric-samples/ && mkdir bin`
+2. 下载binary 可执行文件包，并解压。大家把 [files/hyperledger-fabric-ca-linux-amd64-1.2.0.tar.gz](files/hyperledger-fabric-ca-linux-amd64-1.2.0.tar.gz) 和 [files/hyperledger-fabric-linux-amd64-1.2.0.tar.gz](files/hyperledger-fabric-linux-amd64-1.2.0.tar.gz) 下载到虚拟机里面 `/fabric-samples/bin `，并解压到 bin 文件夹就行了。
+3. 拉去对应的镜像，依次执行下面的命令就行了：
 ```shell
 export FABRIC_TAG=1.2.0
 ```
