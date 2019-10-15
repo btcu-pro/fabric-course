@@ -23,6 +23,9 @@
 			- [安装 `Docker`](#%e5%ae%89%e8%a3%85-docker)
 			- [安装 `Docker-compose`](#%e5%ae%89%e8%a3%85-docker-compose)
 			- [通过脚本安装（推荐，因为下载的镜像更全更多，并且还会生成一个 `fabric-samples/` 文件夹，有一个示例）：](#%e9%80%9a%e8%bf%87%e8%84%9a%e6%9c%ac%e5%ae%89%e8%a3%85%e6%8e%a8%e8%8d%90%e5%9b%a0%e4%b8%ba%e4%b8%8b%e8%bd%bd%e7%9a%84%e9%95%9c%e5%83%8f%e6%9b%b4%e5%85%a8%e6%9b%b4%e5%a4%9a%e5%b9%b6%e4%b8%94%e8%bf%98%e4%bc%9a%e7%94%9f%e6%88%90%e4%b8%80%e4%b8%aa-fabric-samples-%e6%96%87%e4%bb%b6%e5%a4%b9%e6%9c%89%e4%b8%80%e4%b8%aa%e7%a4%ba%e4%be%8b)
+				- [新建文件bootstrap.sh并添加内容](#%e6%96%b0%e5%bb%ba%e6%96%87%e4%bb%b6bootstrapsh%e5%b9%b6%e6%b7%bb%e5%8a%a0%e5%86%85%e5%ae%b9)
+				- [赋予bootstrap.sh可执行权限并运行](#%e8%b5%8b%e4%ba%88bootstrapsh%e5%8f%af%e6%89%a7%e8%a1%8c%e6%9d%83%e9%99%90%e5%b9%b6%e8%bf%90%e8%a1%8c)
+				- [执行bootstrap.sh](#%e6%89%a7%e8%a1%8cbootstrapsh)
 		- [通过 `Windows` 下载 `Docker` 镜像来得到 `Fabric` 环境](#%e9%80%9a%e8%bf%87-windows-%e4%b8%8b%e8%bd%bd-docker-%e9%95%9c%e5%83%8f%e6%9d%a5%e5%be%97%e5%88%b0-fabric-%e7%8e%af%e5%a2%83)
 			- [安装 Docker 环境](#%e5%ae%89%e8%a3%85-docker-%e7%8e%af%e5%a2%83)
 			- [在 `Docker` 里下载定制好了的 `Fabric` 镜像：](#%e5%9c%a8-docker-%e9%87%8c%e4%b8%8b%e8%bd%bd%e5%ae%9a%e5%88%b6%e5%a5%bd%e4%ba%86%e7%9a%84-fabric-%e9%95%9c%e5%83%8f)
@@ -293,56 +296,56 @@ docker-compose --version
 ```shell
 mkdir hyfa && cd hyfa
 ```
-新建文件bootstrap.sh并添加内容
+##### 新建文件bootstrap.sh并添加内容
+```shell
+gedit bootstrap.sh
 ```
-$ vim bootstrap.sh
-```
-将 https://github.com/hyperledger/fabric/blob/master/scripts/bootstrap.sh 中的内容拷贝保存退出。
+将 https://github.com/hyperledger/fabric/blob/master/scripts/bootstrap.sh (这个和上面的 bootstrap.sh 一样)中的内容拷贝保存退出。
 
 该 bootstrap.sh 可执行脚本文件的作用：
 
-如果在当前目录中没有 hyperledger/fabric-samples，则从 github.com 克隆 hyperledger/fabric-samples 存储库
-使用 checkout 签出对应指定的版本标签
-将指定版本的Hyperledger Fabric平台特定的二进制文件和配置文件安装到 fabric-samples 存储库的根目录中
-下载指定版本的 Hyperledger Fabric docker 镜像文件
-将下载的 docker 镜像文件标记为 "latest"
-赋予bootstrap.sh可执行权限并运行
+1. 如果在当前目录中没有 hyperledger/fabric-samples，则从 github.com 克隆 hyperledger/fabric-samples 存储库
+2. 使用 checkout 签出对应指定的版本标签
+3. 将指定版本的Hyperledger Fabric平台特定的二进制文件和配置文件安装到 fabric-samples 存储库的根目录中
+4. 下载指定版本的 Hyperledger Fabric docker 镜像文件
+5. 将下载的 docker 镜像文件标记为 "latest"
 
-$ chmod +x bootstrap.sh
-执行bootstrap.sh
+##### 赋予bootstrap.sh可执行权限并运行
+```shell
+chmod +x bootstrap.sh
+```
+##### 执行bootstrap.sh
+```sh
+sudo ./bootstrap.sh 1.2.0
+```
 
-$ sudo ./bootstrap.sh 1.2.0
-确定网络稳定，否则会导致各种问题，例如下载到一半时网络超时，下载失败等等；由于Docker的各种镜像文件下载时间较长，所以请耐心等待。
+> 确定网络稳定，否则会导致各种问题，例如下载到一半时网络超时，下载失败等等；由于Docker的各种镜像文件下载时间较长，所以请耐心等待。
 
 下载完成后，查看相关输出内容；如果下载有失败的镜像, 可再次执行 $ sudo ./bootstrap.sh 1.2.0 命令重新下载。
 
-重新执行脚本命令对于已下载的Docker镜像文件不会再次重新下载。
-```shell
-bash bootstrap.sh
-```
+> 重新执行脚本命令对于已下载的Docker镜像文件不会再次重新下载。
+
 最后 `log` 输出：
 ```shell
 ===> List out hyperledger docker images
-hyperledger/fabric-tools         1.2.1               18ed4db0cd57        9 days ago          1.55GB
-hyperledger/fabric-tools         latest              18ed4db0cd57        9 days ago          1.55GB
-hyperledger/fabric-ca            1.2.1               c18a0d3cc958        9 days ago          253MB
-hyperledger/fabric-ca            latest              c18a0d3cc958        9 days ago          253MB
-hyperledger/fabric-ccenv         1.2.1               3d31661a812a        9 days ago          1.45GB
-hyperledger/fabric-ccenv         latest              3d31661a812a        9 days ago          1.45GB
-hyperledger/fabric-orderer       1.2.1               b666a6ebbe09        9 days ago          173MB
-hyperledger/fabric-orderer       latest              b666a6ebbe09        9 days ago          173MB
-hyperledger/fabric-peer          1.2.1               fa87ccaed0ef        9 days ago          179MB
-hyperledger/fabric-peer          latest              fa87ccaed0ef        9 days ago          179MB
-hyperledger/fabric-javaenv       1.2.1               5ba5ba09db8f        5 weeks ago         1.76GB
-hyperledger/fabric-javaenv       latest              5ba5ba09db8f        5 weeks ago         1.76GB
-hyperledger/fabric-zookeeper     0.4.15              20c6045930c8        5 months ago        1.43GB
-hyperledger/fabric-zookeeper     latest              20c6045930c8        5 months ago        1.43GB
-hyperledger/fabric-kafka         0.4.15              b4ab82bbaf2f        5 months ago        1.44GB
-hyperledger/fabric-kafka         latest              b4ab82bbaf2f        5 months ago        1.44GB
-hyperledger/fabric-couchdb       0.4.15              8de128a55539        5 months ago        1.5GB
-hyperledger/fabric-couchdb       latest              8de128a55539        5 months ago        1.5GB
+hyperledger/fabric-ca          1.2.0       66cc132bd09c    4 weeks ago     252 MB
+hyperledger/fabric-ca          latest      66cc132bd09c    4 weeks ago     252 MB
+hyperledger/fabric-tools       1.2.0       379602873003    4 weeks ago     1.51 GB
+hyperledger/fabric-tools       latest      379602873003    4 weeks ago     1.51 GB
+hyperledger/fabric-ccenv       1.2.0       6acf31e2d9a4    4 weeks ago     1.43 GB
+hyperledger/fabric-ccenv       latest      6acf31e2d9a4    4 weeks ago     1.43 GB
+hyperledger/fabric-orderer     1.2.0       4baf7789a8ec    4 weeks ago     152 MB
+hyperledger/fabric-orderer     latest      4baf7789a8ec    4 weeks ago     152 MB
+hyperledger/fabric-peer        1.2.0       82c262e65984    4 weeks ago     159 MB
+hyperledger/fabric-peer        latest      82c262e65984    4 weeks ago     159 MB
+hyperledger/fabric-zookeeper   0.4.10      2b51158f3898    5 weeks ago     1.44 GB
+hyperledger/fabric-zookeeper   latest      2b51158f3898    5 weeks ago     1.44 GB
+hyperledger/fabric-kafka       0.4.10      936aef6db0e6    5 weeks ago     1.45 GB
+hyperledger/fabric-kafka       latest      936aef6db0e6    5 weeks ago     1.45 GB
+hyperledger/fabric-couchdb     0.4.10      3092eca241fc    5 weeks ago     1.61 GB
+hyperledger/fabric-couchdb     latest      3092eca241fc    5 weeks ago     1.61 GB
 ```
-并且下面还会出现一个 `fabric-samples/` 文件夹。
+并且目录下面还会出现一个 `fabric-samples/` 文件夹。
 到这里环境已经搭建好了。  
 
 
