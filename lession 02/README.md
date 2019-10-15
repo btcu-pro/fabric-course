@@ -287,7 +287,36 @@ docker-compose --version
 
 参考：https://hyperledger-fabric.readthedocs.io/en/latest/install.html
 
-这里需要注意一下，目前官方给的脚本使用的是 Fabric 1.4.3，而我们统一使用 1.2.1，因此直接用我修改了的脚本： [bootstrap.sh](./script/bootstrap.sh)，然后运行：
+这里需要注意一下，目前官方给的脚本使用的是 Fabric 1.4.3，而我们统一使用 1.2.0，而且官方那个的脚本下载需要翻墙，这里我把它下载到这里了： [bootstrap.sh](./script/bootstrap.sh)。  
+
+为了方便后期管理，在当前登录用户的HOME目录下创建一个空目录并进入该目录
+```shell
+mkdir hyfa && cd hyfa
+```
+新建文件bootstrap.sh并添加内容
+```
+$ vim bootstrap.sh
+```
+将 https://github.com/hyperledger/fabric/blob/master/scripts/bootstrap.sh 中的内容拷贝保存退出。
+
+该 bootstrap.sh 可执行脚本文件的作用：
+
+如果在当前目录中没有 hyperledger/fabric-samples，则从 github.com 克隆 hyperledger/fabric-samples 存储库
+使用 checkout 签出对应指定的版本标签
+将指定版本的Hyperledger Fabric平台特定的二进制文件和配置文件安装到 fabric-samples 存储库的根目录中
+下载指定版本的 Hyperledger Fabric docker 镜像文件
+将下载的 docker 镜像文件标记为 "latest"
+赋予bootstrap.sh可执行权限并运行
+
+$ chmod +x bootstrap.sh
+执行bootstrap.sh
+
+$ sudo ./bootstrap.sh 1.2.0
+确定网络稳定，否则会导致各种问题，例如下载到一半时网络超时，下载失败等等；由于Docker的各种镜像文件下载时间较长，所以请耐心等待。
+
+下载完成后，查看相关输出内容；如果下载有失败的镜像, 可再次执行 $ sudo ./bootstrap.sh 1.2.0 命令重新下载。
+
+重新执行脚本命令对于已下载的Docker镜像文件不会再次重新下载。
 ```shell
 bash bootstrap.sh
 ```
