@@ -382,7 +382,31 @@ hyperledger/fabric-baseimage   latest              62513965e238        15 months
 hyperledger/fabric-baseos      0.4.10              52190e831002        15 months ago       132MB
 hyperledger/fabric-baseos      latest              52190e831002        15 months ago       132MB
 ```
-到这里环境已经搭建好了。  
+
+如果多次运行都无法下载好，那就直接运行下面的命令来拉去镜像：
+```shell
+export FABRIC_TAG=1.2.0
+```
+```shell
+export CA_TAG=1.2.0
+```
+```shell
+export THIRDPARTY_IMAGE_VERSION=0.4.10
+```
+```shell
+docker pull hyperledger/fabric-peer:$FABRIC_TAG \
+&& docker pull hyperledger/fabric-orderer:$FABRIC_TAG \
+&& docker pull hyperledger/fabric-ca:$CA_TAG \
+&& docker pull hyperledger/fabric-tools:$FABRIC_TAG \
+&& docker pull hyperledger/fabric-ccenv:$FABRIC_TAG \
+&& docker pull hyperledger/fabric-baseimage:$THIRDPARTY_IMAGE_VERSION \
+&& docker pull hyperledger/fabric-baseos:$THIRDPARTY_IMAGE_VERSION \
+&& docker pull hyperledger/fabric-couchdb:$THIRDPARTY_IMAGE_VERSION \
+&& docker pull hyperledger/fabric-kafka:$THIRDPARTY_IMAGE_VERSION \
+&& docker pull hyperledger/fabric-zookeeper:$THIRDPARTY_IMAGE_VERSION
+```
+
+到这里基于 Docker 环境已经搭建好了。  
 
 
 
