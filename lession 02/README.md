@@ -266,7 +266,15 @@ docker images
 ```shell
 Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get http://%2Fvar%2Frun%2Fdocker.sock/v1.39/images/json: dial unix /var/run/docker.sock: connect: permission denied
 ```
-参考：
+参考：https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue  
+可以通过依次运行：
+```shell
+sudo groupadd docker
+
+sudo  usermod -aG docker $USER
+```
+来解决。
+
 #### 安装 `Docker-compose`
 ```shell
 sudo apt install docker-compose
