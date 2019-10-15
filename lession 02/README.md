@@ -24,8 +24,8 @@
 			- [安装 `Docker-compose`](#%e5%ae%89%e8%a3%85-docker-compose)
 			- [通过脚本安装（推荐，因为下载的镜像更全更多，并且还会生成一个 `fabric-samples/` 文件夹，有一个示例）：](#%e9%80%9a%e8%bf%87%e8%84%9a%e6%9c%ac%e5%ae%89%e8%a3%85%e6%8e%a8%e8%8d%90%e5%9b%a0%e4%b8%ba%e4%b8%8b%e8%bd%bd%e7%9a%84%e9%95%9c%e5%83%8f%e6%9b%b4%e5%85%a8%e6%9b%b4%e5%a4%9a%e5%b9%b6%e4%b8%94%e8%bf%98%e4%bc%9a%e7%94%9f%e6%88%90%e4%b8%80%e4%b8%aa-fabric-samples-%e6%96%87%e4%bb%b6%e5%a4%b9%e6%9c%89%e4%b8%80%e4%b8%aa%e7%a4%ba%e4%be%8b)
 				- [新建文件bootstrap.sh并添加内容](#%e6%96%b0%e5%bb%ba%e6%96%87%e4%bb%b6bootstrapsh%e5%b9%b6%e6%b7%bb%e5%8a%a0%e5%86%85%e5%ae%b9)
-				- [赋予bootstrap.sh可执行权限并运行](#%e8%b5%8b%e4%ba%88bootstrapsh%e5%8f%af%e6%89%a7%e8%a1%8c%e6%9d%83%e9%99%90%e5%b9%b6%e8%bf%90%e8%a1%8c)
-				- [执行bootstrap.sh](#%e6%89%a7%e8%a1%8cbootstrapsh)
+				- [赋予 bootstrap.sh 可执行权限并运行](#%e8%b5%8b%e4%ba%88-bootstrapsh-%e5%8f%af%e6%89%a7%e8%a1%8c%e6%9d%83%e9%99%90%e5%b9%b6%e8%bf%90%e8%a1%8c)
+				- [执行 bootstrap.sh](#%e6%89%a7%e8%a1%8c-bootstrapsh)
 		- [通过 `Windows` 下载 `Docker` 镜像来得到 `Fabric` 环境](#%e9%80%9a%e8%bf%87-windows-%e4%b8%8b%e8%bd%bd-docker-%e9%95%9c%e5%83%8f%e6%9d%a5%e5%be%97%e5%88%b0-fabric-%e7%8e%af%e5%a2%83)
 			- [安装 Docker 环境](#%e5%ae%89%e8%a3%85-docker-%e7%8e%af%e5%a2%83)
 			- [在 `Docker` 里下载定制好了的 `Fabric` 镜像：](#%e5%9c%a8-docker-%e9%87%8c%e4%b8%8b%e8%bd%bd%e5%ae%9a%e5%88%b6%e5%a5%bd%e4%ba%86%e7%9a%84-fabric-%e9%95%9c%e5%83%8f)
@@ -105,11 +105,11 @@
 下面有好几种环境，个人最推荐的是在 Linux 环境中通过下载对应 `Docker` 镜像来得到 `Fabric` 环境，这样坑最少。
 
 #### 这里我们统一环境：
-* Ubuntu 16.04 + Docker version 18.09.7 + Fabric 1.2.1
+* Ubuntu 16.04 + Docker version 18.09.7 + Fabric 1.2.0
 
-如果是 Mac，则只需在 `Mac` 下安装 Docker version 18.09.7 + Fabric 1.2.1
+如果是 Mac，则自行搜索怎样在 Mac 上安装 VMware。
 
-具体步骤：（如果是 `Mac` 系统，就跳过第 1 步）：  
+具体步骤：  
 
 1. [`Linux` 环境搭建](#linux-%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba)
 2. [安装 `Docker`](#%e5%ae%89%e8%a3%85-docker)
@@ -261,7 +261,7 @@ docker --version
 ```shell
 Docker version 18.09.7, build 2d0083d
 ```
-运行:
+运行来检测权限:
 ```shell
 docker images
 ```
@@ -277,6 +277,11 @@ sudo groupadd docker
 sudo  usermod -aG docker $USER
 ```
 来解决。
+最后，成功执行：
+```shell
+docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+```
 
 #### 安装 `Docker-compose`
 ```shell
@@ -310,11 +315,11 @@ gedit bootstrap.sh
 4. 下载指定版本的 Hyperledger Fabric docker 镜像文件
 5. 将下载的 docker 镜像文件标记为 "latest"
 
-##### 赋予bootstrap.sh可执行权限并运行
+##### 赋予 bootstrap.sh 可执行权限并运行
 ```shell
 chmod +x bootstrap.sh
 ```
-##### 执行bootstrap.sh
+##### 执行 bootstrap.sh
 ```sh
 sudo ./bootstrap.sh 1.2.0
 ```
@@ -346,6 +351,31 @@ hyperledger/fabric-couchdb     0.4.10      3092eca241fc    5 weeks ago     1.61 
 hyperledger/fabric-couchdb     latest      3092eca241fc    5 weeks ago     1.61 GB
 ```
 并且目录下面还会出现一个 `fabric-samples/` 文件夹。
+查看下载的镜像：
+```shell
+flyq@ubuntu:~/workspace/fabric$ docker images
+REPOSITORY                     TAG                 IMAGE ID            CREATED             SIZE
+hyperledger/fabric-ca          1.2.0               66cc132bd09c        15 months ago       252MB
+hyperledger/fabric-ca          latest              66cc132bd09c        15 months ago       252MB
+hyperledger/fabric-tools       1.2.0               379602873003        15 months ago       1.51GB
+hyperledger/fabric-tools       latest              379602873003        15 months ago       1.51GB
+hyperledger/fabric-ccenv       1.2.0               6acf31e2d9a4        15 months ago       1.43GB
+hyperledger/fabric-ccenv       latest              6acf31e2d9a4        15 months ago       1.43GB
+hyperledger/fabric-orderer     1.2.0               4baf7789a8ec        15 months ago       152MB
+hyperledger/fabric-orderer     latest              4baf7789a8ec        15 months ago       152MB
+hyperledger/fabric-peer        1.2.0               82c262e65984        15 months ago       159MB
+hyperledger/fabric-peer        latest              82c262e65984        15 months ago       159MB
+hyperledger/fabric-zookeeper   0.4.10              2b51158f3898        15 months ago       1.44GB
+hyperledger/fabric-zookeeper   latest              2b51158f3898        15 months ago       1.44GB
+hyperledger/fabric-kafka       0.4.10              936aef6db0e6        15 months ago       1.45GB
+hyperledger/fabric-kafka       latest              936aef6db0e6        15 months ago       1.45GB
+hyperledger/fabric-couchdb     0.4.10              3092eca241fc        15 months ago       1.61GB
+hyperledger/fabric-couchdb     latest              3092eca241fc        15 months ago       1.61GB
+hyperledger/fabric-baseimage   0.4.10              62513965e238        15 months ago       1.39GB
+hyperledger/fabric-baseimage   latest              62513965e238        15 months ago       1.39GB
+hyperledger/fabric-baseos      0.4.10              52190e831002        15 months ago       132MB
+hyperledger/fabric-baseos      latest              52190e831002        15 months ago       132MB
+```
 到这里环境已经搭建好了。  
 
 
@@ -399,18 +429,65 @@ Fabric 有多个镜像，下面是对应的依赖关系：
 更多的镜像参考：  
 https://hub.docker.com/search?q=hyperledger&type=image 
 ![image_web](image/fabric13.png)  
-以下命令直接下载对应 fabric 最新的镜像，也就是 fabric 1.4 版本。
+以下命令直接下载对应 fabric 镜像，也就是 fabric 1.2.0 版本。
 ```shell
-docker pull hyperledger/fabric-peer \
-    && docker pull hyperledger/fabric-orderer \
-    && docker pull hyperledger/fabric-ca \
-    && docker pull hyperledger/fabric-tools \
-    && docker pull hyperledger/fabric-ccenv
+export FABRIC_TAG=1.2.0
+
+export CA_TAG=1.2.0
+
+export THIRDPARTY_IMAGE_VERSION=0.4.10
+
+docker pull hyperledger/fabric-peer:$FABRIC_TAG \
+&& docker pull hyperledger/fabric-orderer:$FABRIC_TAG \
+&& docker pull hyperledger/fabric-ca:$CA_TAG \
+&& docker pull hyperledger/fabric-tools:$FABRIC_TAG \
+&& docker pull hyperledger/fabric-ccenv:$FABRIC_TAG \
+&& docker pull hyperledger/fabric-baseimage:$THIRDPARTY_IMAGE_VERSION \
+&& docker pull hyperledger/fabric-baseos:$THIRDPARTY_IMAGE_VERSION \
+&& docker pull hyperledger/fabric-couchdb:$THIRDPARTY_IMAGE_VERSION \
+&& docker pull hyperledger/fabric-kafka:$THIRDPARTY_IMAGE_VERSION \
+&& docker pull hyperledger/fabric-zookeeper:$THIRDPARTY_IMAGE_VERSION
 ```
 
 
-下载完成后，用 `docker images` 查看，可以看到刚刚下载的 5 个镜像。
-![pull_linux](image/fabric15.png)   
+下载完成后，将镜像标记为最新
+```shell
+docker tag hyperledger/fabric-peer:$FABRIC_TAG hyperledger/fabric-peer \
+&& docker tag hyperledger/fabric-orderer:$FABRIC_TAG hyperledger/fabric-orderer \
+&& docker tag hyperledger/fabric-ca:$CA_TAG hyperledger/fabric-ca \
+&& docker tag hyperledger/fabric-tools:$FABRIC_TAG hyperledger/fabric-tools \
+&& docker tag hyperledger/fabric-ccenv:$FABRIC_TAG hyperledger/fabric-ccenv \
+&& docker tag hyperledger/fabric-baseimage:$THIRDPARTY_IMAGE_VERSION hyperledger/fabric-baseimage \
+&& docker tag hyperledger/fabric-baseos:$THIRDPARTY_IMAGE_VERSION hyperledger/fabric-baseos \
+&& docker tag hyperledger/fabric-couchdb:$THIRDPARTY_IMAGE_VERSION hyperledger/fabric-couchdb \
+&& docker tag hyperledger/fabric-kafka:$THIRDPARTY_IMAGE_VERSION hyperledger/fabric-kafka \
+&& docker tag hyperledger/fabric-zookeeper:$THIRDPARTY_IMAGE_VERSION hyperledger/fabric-zookeeper
+```
+用 `docker images` 查看，可以看到刚刚下载的镜像。
+```shell
+docker images
+REPOSITORY                     TAG                 IMAGE ID            CREATED             SIZE
+hyperledger/fabric-ca          1.2.0               66cc132bd09c        15 months ago       252MB
+hyperledger/fabric-ca          latest              66cc132bd09c        15 months ago       252MB
+hyperledger/fabric-tools       1.2.0               379602873003        15 months ago       1.51GB
+hyperledger/fabric-tools       latest              379602873003        15 months ago       1.51GB
+hyperledger/fabric-ccenv       1.2.0               6acf31e2d9a4        15 months ago       1.43GB
+hyperledger/fabric-ccenv       latest              6acf31e2d9a4        15 months ago       1.43GB
+hyperledger/fabric-orderer     1.2.0               4baf7789a8ec        15 months ago       152MB
+hyperledger/fabric-orderer     latest              4baf7789a8ec        15 months ago       152MB
+hyperledger/fabric-peer        1.2.0               82c262e65984        15 months ago       159MB
+hyperledger/fabric-peer        latest              82c262e65984        15 months ago       159MB
+hyperledger/fabric-zookeeper   0.4.10              2b51158f3898        15 months ago       1.44GB
+hyperledger/fabric-zookeeper   latest              2b51158f3898        15 months ago       1.44GB
+hyperledger/fabric-kafka       0.4.10              936aef6db0e6        15 months ago       1.45GB
+hyperledger/fabric-kafka       latest              936aef6db0e6        15 months ago       1.45GB
+hyperledger/fabric-couchdb     0.4.10              3092eca241fc        15 months ago       1.61GB
+hyperledger/fabric-couchdb     latest              3092eca241fc        15 months ago       1.61GB
+hyperledger/fabric-baseimage   0.4.10              62513965e238        15 months ago       1.39GB
+hyperledger/fabric-baseimage   latest              62513965e238        15 months ago       1.39GB
+hyperledger/fabric-baseos      0.4.10              52190e831002        15 months ago       132MB
+hyperledger/fabric-baseos      latest              52190e831002        15 months ago       132MB
+```
 到这里，Windows 下的 Docker 环境配置好了
 
 ### `Linux` 环境下直接安装
