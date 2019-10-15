@@ -305,7 +305,7 @@ mkdir hyfa && cd hyfa
 ```shell
 gedit bootstrap.sh
 ```
-将 https://github.com/hyperledger/fabric/blob/master/scripts/bootstrap.sh (这个和上面的 bootstrap.sh 一样)中的内容拷贝保存退出。
+将 [./script/bootstrap.sh](./script/bootstrap.sh) 中的内容拷贝保存退出。
 
 该 bootstrap.sh 可执行脚本文件的作用：
 

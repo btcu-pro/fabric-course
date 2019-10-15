@@ -6,11 +6,11 @@
 #
 
 # if version not passed in, default to latest released version
-VERSION=1.4.3
+VERSION=1.2.0
 # if ca version not passed in, default to latest released version
-CA_VERSION=1.4.3
+CA_VERSION=1.2.0
 # current version of thirdparty images (couchdb, kafka and zookeeper) released
-THIRDPARTY_IMAGE_VERSION=0.4.15
+THIRDPARTY_IMAGE_VERSION=0.4.10
 ARCH=$(echo "$(uname -s|tr '[:upper:]' '[:lower:]'|sed 's/mingw64_nt.*/windows/')-$(uname -m | sed 's/x86_64/amd64/g')")
 MARCH=$(uname -m)
 
@@ -32,7 +32,7 @@ printHelp() {
 # be skipped, since this script doesn't terminate upon errors.
 dockerFabricPull() {
     local FABRIC_TAG=$1
-    for IMAGES in peer orderer ccenv tools baseos nodeenv javaenv; do
+    for IMAGES in peer orderer ccenv tools; do
         echo "==> FABRIC IMAGE: $IMAGES"
         echo
         docker pull "hyperledger/fabric-$IMAGES:$FABRIC_TAG"
@@ -42,7 +42,7 @@ dockerFabricPull() {
 
 dockerThirdPartyImagesPull() {
     local THIRDPARTY_TAG=$1
-    for IMAGES in couchdb kafka zookeeper; do
+    for IMAGES in couchdb kafka zookeeper baseos baseimage nodeenv javaenv; do
         echo "==> THIRDPARTY DOCKER IMAGE: $IMAGES"
         echo
         docker pull "hyperledger/fabric-$IMAGES:$THIRDPARTY_TAG"
