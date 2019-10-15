@@ -331,6 +331,8 @@ chmod +x bootstrap.sh
 
 > 重新执行脚本命令对于已下载的Docker镜像文件不会再次重新下载。
 
+如果多次执行都不行，那就[如果多次运行都无法下载好。。。](README.md#%e5%a6%82%e6%9e%9c%e5%a4%9a%e6%ac%a1%e8%bf%90%e8%a1%8c%e9%83%bd%e6%97%a0%e6%b3%95%e4%b8%8b%e8%bd%bd%e5%a5%bd)（或者往下翻就能找到）
+
 最后 `log` 输出：
 ```shell
 
