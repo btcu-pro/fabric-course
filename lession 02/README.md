@@ -414,6 +414,19 @@ docker pull hyperledger/fabric-peer:$FABRIC_TAG \
 && docker pull hyperledger/fabric-kafka:$THIRDPARTY_IMAGE_VERSION \
 && docker pull hyperledger/fabric-zookeeper:$THIRDPARTY_IMAGE_VERSION
 ```
+给镜像打标签：
+```shell
+docker tag hyperledger/fabric-peer:$FABRIC_TAG hyperledger/fabric-peer \
+&& docker tag hyperledger/fabric-orderer:$FABRIC_TAG hyperledger/fabric-orderer \
+&& docker tag hyperledger/fabric-ca:$CA_TAG hyperledger/fabric-ca \
+&& docker tag hyperledger/fabric-tools:$FABRIC_TAG hyperledger/fabric-tools \
+&& docker tag hyperledger/fabric-ccenv:$FABRIC_TAG hyperledger/fabric-ccenv \
+&& docker tag hyperledger/fabric-baseimage:$THIRDPARTY_IMAGE_VERSION hyperledger/fabric-baseimage \
+&& docker tag hyperledger/fabric-baseos:$THIRDPARTY_IMAGE_VERSION hyperledger/fabric-baseos \
+&& docker tag hyperledger/fabric-couchdb:$THIRDPARTY_IMAGE_VERSION hyperledger/fabric-couchdb \
+&& docker tag hyperledger/fabric-kafka:$THIRDPARTY_IMAGE_VERSION hyperledger/fabric-kafka \
+&& docker tag hyperledger/fabric-zookeeper:$THIRDPARTY_IMAGE_VERSION hyperledger/fabric-zookeeper
+```
 
 到这里基于 Docker 环境已经搭建好了。  
 
