@@ -308,6 +308,12 @@ gedit bootstrap.sh
 ```
 将 [./script/bootstrap.sh](./script/bootstrap.sh) 中的内容拷贝保存退出。
 
+或者运行
+```s
+wget  https://github.com/btcu-pro/fabric-course/blob/master/lession%2002/script/bootstrap.sh
+```
+效果一样
+
 该 bootstrap.sh 可执行脚本文件的作用：
 
 1. 如果在当前目录中没有 hyperledger/fabric-samples，则从 github.com 克隆 hyperledger/fabric-samples 存储库
