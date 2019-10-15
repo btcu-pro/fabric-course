@@ -391,7 +391,7 @@ hyperledger/fabric-baseos      latest              52190e831002        15 months
 
 因为如果去查看 `bootstrap.sh`，其实这个脚本也就做了这三件事:
 1. 下载 `fabric-samples/` 这个仓库，并指定对应的分支，我们同样这么做：`git clone -b master https://github.com/hyperledger/fabric-samples.git && cd fabric-samples && git checkout v1.2.0 && cd fabric-samples/ && mkdir bin`
-2. 下载binary 可执行文件包，并解压。大家把 [files/hyperledger-fabric-ca-linux-amd64-1.2.0.tar.gz](files/hyperledger-fabric-ca-linux-amd64-1.2.0.tar.gz) 和 [files/hyperledger-fabric-linux-amd64-1.2.0.tar.gz](files/hyperledger-fabric-linux-amd64-1.2.0.tar.gz) 下载到虚拟机里面 `/fabric-samples/bin `，并解压到 bin 文件夹就行了。
+2. 下载binary 可执行文件包，并解压。大家把 [files/hyperledger-fabric-ca-linux-amd64-1.2.0.tar.gz](files/hyperledger-fabric-ca-linux-amd64-1.2.0.tar.gz) 和 [files/hyperledger-fabric-linux-amd64-1.2.0.tar.gz](files/hyperledger-fabric-linux-amd64-1.2.0.tar.gz) 下载到虚拟机里面 `/fabric-samples/bin `，并解压到 bin 文件夹就行了：`tar xzf ./xxxxx --overwrite`，其中 xxxxx 代表这两个压缩包的名字。
 3. 拉去对应的镜像，依次执行下面的命令就行了：
 ```shell
 export FABRIC_TAG=1.2.0
