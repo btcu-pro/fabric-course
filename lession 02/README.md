@@ -173,11 +173,36 @@ tar -xvf go1.10.3.linux-amd64.tar.gz
 ```
 得到 `./go/` 文件夹：
 ```shell
-$ ls go/
+ls go/
+```
+计算机的log输出是：
+```shell
 api      bin              CONTRIBUTORS  favicon.ico  LICENSE  PATENTS  README.md   src   VERSION
 AUTHORS  CONTRIBUTING.md  doc           lib          misc     pkg      robots.txt  test
 ```
-这个文件夹里面就有 go 语言的配套环境了，然后设置当前用户的环境变量。
+进入 go 可执行文件目录：
+```shell
+cd ./go/bin/
+```
+查看文件
+```shell
+ls
+```
+计算机的log输出：
+```shell
+go  godoc  gofmt
+```
+其中上面三个文件都是绿色，说明是可执行文件。
+
+得到当前目录的绝对路径
+```shell
+pwd
+```
+计算机的log输出：
+```shell
+/home/flyq/workspace/go/bin
+```
+因此拿着这个绝对论据去设置go的环境变量（就是去修改 .bashrc 文件）：
 
 用编辑器打开 ~/.bashrc 文件，比如我是用 gedit:
 ```shell
@@ -185,7 +210,7 @@ $ gedit ~/.bashrc
 ```
 在最后一行添加：
 ```shell
-export PATH=$PATH:/home/flyq/workspaces/golang/go/bin/
+export PATH=$PATH:/home/flyq/workspace/go/bin/
 ```
 主要，添加的这行每个人的路径不同，因此这行代码也不同，如下图，需要根据自己电脑环境对应目录的路径得到：
 ![dir](image/fabric16.png)
