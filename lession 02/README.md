@@ -199,6 +199,9 @@ source ~/.bashrc
 运行`go version`出现以下结果即表示安装成功：
 ```shell
 $ go version 
+```
+
+```shell
 go version go1.10.3 linux/amd64
 ```
 
@@ -229,11 +232,17 @@ go 环境已经安装并配置好了。
 拉去 `gopm` 代码:
 ```shell
 cd $GOPATH/src
+
 mkdir -p github.com/gpmgo/
+
 cd ./github.com/gpmgo
+
 git clone https://github.com/gpmgo/gopm.git
+
 cd ./gopm
+
 go build
+
 ls
 ```
 然后可以看到会生成一个可执行文件 `gopm`，把它复制到 `$GOPATH/bin` 下面即可：
@@ -262,7 +271,7 @@ sudo systemctl enable docker
 
 docker --version
 ```
-最后 `log`:
+最后 `log` 输出:
 ```shell
 Docker version 18.09.7, build 2d0083d
 ```
@@ -282,11 +291,20 @@ sudo groupadd docker
 sudo  usermod -aG docker $USER
 ```
 来解决。
-最后，成功执行：
+然后，重启虚拟机：
+1. 关闭虚拟机：`poweroff`
+2. 从 VMware 里面打开这个虚拟机；  
+
+再次执行:
 ```shell
 docker images
+```
+
+发现log输出是这样：
+```shell
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 ```
+说明 Docker 成功安装。
 
 #### 安装 `Docker-compose`
 ```shell
