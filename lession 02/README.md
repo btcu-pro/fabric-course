@@ -203,7 +203,11 @@ go version go1.10.3 linux/amd64
 ```
 
 最后设置一下 `GOPATH` 环境变量，同样是修改 `~/.bashrc` 文件：
-创建一个新建目录（这里是 `/home/flyq/workspaces/golang/gopath/`），并指定它是 GOPATH，然后在这个目录下再创建三个文件夹，分别命名为：`src`, `pkg`, `bin`，最后添加这两行到 `~/.bashrc`下面，同样需要注意修改对应路径：
+1. 创建一个新建目录 gopath：`mkdir gopath`;
+2. 进入这个目录：`cd gopath`;
+3. 创建需要的文件夹：`mkdir src bin pkg`;
+4. 得到当前目录的绝对路径：`pwd`;
+5. 将添加这两行到 `~/.bashrc`下面：`gedit ~/.bashrc`; **注意**下面 `/home/flyq/workspaces/golang/gopath/` 这个是我的绝对路径，每台机器的不同，需要改成你从 4 中得到的绝对路径：
 ```.bashrc
 export GOPATH=/home/flyq/workspaces/golang/gopath/
 export PATH=$PATH:$GOPATH/bin/
@@ -211,7 +215,7 @@ export PATH=$PATH:$GOPATH/bin/
 ![gopath](image/fabric18.png)
 
 
-然后保存好，更新一下：
+然后保存好，更新一下环境变量：
 ```shell 
 source ~/.bashrc
 ```
