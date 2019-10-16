@@ -413,9 +413,20 @@ hyperledger/fabric-baseos      latest              52190e831002        15 months
 ##### 如果多次运行都无法下载好。。。
 肯定是墙的问题，那就直接运行下面的命令：
 
+如果前面多次运行了脚本，已经下载了部分内容，我们可以通过查看来跳过下面部分步骤：
+
+![samples](image/fabric22.png)
+
+如上图，如果我们有了 fabric-samples/ 文件，并且里面有 17 项目内容，说明 `fabric-samples` 已经下载好了，因此我们可以跳过下面的第1.步。然后进入到 bin/ 目录，发现里面有 9 个文件，那就可以跳过下面的第2.步。
+第3.步不用跳过，因为 docker 会自动检测已经下载了多少，然后再继续下载未下载完的。
+
 因为如果去查看 `bootstrap.sh`，其实这个脚本也就做了这三件事:
 1. 下载 `fabric-samples/` 这个仓库，并指定对应的分支，我们同样这么做：`git clone -b master https://github.com/hyperledger/fabric-samples.git && cd fabric-samples && git checkout v1.2.0 && cd fabric-samples/ && mkdir bin`
-2. 下载binary 可执行文件包，并解压。大家把 [files/hyperledger-fabric-ca-linux-amd64-1.2.0.tar.gz](files/hyperledger-fabric-ca-linux-amd64-1.2.0.tar.gz) 和 [files/hyperledger-fabric-linux-amd64-1.2.0.tar.gz](files/hyperledger-fabric-linux-amd64-1.2.0.tar.gz) 下载到虚拟机里面 `/fabric-samples/bin `，并解压到 bin 文件夹就行了：`tar xzf ./xxxxx --overwrite`，其中 xxxxx 代表这两个压缩包的名字。
+2. 下载binary 可执行文件包，并解压。大家把 [files/hyperledger-fabric-ca-linux-amd64-1.2.0.tar.gz](files/hyperledger-fabric-ca-linux-amd64-1.2.0.tar.gz) 和 [files/hyperledger-fabric-linux-amd64-1.2.0.tar.gz](files/hyperledger-fabric-linux-amd64-1.2.0.tar.gz) 下载到虚拟机里面 `/fabric-samples/ `，并解压就行了，注意有前后顺序：
+* `tar xzf ./hyperledger-fabric-linux-amd64-1.2.0.tar.gz --overwrite` 这个会得到一个 `bin/` 文件夹和一个 `config/` 文件夹。
+* `tar xzf ./hyperledger-fabric-ca-linux-amd64-1.2.0.tar.gz --overwrite` 这个会得到 `fabric-ca-client` 二进制可执行文件。
+* 把 `fabric-ca-client` 移动到 `./bin` 目录下：`mv fabric-ca-client ./bin`
+
 3. 拉去对应的镜像，依次执行下面的命令就行了：
 ```shell
 export FABRIC_TAG=1.2.0
