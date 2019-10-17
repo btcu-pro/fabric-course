@@ -175,7 +175,7 @@ tar -xvf go1.10.3.linux-amd64.tar.gz
 ```shell
 ls go/
 ```
-计算机的log输出是：
+计算机的输出是：
 ```shell
 api      bin              CONTRIBUTORS  favicon.ico  LICENSE  PATENTS  README.md   src   VERSION
 AUTHORS  CONTRIBUTING.md  doc           lib          misc     pkg      robots.txt  test
@@ -188,7 +188,7 @@ cd ./go/bin/
 ```shell
 ls
 ```
-计算机的log输出：
+计算机的输出：
 ```shell
 go  godoc  gofmt
 ```
@@ -198,7 +198,7 @@ go  godoc  gofmt
 ```shell
 pwd
 ```
-计算机的log输出：
+计算机的输出：
 ```shell
 /home/flyq/workspace/go/bin
 ```
@@ -306,7 +306,7 @@ sudo systemctl enable docker
 
 docker --version
 ```
-最后 `log` 输出:
+最后一步计算机输出:
 ```shell
 Docker version 18.09.7, build 2d0083d
 ```
@@ -335,7 +335,7 @@ sudo  usermod -aG docker $USER
 docker images
 ```
 
-发现log输出是这样：
+发现输出是这样：
 ```shell
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 ```
@@ -392,7 +392,7 @@ chmod +x bootstrap.sh
 
 如果多次执行都不行，那就[如果多次运行都无法下载好。。。](README.md#%e5%a6%82%e6%9e%9c%e5%a4%9a%e6%ac%a1%e8%bf%90%e8%a1%8c%e9%83%bd%e6%97%a0%e6%b3%95%e4%b8%8b%e8%bd%bd%e5%a5%bd)（或者往下翻就能找到）
 
-最后 `log` 输出：
+最后 输出：
 ```shell
 
 ===> List out hyperledger docker images
@@ -708,13 +708,13 @@ gopm get -g  github.com/hyperledger/fabric
 cd $GOPATH/src/github.com/hyperledger/fabric/
 make peer
 ```
-最后 `log` 输出：
+最后输出：
 ```shell
 .build/bin/peer
 CGO_CFLAGS=" " GOBIN=/home/flyq/workspaces/golang/gopath/src/github.com/hyperledger/fabric/.build/bin go install -tags "" -ldflags "-X github.com/hyperledger/fabric/common/metadata.Version=2.0.0 -X github.com/hyperledger/fabric/common/metadata.CommitSHA= -X github.com/hyperledger/fabric/common/metadata.BaseVersion=0.4.15 -X github.com/hyperledger/fabric/common/metadata.BaseDockerLabel=org.hyperledger.fabric -X github.com/hyperledger/fabric/common/metadata.DockerNamespace=hyperledger -X github.com/hyperledger/fabric/common/metadata.BaseDockerNamespace=hyperledger" github.com/hyperledger/fabric/cmd/peer
 Binary available as .build/bin/peer
 ```
-根据 `log` 得知编译好的 `peer` 二进制文件在 `./.build/bin/` 下面，把它复制到 `GOPATH/bin` 下即可：
+根据输出得知编译好的 `peer` 二进制文件在 `./.build/bin/` 下面，把它复制到 `GOPATH/bin` 下即可：
 ```shell
 cp .build/bin/peer $GOPATH/bin/
 ```
@@ -738,7 +738,7 @@ $ peer version
 cd $GOPATH/src/github.com/hyperledger/fabric/
 make orderer
 ```
-`log`:
+计算机输出:
 ```shell
 .build/bin/orderer
 CGO_CFLAGS=" " GOBIN=/home/flyq/workspaces/golang/gopath/src/github.com/hyperledger/fabric/.build/bin go install -tags "" -ldflags "-X github.com/hyperledger/fabric/common/metadata.Version=2.0.0 -X github.com/hyperledger/fabric/common/metadata.CommitSHA= -X github.com/hyperledger/fabric/common/metadata.BaseVersion=0.4.15 -X github.com/hyperledger/fabric/common/metadata.BaseDockerLabel=org.hyperledger.fabric -X github.com/hyperledger/fabric/common/metadata.DockerNamespace=hyperledger -X github.com/hyperledger/fabric/common/metadata.BaseDockerNamespace=hyperledger" github.com/hyperledger/fabric/orderer
@@ -767,9 +767,11 @@ gopm get -g github.com/hyperledger/fabric-ca
 编译 `fabric-ca-server`:
 ```shell
 cd $GOPATH/src/github.com/hyperledger/fabric-ca/
+
+
 make fabric-ca-server
 ```
-log:
+计算机输出：
 ```shell
 Building fabric-ca-server in bin directory ...
 Built bin/fabric-ca-server
@@ -804,7 +806,7 @@ $ fabric-ca-server version
 cd $GOPATH/src/github.com/hyperledger/fabric
 make configtxgen
 ```
-最后 `log` 输出是：
+最后计算机输出是：
 ```shell
 .build/bin/configtxgen
 CGO_CFLAGS=" " GOBIN=/home/flyq/workspaces/golang/gopath/src/github.com/hyperledger/fabric/.build/bin go install -tags "" -ldflags "-X github.com/hyperledger/fabric/cmd/configtxgen/metadata.CommitSHA=" github.com/hyperledger/fabric/cmd/configtxgen
@@ -1098,7 +1100,7 @@ Attempting to Query peer1.org2 ...3 secs
 |_____| |_| \_| |____/  
 
 ```
-好的，恭喜你已经成功启动网络。你可以自己用编辑器打开 `byfn.sh`，然后配合 `log`，查看启动一个网络是怎么搞的。
+好的，恭喜你已经成功启动网络。你可以自己用编辑器打开 `byfn.sh`，然后配合 `计算机`，查看启动一个网络是怎么搞的。
 
 你可以在 https://hyperledger-fabric-cn.readthedocs.io/zh/latest/build_network.html#bring-up-the-network 查看更多的启动网络的附加命令，
 或者运行 `./byfn.sh --help`
@@ -1322,7 +1324,7 @@ configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./Org1MSPanchors.tx
 configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./Org2MSPanchors.tx -channelID businesschannel -asOrg Org2MSP
 
 ```
-对应的 log 差不多，其中一个是：
+对应的计算机输出差不多，其中一个是：
 ```s
 2019-09-05 22:31:04.608 PDT [common.tools.configtxgen] main -> INFO 001 Loading configuration
 2019-09-05 22:31:04.674 PDT [common.tools.configtxgen.localconfig] Load -> INFO 002 Loaded configuration: /home/flyq/fabric-samples/first-network/configtx.yaml
