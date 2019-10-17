@@ -275,6 +275,16 @@ ls
  cp ./gopm $GOPATH/bin
 ```
 
+运行：
+```shell
+gopm --version
+```
+得到输出：
+```shell
+Gopm version 0.8.8.0307 Beta
+```
+说明安装成功。
+
 接下来你就可以在任意路径下使用 `gopm get` 来代替 `go get` 了。
 
 
