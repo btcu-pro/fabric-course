@@ -4,7 +4,8 @@
 ![作业1](image/fabric23.png)
 ![作业2](image/fabric24.png)
 
-[BTCU联盟链训练营第二课.pdf](files/BTCU联盟链训练营第二课.pdf)
+[BTCU联盟链训练营第二课.pdf](files/BTCU联盟链训练营第二课.pdf)  
+
 [BTCU联盟链训练营第二课.pptx](files/BTCU联盟链训练营第二课.pptx)
 
 截止到 10.18 晚上10点，视频还在剪辑。
