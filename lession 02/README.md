@@ -1151,7 +1151,7 @@ Taking all defaults:
 ```
 比如如果你想使用 `Kafka` 服务，就可以这样启动：
 ```shell
-./byfn.sh up -o kafka
+sudo ./byfn.sh up -o kafka
 ```
 
 查看有哪些容器：
