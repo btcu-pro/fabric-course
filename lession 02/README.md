@@ -829,27 +829,19 @@ configtxgen:
 ### 运行 `fabric-samples/` 里面的 `first-samples` 例子
 参考：https://hyperledger-fabric-cn.readthedocs.io/zh/latest/build_network.html
 
-如果是基于脚本安装的 Docker 环境，可以直接在运行脚本命令的目录找到 `fabric-samples/` 文件夹，直接进入这个文件夹即可。如果是其他途径安装的环境，直接运行：
-```shell
-gopm get -g github.com/hyperledger/fabric-samples
-
-cd $GOPATH/src/github.com/hyperledger/fabric-samples
-```
-来下载 `fabric-samples/` 文件夹。   
-
-
-不过如果仔细对比就会发现，如果是用脚本生成的，`fabric-samples` 下面多了一个 `/bin` 目录，里面有之前我们编译，安装的像 `peer` 等二进制可以执行文件:
-```shell
-ls ./fabric-samples/bin/
-configtxgen    cryptogen  fabric-ca-client  orderer
-configtxlator  discover   idemixgen         peer
-```
+有了 1、步的基础，我们按步骤执行：
 
 #### 生成必要组件
+
 ```shell
 cd  first-network/
+```
 
+```shell
 sudo ./byfn.sh generate
+```
+此时计算机的输出：
+```shell
 Generating certs and genesis block for channel 'mychannel' with CLI timeout of '10' seconds and CLI delay of '3' seconds
 Continue? [Y/n] y
 proceeding ...
@@ -910,9 +902,17 @@ Generate CCP files for Org1 and Org2
 + set +x
 ```
 
+到这里，像证书，创世区块等一些必要的组件已经生成好了。
+
+
 #### 启动网络
+
 ```shell
 sudo ./byfn.sh up
+```
+计算机的输出：
+
+```
 Starting for channel 'mychannel' with CLI timeout of '10' seconds and CLI delay of '3' seconds
 Continue? [Y/n] y
 proceeding ...
@@ -925,17 +925,24 @@ ERROR !!!! Test failed
 ```
 
 嗯，通过脚本启动网络有问题，看问题是没有安装 `docker-compose`:
-安装它(如果之前安装了 `docker-compose` 应该就不会遇到这个问题)：
+安装它(如果之前安装了 `docker-compose` 应该就不会遇到这个问题)：  
+一条一条执行下面命令：
+
 ```shell
 sudo apt update
 
+
 sudo apt upgrade
+
 
 sudo apt install docker-compose
 ```
 然后再次启动网络：
 ```shell
 sudo ./byfn.sh up
+```
+计算机的输出：
+```shell
 Starting for channel 'mychannel' with CLI timeout of '10' seconds and CLI delay of '3' seconds
 Continue? [Y/n] y
 proceeding ...
@@ -1106,6 +1113,9 @@ Attempting to Query peer1.org2 ...3 secs
 或者运行 `./byfn.sh --help`
 ```shell
  ./byfn.sh --help
+```
+计算机的输出：
+```shell
 Usage: 
   byfn.sh <mode> [-c <channel name>] [-t <timeout>] [-d <delay>] [-f <docker-compose-file>] [-s <dbtype>] [-l <language>] [-i <imagetag>] [-v]
     <mode> - one of 'up', 'down', 'restart', 'generate' or 'upgrade'
@@ -1147,6 +1157,9 @@ Taking all defaults:
 查看有哪些容器：
 ```shell
 docker ps
+```
+计算机的输出：
+```shell
 CONTAINER ID        IMAGE                                                                                                  COMMAND                  CREATED              STATUS              PORTS                      NAMES
 54a6e6e707de        dev-peer1.org2.example.com-mycc-1.0-26c2ef32838554aac4f7ad6f100aca865e87959c9a126e86d764c8d01f8346ab   "chaincode -peer.add…"   9 seconds ago        Up 8 seconds                                   dev-peer1.org2.example.com-mycc-1.0
 f6851e88d739        dev-peer0.org1.example.com-mycc-1.0-384f11f484b9302df90b453200cfb25174305fce8f53f4e94d45ee3b6cab0ce9   "chaincode -peer.add…"   23 seconds ago       Up 22 seconds                                  dev-peer0.org1.example.com-mycc-1.0
@@ -1164,6 +1177,7 @@ b43fa626ea19        hyperledger/fabric-peer:latest                              
 ```shell
 docker exec -it cli /bin/bash
 
+
 root@7c1a4dc09da7:/opt/gopath/src/github.com/hyperledger/fabric/peer# ls
 channel-artifacts  crypto  log.txt  mychannel.block  scripts
 ```
@@ -1174,7 +1188,10 @@ channel-artifacts  crypto  log.txt  mychannel.block  scripts
 #### 关闭网络
 关闭网络并清理掉对应的容器：
 ```shell
-./byfn.sh down 
+sudo ./byfn.sh down 
+```
+计算机的输出：
+```shell
 Stopping for channel 'mychannel' with CLI timeout of '10' seconds and CLI delay of '3' seconds
 Continue? [Y/n] y
 proceeding ...
@@ -1234,9 +1251,12 @@ Deleted: sha256:2f5e59ecb2031eb1c27a5c3ba284c3fc603acb4c2deb5332cf4c0230e424e5c9
 查看容器：
 ```shell
 docker ps -a
+```
+计算机的输入：
+```shell
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 ```
-发现那些节点都已经清理完毕。
+发现那些节点对应的 `container` 都已经清理完毕。
 
 > 请在网络不再使用时，务必关闭网络，以防止后期启动网络时造成的错误。
 
