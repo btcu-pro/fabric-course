@@ -2,30 +2,35 @@
 
 ## `Constents`
 - [Course 03](#course-03)
-	- [`Constents`](#constents)
-	- [任务一](#%e4%bb%bb%e5%8a%a1%e4%b8%80)
-	- [任务一实现](#%e4%bb%bb%e5%8a%a1%e4%b8%80%e5%ae%9e%e7%8e%b0)
-		- [比较抽象的逻辑架构](#%e6%af%94%e8%be%83%e6%8a%bd%e8%b1%a1%e7%9a%84%e9%80%bb%e8%be%91%e6%9e%b6%e6%9e%84)
-			- [新特性](#%e6%96%b0%e7%89%b9%e6%80%a7)
-			- [Hyperledger Fabric超级账本整体逻辑架构如下图所示：](#hyperledger-fabric%e8%b6%85%e7%ba%a7%e8%b4%a6%e6%9c%ac%e6%95%b4%e4%bd%93%e9%80%bb%e8%be%91%e6%9e%b6%e6%9e%84%e5%a6%82%e4%b8%8b%e5%9b%be%e6%89%80%e7%a4%ba)
-			- [Fabric四大核心组件：](#fabric%e5%9b%9b%e5%a4%a7%e6%a0%b8%e5%bf%83%e7%bb%84%e4%bb%b6)
-		- [实际中的运行时架构](#%e5%ae%9e%e9%99%85%e4%b8%ad%e7%9a%84%e8%bf%90%e8%a1%8c%e6%97%b6%e6%9e%b6%e6%9e%84)
-			- [实际运行时架构如下图所示：](#%e5%ae%9e%e9%99%85%e8%bf%90%e8%a1%8c%e6%97%b6%e6%9e%b6%e6%9e%84%e5%a6%82%e4%b8%8b%e5%9b%be%e6%89%80%e7%a4%ba)
-	- [任务二](#%e4%bb%bb%e5%8a%a1%e4%ba%8c)
-	- [任务实现二](#%e4%bb%bb%e5%8a%a1%e5%ae%9e%e7%8e%b0%e4%ba%8c)
-		- [core.yaml详解](#coreyaml%e8%af%a6%e8%a7%a3)
-			- [日志部分：](#%e6%97%a5%e5%bf%97%e9%83%a8%e5%88%86)
-			- [peer部分：](#peer%e9%83%a8%e5%88%86)
-			- [vm部分：](#vm%e9%83%a8%e5%88%86)
-			- [chaincode部分：](#chaincode%e9%83%a8%e5%88%86)
-			- [ledger部分：](#ledger%e9%83%a8%e5%88%86)
-			- [metrics部分：](#metrics%e9%83%a8%e5%88%86)
-		- [orderer.yaml详解](#ordereryaml%e8%af%a6%e8%a7%a3)
-			- [General部分：](#general%e9%83%a8%e5%88%86)
-			- [FileLedger部分：](#fileledger%e9%83%a8%e5%88%86)
-			- [RAMLedger部分：](#ramledger%e9%83%a8%e5%88%86)
-			- [Kafka部分：](#kafka%e9%83%a8%e5%88%86)
-			- [Debug部分：](#debug%e9%83%a8%e5%88%86)
+  - [`Constents`](#constents)
+  - [任务一](#%e4%bb%bb%e5%8a%a1%e4%b8%80)
+  - [任务一实现](#%e4%bb%bb%e5%8a%a1%e4%b8%80%e5%ae%9e%e7%8e%b0)
+    - [比较抽象的逻辑架构](#%e6%af%94%e8%be%83%e6%8a%bd%e8%b1%a1%e7%9a%84%e9%80%bb%e8%be%91%e6%9e%b6%e6%9e%84)
+      - [新特性](#%e6%96%b0%e7%89%b9%e6%80%a7)
+      - [Hyperledger Fabric超级账本整体逻辑架构如下图所示：](#hyperledger-fabric%e8%b6%85%e7%ba%a7%e8%b4%a6%e6%9c%ac%e6%95%b4%e4%bd%93%e9%80%bb%e8%be%91%e6%9e%b6%e6%9e%84%e5%a6%82%e4%b8%8b%e5%9b%be%e6%89%80%e7%a4%ba)
+      - [Fabric四大核心组件：](#fabric%e5%9b%9b%e5%a4%a7%e6%a0%b8%e5%bf%83%e7%bb%84%e4%bb%b6)
+    - [实际中的运行时架构](#%e5%ae%9e%e9%99%85%e4%b8%ad%e7%9a%84%e8%bf%90%e8%a1%8c%e6%97%b6%e6%9e%b6%e6%9e%84)
+      - [实际运行时架构如下图所示：](#%e5%ae%9e%e9%99%85%e8%bf%90%e8%a1%8c%e6%97%b6%e6%9e%b6%e6%9e%84%e5%a6%82%e4%b8%8b%e5%9b%be%e6%89%80%e7%a4%ba)
+  - [任务二](#%e4%bb%bb%e5%8a%a1%e4%ba%8c)
+  - [任务实现二](#%e4%bb%bb%e5%8a%a1%e5%ae%9e%e7%8e%b0%e4%ba%8c)
+    - [core.yaml详解](#coreyaml%e8%af%a6%e8%a7%a3)
+      - [日志部分：](#%e6%97%a5%e5%bf%97%e9%83%a8%e5%88%86)
+      - [peer部分：](#peer%e9%83%a8%e5%88%86)
+      - [vm部分：](#vm%e9%83%a8%e5%88%86)
+      - [chaincode部分：](#chaincode%e9%83%a8%e5%88%86)
+      - [ledger部分：](#ledger%e9%83%a8%e5%88%86)
+      - [metrics部分：](#metrics%e9%83%a8%e5%88%86)
+    - [orderer.yaml详解](#ordereryaml%e8%af%a6%e8%a7%a3)
+      - [General部分：](#general%e9%83%a8%e5%88%86)
+      - [FileLedger部分：](#fileledger%e9%83%a8%e5%88%86)
+      - [RAMLedger部分：](#ramledger%e9%83%a8%e5%88%86)
+      - [Kafka部分：](#kafka%e9%83%a8%e5%88%86)
+      - [Debug部分：](#debug%e9%83%a8%e5%88%86)
+  - [任务三](#%e4%bb%bb%e5%8a%a1%e4%b8%89)
+  - [任务三实现](#%e4%bb%bb%e5%8a%a1%e4%b8%89%e5%ae%9e%e7%8e%b0)
+    - [完整的交易流程解释如下：](#%e5%ae%8c%e6%95%b4%e7%9a%84%e4%ba%a4%e6%98%93%e6%b5%81%e7%a8%8b%e8%a7%a3%e9%87%8a%e5%a6%82%e4%b8%8b)
+      - [1. 应用程序使用相应的 SDK（Node，Java，Python）提供的 API 构建交易提案并提交给相应的背书节点，交易提案中包含：](#1-%e5%ba%94%e7%94%a8%e7%a8%8b%e5%ba%8f%e4%bd%bf%e7%94%a8%e7%9b%b8%e5%ba%94%e7%9a%84-sdknodejavapython%e6%8f%90%e4%be%9b%e7%9a%84-api-%e6%9e%84%e5%bb%ba%e4%ba%a4%e6%98%93%e6%8f%90%e6%a1%88%e5%b9%b6%e6%8f%90%e4%ba%a4%e7%bb%99%e7%9b%b8%e5%ba%94%e7%9a%84%e8%83%8c%e4%b9%a6%e8%8a%82%e7%82%b9%e4%ba%a4%e6%98%93%e6%8f%90%e6%a1%88%e4%b8%ad%e5%8c%85%e5%90%ab)
+      - [2. 背书节点对接收到的交易提案请求进行验证：](#2-%e8%83%8c%e4%b9%a6%e8%8a%82%e7%82%b9%e5%af%b9%e6%8e%a5%e6%94%b6%e5%88%b0%e7%9a%84%e4%ba%a4%e6%98%93%e6%8f%90%e6%a1%88%e8%af%b7%e6%b1%82%e8%bf%9b%e8%a1%8c%e9%aa%8c%e8%af%81)
 	
 
 ## 任务一
@@ -564,3 +569,44 @@ Debug:
     BroadcastTraceDir:    # 对广播服务的每个请求写入此目录中的文件
 	DeliverTraceDir:    # 对交付服务的每个请求写入此目录中的文件
 ```
+
+## 任务三
+1. Hyperledger Fabric 网络中的节点分类
+2. 熟知 Hyperledger Fabric 交易流程
+
+## 任务三实现
+
+> 现在我们深入 Hyperledger Fabric 内部，详细了解 Hyperledger Fabric 的交易实现流程，理解相应的核心内容。
+
+区块链技术最重要特征之一就是能够保证实现安全的交易。Hyperledger Fabric 与公有链的交易实现又有很大的区别。如：权限、认证、数据隔离等等。
+
+Hyperledger Fabric 典型的交易流程如下图所示：
+![guocheng](images/0003.png)
+
+### 完整的交易流程解释如下：
+
+#### 1. 应用程序使用相应的 SDK（Node，Java，Python）提供的 API 构建交易提案并提交给相应的背书节点，交易提案中包含：
+   * channelID：通道信息
+   * chaincodeID：要调用的链码信息
+   * timestamp：时间戳
+   * sign：客户端的签名
+   * txPayload：提交的事务本身包含的内容，包含两项：
+     * operation：要调用的链码的函数及相应的参数
+     * metadata：调用的相关属性
+​
+![test](images/0004.png)
+
+交易提案（Proposal）消息结构如下：
+
+![test2](images/0005.png)
+
+#### 2. 背书节点对接收到的交易提案请求进行验证：
+
+   * 交易提案格式是否正确
+交易在之前并未提交过（重复性攻击保护）
+提交交易提案的客户端签名是否有效（使用MSP）
+提交交易提案的请求者是否在该通道中有相应的执行权限
+验证通过后调用链码进行模拟执行， 产生包括响应值、读集和写集的事务结果。对结果进行背书并响应给客户端。
+
+注意，此时的调用链码是模拟执行，不会对账本中的数据进行真正意义上的更改。
+
