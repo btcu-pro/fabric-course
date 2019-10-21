@@ -1,7 +1,24 @@
 # Course 03
 
+## 作业：
+![homework](images/0012.PNG)
+
+
+## ppt:
+[BTCU联盟链训练营第三课.pptx](files/BTCU联盟链训练营第三课.pptx)
+
+## 其他参考资料
+[王业伟的第七次报告.pptx](files/王业伟的第七次报告.pptx)
+
+[docker从入门到实践](files/docker_practice.pdf)
+
+[hyperledger fabric.pdf](files/hyperledger&#32;fabric.pdf)
+
 ## `Contents`
 - [Course 03](#course-03)
+  - [作业：](#%e4%bd%9c%e4%b8%9a)
+  - [ppt:](#ppt)
+  - [其他参考资料](#%e5%85%b6%e4%bb%96%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99)
   - [`Contents`](#contents)
   - [任务一](#%e4%bb%bb%e5%8a%a1%e4%b8%80)
   - [任务一实现](#%e4%bb%bb%e5%8a%a1%e4%b8%80%e5%ae%9e%e7%8e%b0)
