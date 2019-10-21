@@ -10,10 +10,10 @@
 
 截止到 10.18 晚上10点，视频还在剪辑。
 
-## `Constents`
+## `Contents`
 - [`BTCU_Fabric`](#btcufabric)
 	- [第二课作业](#%e7%ac%ac%e4%ba%8c%e8%af%be%e4%bd%9c%e4%b8%9a)
-	- [`Constents`](#constents)
+	- [`Contents`](#contents)
 	- [0. `Fabric` 简介](#0-fabric-%e7%ae%80%e4%bb%8b)
 		- [超级账本背景](#%e8%b6%85%e7%ba%a7%e8%b4%a6%e6%9c%ac%e8%83%8c%e6%99%af)
 		- [`Fabric` 背景](#fabric-%e8%83%8c%e6%99%af)
