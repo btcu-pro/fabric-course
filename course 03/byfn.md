@@ -26,6 +26,7 @@
     - [5.2 Instantiate ChainCode 实例化链上代码](#52-instantiate-chaincode-%e5%ae%9e%e4%be%8b%e5%8c%96%e9%93%be%e4%b8%8a%e4%bb%a3%e7%a0%81)
     - [5.3在一个Peer上查询并发起交易](#53%e5%9c%a8%e4%b8%80%e4%b8%aapeer%e4%b8%8a%e6%9f%a5%e8%af%a2%e5%b9%b6%e5%8f%91%e8%b5%b7%e4%ba%a4%e6%98%93)
     - [5.4在另一个节点上查询交易](#54%e5%9c%a8%e5%8f%a6%e4%b8%80%e4%b8%aa%e8%8a%82%e7%82%b9%e4%b8%8a%e6%9f%a5%e8%af%a2%e4%ba%a4%e6%98%93)
+  - [清理容器](#%e6%b8%85%e7%90%86%e5%ae%b9%e5%99%a8)
 - [总结](#%e6%80%bb%e7%bb%93)
 
 
@@ -749,7 +750,7 @@ peer chaincode query -C mychannel -n mycc -c '{"Args":["query","a"]}'
 peer chaincode query -C mychannel -n mycc -c '{"Args":["query","b"]}'
 ```
 返回结果：250
-
+![result](images/0014.png)
 说明我们成功执行了一笔交易，将 50 单位从 a 转到 b。
 
 这是因为peer0.org2也需要生成Docker镜像，创建对应的容器，才能通过容器返回结果。我们回到Ubuntu终端，执行docker ps，可以看到又多了一个容器：
@@ -766,6 +767,21 @@ b6a6a441edb8        dev-peer0.org2.example.com-mycc-1.0-15b571b3ce849066b7ec7449
 ```
 ![docker13](images/0013.png)
 可以看出红框里面的docker容器是新增的。
+
+## 清理容器
+分条执行：
+```shell
+DOCKER_IMAGE_IDS=$(docker images | awk '($1 ~ /dev-peer.*/) {print $3}')
+
+
+# 关闭删除容器
+docker stop $(docker ps -q) & docker rm $(docker ps -aq)
+# Cleanup images (清理新生成的链码镜像)
+docker rmi -f $DOCKER_IMAGE_IDS
+# remove orderer block and other channel configuration transactions and certs
+sudo rm -rf channel-artifacts/*.block channel-artifacts/*.tx crypto-config ./org3-artifacts/crypto-config/ channel-artifacts/org3.json
+
+```
 
 # 总结
 通过以上的分解，希望大家对Fabric环境的创建有了更深入的理解。我这里的示例仍然是官方的示例，并没有什么太新的东西。只要把这每一步搞清楚，那么接下来我们在生产环境创建更多的Org，创建大量的Channel，执行各种ChainCode都是如出一辙。
