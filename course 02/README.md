@@ -8,7 +8,12 @@
 
 [BTCU联盟链训练营第二课.pptx](files/BTCU联盟链训练营第二课.pptx)
 
-截止到 10.18 晚上10点，视频还在剪辑。
+第二节课视频地址：
+
+https://www.bilibili.com/video/av71774723
+
+第二节课作业答案：
+[第二节课作业答案.docx](files/第二节课作业答案.docx)
 
 ## `Contents`
 - [`BTCU_Fabric`](#btcufabric)

@@ -7,6 +7,11 @@
 ## ppt:
 [BTCU联盟链训练营第三课.pptx](files/BTCU联盟链训练营第三课.pptx)
 
+## 第三节课视频地址
+
+https://www.bilibili.com/video/av72042482
+
+
 ## 其他参考资料
 [王业伟的第七次报告.pptx](files/王业伟的第七次报告.pptx)
 
@@ -18,6 +23,7 @@
 - [Course 03](#course-03)
   - [作业：](#%e4%bd%9c%e4%b8%9a)
   - [ppt:](#ppt)
+  - [第三节课视频地址](#%e7%ac%ac%e4%b8%89%e8%8a%82%e8%af%be%e8%a7%86%e9%a2%91%e5%9c%b0%e5%9d%80)
   - [其他参考资料](#%e5%85%b6%e4%bb%96%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99)
   - [`Contents`](#contents)
   - [任务一](#%e4%bb%bb%e5%8a%a1%e4%b8%80)
