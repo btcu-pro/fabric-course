@@ -4,6 +4,8 @@
 - [Build Your First Network](#build-your-first-network)
   - [`Contents`](#contents)
   - [1. 1.生成公私钥和证书](#1-1%e7%94%9f%e6%88%90%e5%85%ac%e7%a7%81%e9%92%a5%e5%92%8c%e8%af%81%e4%b9%a6)
+    - [1.1 简介 cryptogen](#11-%e7%ae%80%e4%bb%8b-cryptogen)
+    - [1.2 配置crypto-config.yaml](#12-%e9%85%8d%e7%bd%aecrypto-configyaml)
 
 
 
@@ -11,19 +13,43 @@
 ## 1. 1.生成公私钥和证书
 Fabric中有两种类型的公私钥和证书，一种是给节点之前通讯安全而准备的TLS证书，另一种是用户登录和权限控制的用户证书。这些证书本来应该是由CA来颁发，但是我们这里是测试环境，并没有启用CA节点，所以Fabric帮我们提供了一个工具：cryptogen。
 
-1.1编译生成cryptogen
-我们既然获得了Fabric的源代码，那么就可以轻易的使用make命令编译需要的程序。Fabric官方提供了专门编译cryptogen的入口，我们只需要运行以下命令即可：
+### 1.1 简介 cryptogen
+我们在第二节的搭建环境变量，下载了一组程序，并且放在了 fabric-samples/bin/ 目录下。我们可以直接用这个里面的 cryptogen。
 
-cd ~/go/src/github.com/hyperledger/fabric
+当然，我们也可以通过获取 Fabric 的源代码，然后使用make命令编译需要的程序。Fabric官方提供了专门编译cryptogen的入口，我们只需要运行以下命令即可：
+```shell
+gopm get github.com/hyperledger/fabric
+
+cd  $GOPATH/src/github.com/hyperledger/fabric
+
+git checkout v1.2.0
+
 make cryptogen
+```
 运行后系统返回结果：
-
+```shell
 build/bin/cryptogen 
 CGO_CFLAGS=" " GOBIN=/home/studyzy/go/src/github.com/hyperledger/fabric/build/bin go install -tags "" -ldflags "-X github.com/hyperledger/fabric/common/tools/cryptogen/metadata.Version=1.0.0" github.com/hyperledger/fabric/common/tools/cryptogen 
 Binary available as build/bin/cryptogen
+```
 也就是说我们在build/bin文件夹下可以看到编译出来的cryptogen程序。
 
-1.2配置crypto-config.yaml
+
+然后我们执行
+```shell
+./bin/cryptogen version
+```
+终端返回结果：
+```shell
+cryptogen:
+ Version: 1.2.0
+ Commit SHA: cae2ad4
+ Go version: go1.10
+ OS/Arch: linux/amd64
+```
+
+
+### 1.2 配置crypto-config.yaml
 examples/e2e_cli/crypto-config.yaml已经提供了一个Orderer Org和两个Peer Org的配置，该模板中也对字段进行了注释。我们可以把Org2拿来分析一下：
 
 - Name: Org2 
