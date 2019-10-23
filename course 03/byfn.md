@@ -39,24 +39,7 @@ Fabric中有两种类型的公私钥和证书，一种是给节点之前通讯�
 ### 1.1 简介 cryptogen
 我们在第二节的搭建环境变量，下载了一组程序，并且放在了 fabric-samples/bin/ 目录下。我们可以直接用这个里面的 cryptogen。
 
-当然，我们也可以通过获取 Fabric 的源代码，然后使用make命令编译需要的程序。Fabric官方提供了专门编译cryptogen的入口，我们只需要运行以下命令即可：
-```shell
-gopm get github.com/hyperledger/fabric
-
-cd  $GOPATH/src/github.com/hyperledger/fabric
-
-git checkout v1.2.0
-
-make cryptogen
-```
-运行后系统返回结果：
-```shell
-build/bin/cryptogen 
-CGO_CFLAGS=" " GOBIN=/home/studyzy/go/src/github.com/hyperledger/fabric/build/bin go install -tags "" -ldflags "-X github.com/hyperledger/fabric/common/tools/cryptogen/metadata.Version=1.0.0" github.com/hyperledger/fabric/common/tools/cryptogen 
-Binary available as build/bin/cryptogen
-```
-也就是说我们在build/bin文件夹下可以看到编译出来的cryptogen程序。
-
+开启终端进入到 `./fabric-samples/first-network$` 目录下
 
 然后我们执行
 ```shell
@@ -95,7 +78,8 @@ Name和Domain就是关于这个组织的名字和域名，这主要是用于生�
 
 ### 1.3 生成公私钥和证书
 我们配置好crypto-config.yaml文件后(其实默认的就是配置好了，我们只是查看了一下，知道有这么回事，不需要改)，就可以用cryptogen去读取该文件，并生成对应的公私钥和证书了：
-我们先进入 fabric-samples/first-network/ 文件夹，然后执行操作：
+
+我们先进入 `fabric-samples/first-network/` 文件夹，然后执行操作：
 ```shell
 cd fabric-samples/first-network
 
@@ -115,24 +99,12 @@ tree crypto-config
 ```
 ## 2 生成创世区块和Channel配置区块
 ### 2.1 介绍 configtxgen
-与前面1.1说到的类似，我们 fabric-samples/bin 文件夹下面已经有了 configtxgen 程序了。所以下面的步骤不需要，知道有这么回事就行：
+与前面1.1说到的类似，我们 fabric-samples/bin 文件夹下面已经有了 configtxgen 程序了。所以直接用它就行
 
-当然我们也可以通过make命令生成configtxgen程序：
-```shell
-cd $GOPATH/src/github.com/hyperledger/fabric
+我们先进入 `fabric-samples/first-network/` 文件夹，然后执行操作：
 
-make configtxgen
-```
-运行后的结果为：
 ```shell
-build/bin/configtxgen 
-CGO_CFLAGS=" " GOBIN=/home/studyzy/go/src/github.com/hyperledger/fabric/build/bin go install -tags "nopkcs11" -ldflags "-X github.com/hyperledger/fabric/common/configtx/tool/configtxgen/metadata.Version=1.0.0" github.com/hyperledger/fabric/common/configtx/tool/configtxgen 
-Binary available as build/bin/configtxgen
-```
-
-最后执行：
-```shell
-./configtxgen --version
+../bin/configtxgen --version
 ```
 终端返回：
 ```shell
