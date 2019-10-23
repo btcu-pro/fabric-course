@@ -200,7 +200,7 @@ sudo ../bin/configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./chann
 ```
 **生成 Org2 的：**
 ```shell
-../bin/configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org2MSPanchors.tx -channelID mychannel -asOrg Org2MSP
+sudo ../bin/configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org2MSPanchors.tx -channelID mychannel -asOrg Org2MSP
 ```
 终端返回：
 ```shell
@@ -211,12 +211,13 @@ sudo ../bin/configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./chann
 
 
 最终，我们在channel-artifacts文件夹中，应该是能够看到4个文件。
-
+```shell
 channel-artifacts/
 ├── channel.tx
 ├── genesis.block
 ├── Org1MSPanchors.tx
 └── Org2MSPanchors.tx
+```
 
 ## 3 配置Fabric环境的docker-compose文件
 前面对节点和用户的公私钥以及证书，还有创世区块都生成完毕，接下来我们就可以配置docker-compose的yaml文件，启动Fabric的Docker环境了。
@@ -252,9 +253,9 @@ orderer.example.com:
 ```
 
 这里主要关心的是，ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block，而这个创世区块就是我们之前创建的创世区块，这里就是Host(这里指我们的Ubuntu系统)到Docker(这里指等下运行的 Docker Orderer节点)的映射：
-
+```yaml
   - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-
+```
 另外的配置主要是TL，Log等，最后暴露出服务端口7050。
 
 ### 3.2 配置Peer
