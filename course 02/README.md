@@ -222,7 +222,7 @@ pwd
 
 用编辑器打开 ~/.bashrc 文件，比如我是用 gedit:
 ```shell
-$ gedit ~/.bashrc
+gedit ~/.bashrc
 ```
 在最后一行添加：
 ```shell
@@ -239,7 +239,7 @@ source ~/.bashrc
 
 运行`go version`出现以下结果即表示安装成功：
 ```shell
-$ go version 
+go version 
 ```
 
 ```shell
@@ -645,7 +645,7 @@ tar -xvf go1.12.9.linux-amd64.tar.gz
 ```
 得到 `./go/` 文件夹：
 ```shell
-$ ls go/
+ls go/
 api      bin              CONTRIBUTORS  favicon.ico  LICENSE  PATENTS  README.md   src   VERSION
 AUTHORS  CONTRIBUTING.md  doc           lib          misc     pkg      robots.txt  test
 ```
@@ -653,7 +653,7 @@ AUTHORS  CONTRIBUTING.md  doc           lib          misc     pkg      robots.tx
 
 用编辑器打开 ~/.bashrc 文件，比如我是用 Emacs：
 ```shell
-$ emacs ~/.bashrc
+emacs ~/.bashrc
 ```
 在最后一行添加：
 ```shell
@@ -670,7 +670,7 @@ source ~/.bashrc
 
 运行`go version`出现以下结果即表示安装成功：
 ```shell
-$ go version 
+go version 
 go version go1.12.9 linux/amd64
 ```
 
@@ -736,7 +736,10 @@ cp .build/bin/peer $GOPATH/bin/
 ```
 然后在任意目录下运行：
 ```shell
-$ peer version
+peer version
+```
+终端返回：
+```shell
   peer:
   Version: 2.0.0
   Commit SHA: 
@@ -766,7 +769,10 @@ cp .build/bin/orderer $GOPATH/bin
 ```
 验证是否安装成功：
 ```shell
-$ orderer version
+orderer version
+```
+终端返回：
+```shell
   orderer:
   Version: 2.0.0
   Commit SHA: 
@@ -798,7 +804,11 @@ cp ./bin/fabric-ca-server $GOPATH/bin
 ```
 验证是否安装成功：
 ```shell
-$ fabric-ca-server version
+ fabric-ca-server version
+
+```
+
+```shell
   fabric-ca-server:
   Version: 2.0.0-snapshot-
   Go version: go1.12.9
