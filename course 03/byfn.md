@@ -227,29 +227,33 @@ Orderer的配置是在 ./base/docker-compose-base.yaml里面，我们看看其�
 PS：这次我们看看就行，不需要动它们。
 
 ```yaml
-orderer.example.com: 
-  container_name: orderer.example.com 
-  image: hyperledger/fabric-orderer 
-  environment: 
-    - ORDERER_GENERAL_LOGLEVEL=debug 
-    - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0 
-    - ORDERER_GENERAL_GENESISMETHOD=file 
-    - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block 
-    - ORDERER_GENERAL_LOCALMSPID=OrdererMSP 
-     - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp 
-     # enabled TLS 
-    - ORDERER_GENERAL_TLS_ENABLED=true 
-    - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key 
-    - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt 
-    - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt] 
-  working_dir: /opt/gopath/src/github.com/hyperledger/fabric 
-  command: orderer 
-  volumes: 
-  - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block 
-  - ../crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/var/hyperledger/orderer/msp 
-  - ../crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/:/var/hyperledger/orderer/tls 
-  ports: 
-    - 7050:7050
+
+services:
+
+  orderer.example.com:
+    container_name: orderer.example.com
+    image: hyperledger/fabric-orderer:$IMAGE_TAG
+    environment:
+      - ORDERER_GENERAL_LOGLEVEL=INFO
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      # enabled TLS
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: orderer
+    volumes:
+    - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+    - ../crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/var/hyperledger/orderer/msp
+    - ../crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/:/var/hyperledger/orderer/tls
+    - orderer.example.com:/var/hyperledger/production/orderer
+    ports:
+      - 7050:7050
 ```
 
 这里主要关心的是，ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block，而这个创世区块就是我们之前创建的创世区块，这里就是Host(这里指我们的Ubuntu系统)到Docker(这里指等下运行的 Docker Orderer节点)的映射：
@@ -263,45 +267,46 @@ Peer的配置是在 ./base/docker-compose-base.yaml 和 peer-base.yaml里面，�
 同样看看就行，不需要动它。
 
 ```yaml
-peer-base: 
-  image: hyperledger/fabric-peer 
-  environment: 
-    - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock 
-    # the following setting starts chaincode containers on the same 
-    # bridge network as the peers 
-    # https://docs.docker.com/compose/networking/ 
-    - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=e2ecli_default 
-    #- CORE_LOGGING_LEVEL=ERROR 
-    - CORE_LOGGING_LEVEL=DEBUG 
-    - CORE_PEER_TLS_ENABLED=true 
-    - CORE_PEER_GOSSIP_USELEADERELECTION=true 
-    - CORE_PEER_GOSSIP_ORGLEADER=false 
-    - CORE_PEER_PROFILE_ENABLED=true 
-    - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt 
-    - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key 
-    - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt 
-  working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer 
-  command: peer node start
+services:
+  peer-base:
+    image: hyperledger/fabric-peer:$IMAGE_TAG
+    environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      # the following setting starts chaincode containers on the same
+      # bridge network as the peers
+      # https://docs.docker.com/compose/networking/
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_byfn
+      - CORE_LOGGING_LEVEL=INFO
+      #- CORE_LOGGING_LEVEL=DEBUG
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
 
-peer0.org1.example.com: 
-  container_name: peer0.org1.example.com 
-  extends: 
-    file: peer-base.yaml 
-    service: peer-base 
-  environment: 
-    - CORE_PEER_ID=peer0.org1.example.com 
-    - CORE_PEER_ADDRESS=peer0.org1.example.com:7051 
-    - CORE_PEER_CHAINCODELISTENADDRESS=peer0.org1.example.com:7052 
-    - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.example.com:7051 
-    - CORE_PEER_LOCALMSPID=Org1MSP 
-  volumes: 
-      - /var/run/:/host/var/run/ 
-      - ../crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp:/etc/hyperledger/fabric/msp 
-      - ../crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls:/etc/hyperledger/fabric/tls 
-  ports: 
-    - 7051:7051 
-     - 7052:7052 
-    - 7053:7053
+  peer0.org1.example.com:
+      container_name: peer0.org1.example.com
+      extends:
+        file: peer-base.yaml
+        service: peer-base
+      environment:
+        - CORE_PEER_ID=peer0.org1.example.com
+        - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+        - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org1.example.com:7051
+        - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.example.com:7051
+        - CORE_PEER_LOCALMSPID=Org1MSP
+      volumes:
+          - /var/run/:/host/var/run/
+          - ../crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp:/etc/hyperledger/fabric/msp
+          - ../crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls:/etc/hyperledger/fabric/tls
+          - peer0.org1.example.com:/var/hyperledger/production
+      ports:
+        - 7051:7051
+        - 7053:7053
 ```
 
 在Peer的配置中，主要是给Peer分配好各种服务的地址，以及TLS和MSP信息。
@@ -310,36 +315,40 @@ peer0.org1.example.com:
 CLI在整个Fabric网络中扮演客户端的角色，我们在开发测试的时候可以用CLI来代替SDK，执行各种SDK能执行的操作。(第三节课我们讲了客户端 Client，可以看作使用者)CLI会和Peer相连，把指令发送给对应的Peer执行。CLI的配置在fabric-samples/first-network/docker-compose-cli.yaml中，我们看看其中的内容：
 
 ```yaml
-cli: 
-  container_name: cli 
-  image: hyperledger/fabric-tools 
-  tty: true 
-  environment: 
-    - GOPATH=/opt/gopath 
-    - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock 
-    - CORE_LOGGING_LEVEL=DEBUG 
-    - CORE_PEER_ID=cli 
-    - CORE_PEER_ADDRESS=peer0.org1.example.com:7051 
-    - CORE_PEER_LOCALMSPID=Org1MSP 
-    - CORE_PEER_TLS_ENABLED=true 
-    - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.crt 
-    - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.key 
-    - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt 
-    - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp 
-  working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer 
-  command: /bin/bash
-  volumes: 
-      - /var/run/:/host/var/run/ 
-      - ../chaincode/go/:/opt/gopath/src/github.com/hyperledger/fabric/examples/chaincode/go 
-      - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ 
-       - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/ 
-      - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts 
-  depends_on: 
-    - orderer.example.com 
-    - peer0.org1.example.com 
-    - peer1.org1.example.com 
-    - peer0.org2.example.com 
-    - peer1.org2.example.com 
+cli:
+    container_name: cli
+    image: hyperledger/fabric-tools:$IMAGE_TAG
+    tty: true
+    stdin_open: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      #- CORE_LOGGING_LEVEL=DEBUG
+      - CORE_LOGGING_LEVEL=INFO
+      - CORE_PEER_ID=cli
+      - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+      - CORE_PEER_LOCALMSPID=Org1MSP
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./../chaincode/:/opt/gopath/src/github.com/chaincode
+        - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+        - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+        - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+    depends_on:
+      - orderer.example.com
+      - peer0.org1.example.com
+      - peer1.org1.example.com
+      - peer0.org2.example.com
+      - peer1.org2.example.com
+    networks:
+      - byfn
 ```
 从这里我们可以看到，CLI启动的时候默认连接的是peer0.org1.example.com，并且启用了TLS。默认是以Admin@org1.example.com这个身份连接到Peer的。CLI启动的时候，没有命令执行，因为 ` command: /bin/bash` 没有执行命令。`./scripts/script.sh `这个脚本也就是 fabric-samples/first-network/scripts/script.sh 这个脚本，这个脚本完成了Fabric环境的初始化和ChainCode的安装及运行，也就是接下来要讲的步骤4和5.在文件映射配置上，我们注意到`./../chaincode/:/opt/gopath/src/github.com/chaincode`，也就是说我们要安装的ChainCode都是在fabric-samples/chaincode目录下，以后我们要开发自己的ChainCode，只需要把我们的代码复制到该目录即可。
 
@@ -751,17 +760,10 @@ b6a6a441edb8        dev-peer0.org2.example.com-mycc-1.0-15b571b3ce849066b7ec7449
 可以看出红框里面的docker容器是新增的。
 
 ## 清理容器
-分条执行：
+执行：
+
 ```shell
-DOCKER_IMAGE_IDS=$(docker images | awk '($1 ~ /dev-peer.*/) {print $3}')
-
-
-# 关闭删除容器
-docker stop $(docker ps -q) & docker rm $(docker ps -aq)
-# Cleanup images (清理新生成的链码镜像)
-docker rmi -f $DOCKER_IMAGE_IDS
-# remove orderer block and other channel configuration transactions and certs
-sudo rm -rf channel-artifacts/*.block channel-artifacts/*.tx crypto-config ./org3-artifacts/crypto-config/ channel-artifacts/org3.json
+sudo ./byfn.sh down
 
 ```
 
