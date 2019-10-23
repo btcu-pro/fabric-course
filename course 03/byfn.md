@@ -72,20 +72,22 @@ cryptogen:
 
 
 ### 1.2 配置crypto-config.yaml
-fabric-samples/first-network/crypto-config.yaml 已经提供了一个Orderer Org和两个Peer Org的配置，该模板中也对字段进行了注释。我们可以把Org2拿来分析一下：(用文本编辑器打开)
-
+fabric-samples/first-network/crypto-config.yaml 已经提供了一个Orderer Org和两个Peer Org的配置，该模板中也对字段进行了注释。我们可以把Org2拿来分析一下：(用文本编辑器打开，查看即可，不需要改)
+```yaml
 - Name: Org2 
   Domain: org2.example.com 
   Template: 
     Count: 2 
   Users: 
     Count: 1
+```
+
 Name和Domain就是关于这个组织的名字和域名，这主要是用于生成证书的时候，证书内会包含该信息。而Template Count=2是说我们要生成2套公私钥和证书，一套是peer0.org2的，还有一套是peer1.org2的。最后Users. Count=1是说每个Template下面会有几个普通User（注意，Admin是Admin，不包含在这个计数中），这里配置了1，也就是说我们只需要一个普通用户User1@org2.example.com 我们可以根据实际需要调整这个配置文件，增删Org Users等。
 
 这里，我们无需修改它。
 
 ### 1.3 生成公私钥和证书
-我们配置好crypto-config.yaml文件后，就可以用cryptogen去读取该文件，并生成对应的公私钥和证书了：
+我们配置好crypto-config.yaml文件后(其实默认的就是配置好了，我们只是查看了一下，知道有这么回事，不需要改)，就可以用cryptogen去读取该文件，并生成对应的公私钥和证书了：
 我们先进入 fabric-samples/first-network/ 文件夹，然后执行操作：
 ```shell
 cd fabric-samples/first-network
@@ -106,7 +108,7 @@ tree crypto-config
 ```
 ## 2 生成创世区块和Channel配置区块
 ### 2.1 介绍 configtxgen
-与前面1.1说到的类似，我们 fabric-samples/bin 文件夹下面已经有了 configtxgen 程序了。所有下面的步骤不需要，看看就行：
+与前面1.1说到的类似，我们 fabric-samples/bin 文件夹下面已经有了 configtxgen 程序了。所以下面的步骤不需要，知道有这么回事就行：
 
 当然我们也可以通过make命令生成configtxgen程序：
 ```shell
