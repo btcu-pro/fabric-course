@@ -6,6 +6,7 @@
   - [1 生成公私钥和证书](#1-%e7%94%9f%e6%88%90%e5%85%ac%e7%a7%81%e9%92%a5%e5%92%8c%e8%af%81%e4%b9%a6)
     - [1.1 简介 cryptogen](#11-%e7%ae%80%e4%bb%8b-cryptogen)
     - [1.2 配置crypto-config.yaml](#12-%e9%85%8d%e7%bd%aecrypto-configyaml)
+- [强调](#%e5%bc%ba%e8%b0%83)
     - [1.3 生成公私钥和证书](#13-%e7%94%9f%e6%88%90%e5%85%ac%e7%a7%81%e9%92%a5%e5%92%8c%e8%af%81%e4%b9%a6)
   - [2 生成创世区块和Channel配置区块](#2-%e7%94%9f%e6%88%90%e5%88%9b%e4%b8%96%e5%8c%ba%e5%9d%97%e5%92%8cchannel%e9%85%8d%e7%bd%ae%e5%8c%ba%e5%9d%97)
     - [2.1 介绍 configtxgen](#21-%e4%bb%8b%e7%bb%8d-configtxgen)
@@ -73,6 +74,12 @@ cryptogen:
 
 ### 1.2 配置crypto-config.yaml
 fabric-samples/first-network/crypto-config.yaml 已经提供了一个Orderer Org和两个Peer Org的配置，该模板中也对字段进行了注释。我们可以把Org2拿来分析一下：(用文本编辑器打开，查看即可，不需要改)
+
+# 强调
+**这里强调一下，这个文档就是第二节课环境搭建好了运行的那个脚本的具体步骤而已，因此，所有的配置(就是 .yaml 文件)，都是官方提供的那个默认的。不需要我们修改**
+
+
+
 ```yaml
 - Name: Org2 
   Domain: org2.example.com 
