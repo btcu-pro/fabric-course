@@ -43,7 +43,7 @@ Fabric中有两种类型的公私钥和证书，一种是给节点之前通讯�
 
 然后我们执行
 ```shell
-./bin/cryptogen version
+../bin/cryptogen version
 ```
 终端返回结果：
 ```shell
