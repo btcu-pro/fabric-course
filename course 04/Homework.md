@@ -26,6 +26,6 @@
 
 #### 最后作业效果图下图
 
-![homework](images/0041.PNG)
+![homework](images/0041.png)
 
-![homework](images/0042.PNG)
+![homework](images/0042.png)
