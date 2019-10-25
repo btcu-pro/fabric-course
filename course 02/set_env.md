@@ -3,6 +3,10 @@
 
 然后你从这里：
 
+链接: https://pan.baidu.com/s/1x-ZnaT1sbFRH5rQJWmfcog 提取码: nt38  
+
+![pan.baidu.com](image/fabric26.png)
+
 1. 下载好压缩包：
 ![zip](image/0025.png)
 注意看大小是 4,836,181 KB，下载的时候要下全。
