@@ -5,7 +5,7 @@
   - [6.1 如何利用Fabric提供的接口编写链码](#61-%e5%a6%82%e4%bd%95%e5%88%a9%e7%94%a8fabric%e6%8f%90%e4%be%9b%e7%9a%84%e6%8e%a5%e5%8f%a3%e7%bc%96%e5%86%99%e9%93%be%e7%a0%81)
     - [6.1.1 链码接口](#611-%e9%93%be%e7%a0%81%e6%8e%a5%e5%8f%a3)
       - [Init 与 Invoke 方法](#init-%e4%b8%8e-invoke-%e6%96%b9%e6%b3%95)
-    - [5.1.2 必要结构](#512-%e5%bf%85%e8%a6%81%e7%bb%93%e6%9e%84)
+    - [6.1.2 必要结构](#612-%e5%bf%85%e8%a6%81%e7%bb%93%e6%9e%84)
       - [依赖包](#%e4%be%9d%e8%b5%96%e5%8c%85)
   - [6.2 如何操作账本数据：熟悉链码相关API](#62-%e5%a6%82%e4%bd%95%e6%93%8d%e4%bd%9c%e8%b4%a6%e6%9c%ac%e6%95%b0%e6%8d%ae%e7%86%9f%e6%82%89%e9%93%be%e7%a0%81%e7%9b%b8%e5%85%b3api)
     - [6.2.1 参数解析相关API](#621-%e5%8f%82%e6%95%b0%e8%a7%a3%e6%9e%90%e7%9b%b8%e5%85%b3api)
@@ -62,7 +62,7 @@ type Chaincode interface{
   
 在实际开发中，开发人员可以自行定义一个结构体，然后重写 Chaincode 接口的两个方法，并将两个方法指定为自定义结构体的成员方法；具体可参考下面 6.2 的内容。
 
-### 5.1.2 必要结构
+### 6.1.2 必要结构
 #### 依赖包
 
 shim 包为链码提供了 API 用来访问/操作数据状态、事务上下文和调用其他链代码；peer 包提供了链码执行后的响应信息。所以开发链码需要引入如下依赖包：
@@ -349,12 +349,12 @@ shim 包提供给链码的相应接口有如下几种类型：
         ```
     * 3.3 实例化链码
         ```shell
-        peer chaincode instantiate -n hellocc -v 0 -c '{"Args":["init", "Hello","World"]}' -C myc
+        peer chaincode instantiate -n hellocc -v 0 -c '{"Args":["init", "Hello","World"]}' -C mycc
         ```  
     * 3.4 调用链码  
         根据指定的 key （"Hello"）查询对应的状态数据:
         ```shell
-        peer chaincode query -n hellocc  -c '{"Args":["query","Hello"]}' -C myc
+        peer chaincode query -n hellocc  -c '{"Args":["query","Hello"]}' -C mycc
         ```
         返回查询结果： World
 
@@ -529,12 +529,12 @@ return shim.Success([]byte(result))
         ```
     * 3.3 实例化链码
         ```shell
-        peer chaincode instantiate -n test -v 0 -c '{"Args":["a","10"]}' -C myc
+        peer chaincode instantiate -n test -v 0 -c '{"Args":["a","10"]}' -C mycc
         ```
     * 3.4 调用链码  
     指定调用 set 函数，将a的值更改为20
         ```shell
-        peer chaincode invoke -n test -c '{"Args":["set", "a", "20"]}' -C myc
+        peer chaincode invoke -n test -c '{"Args":["set", "a", "20"]}' -C mycc
         ```
         执行成功，输出如下内容：
         ```shell
@@ -544,7 +544,7 @@ return shim.Success([]byte(result))
     * 3.5 查询  
     指定调用 get 函数，查询 a 的值
         ```shell
-        peer chaincode query -n test -c '{"Args":["query","a"]}' -C myc
+        peer chaincode query -n test -c '{"Args":["query","a"]}' -C mycc
         ```
         执行成功, 输出: 20
 
@@ -659,7 +659,7 @@ return shim.Success([]byte(result))
    * 判断函数名称并调用相应的函数  
     具体实现代码如下：
         ```go
-        // peer chaincode query -n pay -C myc -c '{"Args":["find", "a"]}'
+        // peer chaincode query -n pay -C mycc -c '{"Args":["find", "a"]}'
         func (t *PaymentChaincode) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
         // 获取用户意图
         fun, args := stub.GetFunctionAndParameters()
@@ -952,12 +952,12 @@ return shim.Success([]byte(result))
         ```
     * 3.3 实例化链码
         ```shell
-        peer chaincode instantiate -n paycc -v 0 -c '{"Args":["init","aaa", "100", "bbb","200"]}' -C myc
+        peer chaincode instantiate -n paycc -v 0 -c '{"Args":["init","aaa", "100", "bbb","200"]}' -C mycc
         ```
     * 3.4 调用链码  
     指定调用 payment 函数，从 aaa 账户向 bbb 账户转账 20
         ```shell
-        peer chaincode invoke -n paycc -c '{"Args":["payment", "aaa","bbb","20"]}' -C myc
+        peer chaincode invoke -n paycc -c '{"Args":["payment", "aaa","bbb","20"]}' -C mycc
         ```
         执行成功，输出如下内容：
         ```shell
@@ -967,6 +967,6 @@ return shim.Success([]byte(result))
     * 3.5 查询  
     * 指定调用 find 函数，查询 a 账户的值
         ```shell
-        peer chaincode query -n paycc -c '{"Args":["find","aaa"]}' -C myc
+        peer chaincode query -n paycc -c '{"Args":["find","aaa"]}' -C mycc
         ```
         执行成功, 输出: 80
