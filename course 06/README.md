@@ -38,9 +38,21 @@
 这节课中我们将使用 Golang 进行链码的开发，所以我们应该确定在本系统中有 Hyperledger Fabric 提供的相关API，其它语言的 SDK 我们不在本课程中进行讨论。
 
 如果本地系统中没有相关的API，请执行如下下载命令：
-```
+```shell
 go get -u github.com/hyperledger/fabric/core/chaincode/shim
 ```
+如果下载不下来，可以试试
+```shell
+gopm get -g github.com/hyperledger/fabric/core/chaincode/shim
+```
+
+不过仍有同学的 gopm 半天也下载不了，就直接用 git 吧：
+```
+cd $GOPATH/src/github.com/hyperledger/
+
+git clone https://github.com/hyperledger/fabric.git
+```
+
 **可能需要等一阵子**
 
 ### 6.1.1 链码接口
