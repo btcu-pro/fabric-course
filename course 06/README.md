@@ -325,12 +325,27 @@ shim 包提供给链码的相应接口有如下几种类型：
     }
     ```
 
+    最后，上面的代码汇总到 [hello.go](./files/hello.go)
+
 ### 6.3.2 链码测试
 1. 启动网络  
 进入 fabric-samples/chaincode-docker-devmode/ 目录
     ```shell
     cd ../chaincode-docker-devmode/
+
+    sudo docker-compose -f docker-compose-simple.yaml up
     ```
+    终端输出：
+    ```shell
+    Creating network "chaincodedockerdevmode_default" with the default driver
+    Creating orderer
+    Creating peer
+    Creating chaincode
+    Creating cli
+    ```
+    PS: 其实我们这里 -d 表示以守护进程（daemon）形式来启动，这样就不会占用终端并且不会输出大量的log了，你们可以试试去掉 -d 来得到详细的计算机输出。
+
+
 2. 构建并启动链码
     * 2.1 打开一个新的终端2，进入 chaincode 容器：
         ```shell
@@ -339,13 +354,16 @@ shim 包提供给链码的相应接口有如下几种类型：
     * 2.2 编译链码
         ```shell
         cd hello
+
         go build
         ```
+        可以通过 `ls` 查看到生成了一个绿色的 hello 文件，即编译得到可执行文件
+    
     * 2.3 启动链码
         ```shell
         CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=hellocc:0 ./hello
         ```
-        命令执行后终端输出如下：
+        命令执行后终端输出如下，这是把这个终端放在这里，不要动它，然后进入第 3 步：
         ```shell
         [shim] SetupChaincodeLogging -> INFO 001 Chaincode log level not provided; defaulting to: INFO
         [shim] SetupChaincodeLogging -> INFO 002 Chaincode (build level: ) starting up ...
@@ -361,12 +379,13 @@ shim 包提供给链码的相应接口有如下几种类型：
         ```
     * 3.3 实例化链码
         ```shell
-        peer chaincode instantiate -n hellocc -v 0 -c '{"Args":["init", "Hello","World"]}' -C mycc
+        peer chaincode instantiate -n hellocc -v 0 -c '{"Args":["init", "Hello","World"]}' -C myc
         ```  
+        **注意**：这里 -n 是 hellocc，这个是链码的名字，然后 -C 是 myc，这个是通道 channel 的id。
     * 3.4 调用链码  
         根据指定的 key （"Hello"）查询对应的状态数据:
         ```shell
-        peer chaincode query -n hellocc  -c '{"Args":["query","Hello"]}' -C mycc
+        peer chaincode query -n hellocc  -c '{"Args":["query","Hello"]}' -C myc
         ```
         返回查询结果： World
 

@@ -44,6 +44,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	if len(args) != 4 {
 		return shim.Error("Incorrect number of arguments. Expecting 4")
 	}
+	// '{"Args":["init","a", "100", "b","200"]}'
 
 	// Initialize the chaincode
 	A = args[0]
@@ -102,7 +103,7 @@ func (t *SimpleChaincode) invoke(stub shim.ChaincodeStubInterface, args []string
 
 	A = args[0]
 	B = args[1]
-
+	// '{"Args":["invoke","a","b","10"]}'
 	// Get the state from the ledger
 	// TODO: will be nice to have a GetAllState call to ledger
 	Avalbytes, err := stub.GetState(A)
