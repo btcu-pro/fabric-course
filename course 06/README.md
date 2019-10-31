@@ -1,6 +1,6 @@
-# course 06 深入MSP成员管理与Fabric CA服务实现
+# course 06 链码开发与实践
 ## `Contents`
-- [course 06 深入MSP成员管理与Fabric CA服务实现](#course-06-%e6%b7%b1%e5%85%a5msp%e6%88%90%e5%91%98%e7%ae%a1%e7%90%86%e4%b8%8efabric-ca%e6%9c%8d%e5%8a%a1%e5%ae%9e%e7%8e%b0)
+- [course 06 链码开发与实践](#course-06-%e9%93%be%e7%a0%81%e5%bc%80%e5%8f%91%e4%b8%8e%e5%ae%9e%e8%b7%b5)
   - [`Contents`](#contents)
   - [6.1 如何利用Fabric提供的接口编写链码](#61-%e5%a6%82%e4%bd%95%e5%88%a9%e7%94%a8fabric%e6%8f%90%e4%be%9b%e7%9a%84%e6%8e%a5%e5%8f%a3%e7%bc%96%e5%86%99%e9%93%be%e7%a0%81)
     - [6.1.1 链码接口](#611-%e9%93%be%e7%a0%81%e6%8e%a5%e5%8f%a3)
