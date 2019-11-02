@@ -400,6 +400,14 @@ shim 包提供给链码的相应接口有如下几种类型：
         ```
         返回查询结果： World
 
+4. 关闭网络:  
+退出所有的容器 `Ctrl d`，然后在宿主机的终端中（就是提示符前面是 xxxx@ubuntu:~/xxx/xxx/ 之类的，不是以 root 开头的），运行：
+    ```shell
+    sudo docker-compose -f docker-compose-simple.yaml down 
+
+    docker volume prune 
+    ```
+
 
 ## 6.4 动手编码一：链码实现资产管理
 > 下面我们来实现一个简单的资产链码应用，该链码能够让用户在分类账上创建资产，并通过指定的函数实现对资产的修改与查询功能。
@@ -590,6 +598,13 @@ return shim.Success([]byte(result))
         ```
         执行成功, 输出: 20
 
+4. 关闭网络:  
+退出所有的容器 `Ctrl d`，然后在宿主机的终端中（就是提示符前面是 xxxx@ubuntu:~/xxx/xxx/ 之类的，不是以 root 开头的），运行：
+    ```shell
+    sudo docker-compose -f docker-compose-simple.yaml down 
+
+    docker volume prune 
+    ```
 
 
 ## 6.5 动手编码二：链码实现转账
@@ -1012,3 +1027,12 @@ return shim.Success([]byte(result))
         peer chaincode query -n paycc -c '{"Args":["find","aaa"]}' -C myc
         ```
         执行成功, 输出: 80
+
+
+4. 关闭网络:  
+退出所有的容器 `Ctrl d`，然后在宿主机的终端中（就是提示符前面是 xxxx@ubuntu:~/xxx/xxx/ 之类的，不是以 root 开头的），运行：
+    ```shell
+    sudo docker-compose -f docker-compose-simple.yaml down 
+
+    docker volume prune 
+    ```
