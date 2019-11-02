@@ -560,12 +560,12 @@ return shim.Success([]byte(result))
         ```
     * 3.3 实例化链码
         ```shell
-        peer chaincode instantiate -n test -v 0 -c '{"Args":["a","10"]}' -C mycc
+        peer chaincode instantiate -n test -v 0 -c '{"Args":["a","10"]}' -C myc
         ```
     * 3.4 调用链码  
     指定调用 set 函数，将a的值更改为20
         ```shell
-        peer chaincode invoke -n test -c '{"Args":["set", "a", "20"]}' -C mycc
+        peer chaincode invoke -n test -c '{"Args":["set", "a", "20"]}' -C myc
         ```
         执行成功，输出如下内容：
         ```shell
@@ -575,7 +575,7 @@ return shim.Success([]byte(result))
     * 3.5 查询  
     指定调用 get 函数，查询 a 的值
         ```shell
-        peer chaincode query -n test -c '{"Args":["query","a"]}' -C mycc
+        peer chaincode query -n test -c '{"Args":["query","a"]}' -C myc
         ```
         执行成功, 输出: 20
 
@@ -690,7 +690,7 @@ return shim.Success([]byte(result))
    * 判断函数名称并调用相应的函数  
     具体实现代码如下：
         ```go
-        // peer chaincode query -n pay -C mycc -c '{"Args":["find", "a"]}'
+        // peer chaincode query -n pay -C myc -c '{"Args":["find", "a"]}'
         func (t *PaymentChaincode) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
         // 获取用户意图
         fun, args := stub.GetFunctionAndParameters()
@@ -983,12 +983,12 @@ return shim.Success([]byte(result))
         ```
     * 3.3 实例化链码
         ```shell
-        peer chaincode instantiate -n paycc -v 0 -c '{"Args":["init","aaa", "100", "bbb","200"]}' -C mycc
+        peer chaincode instantiate -n paycc -v 0 -c '{"Args":["init","aaa", "100", "bbb","200"]}' -C myc
         ```
     * 3.4 调用链码  
     指定调用 payment 函数，从 aaa 账户向 bbb 账户转账 20
         ```shell
-        peer chaincode invoke -n paycc -c '{"Args":["payment", "aaa","bbb","20"]}' -C mycc
+        peer chaincode invoke -n paycc -c '{"Args":["payment", "aaa","bbb","20"]}' -C myc
         ```
         执行成功，输出如下内容：
         ```shell
@@ -998,6 +998,6 @@ return shim.Success([]byte(result))
     * 3.5 查询  
     * 指定调用 find 函数，查询 a 账户的值
         ```shell
-        peer chaincode query -n paycc -c '{"Args":["find","aaa"]}' -C mycc
+        peer chaincode query -n paycc -c '{"Args":["find","aaa"]}' -C myc
         ```
         执行成功, 输出: 80
