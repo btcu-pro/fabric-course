@@ -1,4 +1,10 @@
 # `BTCU_Fabric`
+
+## 懒人办法
+
+我把配置好环境的Vmware 文件上传了，具体查看：  
+[环境没有搭建好的可以使用这个](set_env.md)
+
 ## 第二课作业
 
 ![作业1](image/fabric23.png)
@@ -17,6 +23,7 @@ https://www.bilibili.com/video/av71774723
 
 ## `Contents`
 - [`BTCU_Fabric`](#btcufabric)
+	- [懒人办法](#%e6%87%92%e4%ba%ba%e5%8a%9e%e6%b3%95)
 	- [第二课作业](#%e7%ac%ac%e4%ba%8c%e8%af%be%e4%bd%9c%e4%b8%9a)
 	- [`Contents`](#contents)
 	- [0. `Fabric` 简介](#0-fabric-%e7%ae%80%e4%bb%8b)
