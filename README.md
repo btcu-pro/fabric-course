@@ -6,3 +6,5 @@
 ## [course 04](course&#32;04/README.md)
 ## [course 05](course&#32;05/README.md)
 ## [course 06](course&#32;06/README.md)
+## [course 07](course&#32;07/READEME.md)
+## [course 08](course&#32;08/Homework.md)
