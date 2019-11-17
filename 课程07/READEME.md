@@ -1,5 +1,4 @@
 # course 07 深入MSP成员管理与Fabric CA服务实现
-[TOC]
 ## MSP的概念
 ###MSP定义及作用
 在 Hyperledger Fabric 中，各个网络参与者之间的通信安全依赖于 PKI 标准来实现，并确保在区块链上发布的消息得到相应的认证。
