@@ -1,5 +1,8 @@
 # Course 10 Fabric 分布式账本数据存储
 
+讲课时用到的官方资料链接：  
+https://hyperledger-fabric.readthedocs.io/en/release-1.4/couchdb_tutorial.html
+
 ## `Contents`
 - [Course 10 Fabric 分布式账本数据存储](#course-10-fabric-%e5%88%86%e5%b8%83%e5%bc%8f%e8%b4%a6%e6%9c%ac%e6%95%b0%e6%8d%ae%e5%ad%98%e5%82%a8)
   - [`Contents`](#contents)
