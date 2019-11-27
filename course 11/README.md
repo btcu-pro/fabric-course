@@ -1,4 +1,4 @@
-#构建基于 Fabric-SDK-Go 项目环境搭建
+# 构建基于 Fabric-SDK-Go 项目环境搭建
 
 
 ## 基础环境
