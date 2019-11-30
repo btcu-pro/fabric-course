@@ -5,7 +5,7 @@ sudo mkdir testcdb
 cd testcdb
 ```
 
-将编写的两个 main.go 文件上传至 testcdb 目录中，然后跳转至fabric-samples的chaincode-docker-devmode目录
+将编写的 main.go 文件上传至 testcdb 目录中，然后跳转至fabric-samples的chaincode-docker-devmode目录
 
 ```shell
 cd ~/hyfa/fabric-samples/chaincode-docker-devmode/
@@ -99,3 +99,11 @@ peer chaincode query -n cdb -C myc -c '{"Args":["queryCars", "{\"selector\":{\"o
 key:car001, Value: {"brand":"brand-1","carid":"car001","carname":"car-wife","docType":"carObj","owner":"p1","price":"20"}; key:car002, Value: {"brand":"brand-2","carid":"car002","carname":"car-me","docType":"carObj","owner":"p1","price":"40"}
 
 ```
+
+
+最后注意清理网络。
+
+参考：  
+https://docs.couchdb.org/en/2.2.0/api/database/find.html
+
+https://github.com/hyperledger/fabric-samples/blob/master/chaincode/marbles02/go/marbles_chaincode.go#L22
