@@ -553,6 +553,12 @@ func main() {
 ### 满足依赖
 
 #### 安装dep工具
+govendor工具-1.13以前
+go mod-1.13
+go.mod
+
+go mod init
+go build
 在运行应用程序之前，需要将 Go 源代码时行编译，但在开始编译之前，我们需要使用一个 vendor 目录来包含应用中所需的所有的依赖关系。 在我们的GOPATH中，我们有Fabric SDK Go和其他项目。 在尝试编译应用程序时，Golang 会在 GOPATH 中搜索依赖项，但首先会检查项目中是否存在vendor 文件夹。 如果项目中包含一个叫vendor的目录，Golang 将会从这个目录搜索依赖的包，就不会去检查 GOPATH 或 GOROOT。
 
 Golang官方最初只提供了包管理的 go get 工具，它将下载的第三方包放到GOPATH的src目录下。但是项目一般由许多来源不同的第三包构成，所以在Golang1.5版本增加了一个新的发现包的方法，通过使用像dep这样的工具在vendor目录中来处理这些依赖关系。
@@ -685,7 +691,7 @@ clean: env-down
 1）使用make clean命令将关闭并清理Hyperledger Fabric整个网络环境；
 2）使用make build命令将编译Golang应用程序；
 3）使用make env-up命令将启动 Hyperledger Fabric网络环境；
-4）使用make clean命令将启动应用程序并运行。
+4）使用make命令将启动应用程序并运行。
 如果想直接启动项目，则可以使用 make 命令。该 make 命令执行顺序如上面的步骤所示。
 
 ### 链码实现
