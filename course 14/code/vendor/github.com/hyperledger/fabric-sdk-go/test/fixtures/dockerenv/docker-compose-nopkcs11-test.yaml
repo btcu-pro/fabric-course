@@ -1,0 +1,34 @@
+#
+# Copyright SecureKey Technologies Inc. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+version: '2.1'
+
+services:
+
+  integration-tests:
+    # TODO: parameterize golang version
+    image: golang:1.13
+    environment:
+      - GO_TAGS
+      - GO_TESTFLAGS
+      - FABRIC_SDKGO_CODELEVEL_TAG
+      - FABRIC_SDKGO_CODELEVEL_VER
+      - FABRIC_SDKGO_TESTRUN_ID
+      - FABRIC_FIXTURE_VERSION
+      - FABRIC_SDK_CLIENT_EVENTSERVICE_TYPE
+      - E2E_ONLY
+      - TEST_CHANGED_ONLY
+      - CORE_VM_ENDPOINT
+    volumes:
+      - ${GOPATH}/pkg/mod:/opt/gopath/pkg/mod
+      - ../../../:/opt/workspace/fabric-sdk-go
+    command: /opt/workspace/fabric-sdk-go/test/scripts/integration.sh
+    depends_on:
+      - org1ca1
+      - org2ca1
+      - org1peer1
+      - org2peer1
+      - orderer1
+      - builder
