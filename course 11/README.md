@@ -103,28 +103,33 @@ Crypto 材料已使用 Hyperledger Fabric 中的 cryptogen 工具生成，并保
 
 在GOPATH的src文件夹中新建一个目录如下：
 ```
-$ mkdir -p $GOPATH/src/github.com/kongyixueyuan.com/kongyixueyuan 
-$ cd $GOPATH/src/github.com/kongyixueyuan.com/kongyixueyuan
+$ mkdir -p $GOPATH/src/github.com/btcu-pro/btcu
+$ cd $GOPATH/src/github.com/btcu-pro/btcu
 ```
 使用 git 命令克隆 hf-fixtures 目录当前路径
 ```
-$ git clone https://github.com/kevin-hf/hf-fixtures.git
+$ git clone https://github.com/btcu-pro/fc_fixtures.git
 ```
 将 hf-fixtures 文件夹重命名为 fixtures
 ```
-$ mv hf-fixtures/ fixtures
+$ mv fc_fixtures/ fixtures
 ```
 修改fixtures 文件夹的所属关系为当前用户
 ```
-$ sudo chown -R kevin:kevin ./fixtures
+$ sudo chown -R flyq:flyq ./fixtures
 ```
-提示： kevin 为安装 Ubuntu 16.04 系统时创建的用户
+提示： flyq 为安装 Ubuntu 16.04 系统时创建的用户。比如我这里是 flyq：
+![flyq](捕获.PNG)
+
 
 进入 fixtures 目录
 ```
 $ cd fixtures
 ```
-为了构建区块链网络，使用 docker 构建处理不同角色的虚拟计算机。 在这里我们将尽可能保持简单。如果确定您的系统中已经存在相关的所需容器，或可以使用其它方式获取，则无需执行如下命令。否则请将 fixtures 目录下的 pull_images.sh 文件添加可执行权限后直接执行。
+为了构建区块链网络，使用 docker 构建处理不同角色的虚拟计算机。 在这里我们将尽可能保持简单。如果确定您的系统中已经存在相关的所需容器，或可以使用其它方式获取，则无需执行如下命令。否则请将 fixtures 目录下的 pull_images.sh 文件添加可执行权限后直接执行。  
+
+***PS***：其实如果之前的课程按部就班都学了，下面的镜像就会都有了，就不需要 pull 了。不过即使有了，再 pull 一遍也没有问题。
+
 ```
 $ chmod 777 ./pull_images.sh
 $ ./pull_images.sh
@@ -132,7 +137,9 @@ $ ./pull_images.sh
 提示：pull_images.sh 文件是下载 Fabric 环境所需容器的一个可执行脚本，下载过程需要一段时间（视网速情况而定），请耐心等待。另：请确定您的系统支持虚拟技术。
 
 ### 配置docker-compose.yml文件
-在 fixtures 目录下创建一个 docker-compose.yml 文件并编辑
+在 fixtures 目录下创建一个 docker-compose.yml 文件并编辑。
+这个 docker-compose.yml 我上传到 course 11/ 文件夹下面了，因此可以按照下面的步骤自行创建或者直接参考 docker-compose.yml。
+
 ```
 $ vim docker-compose.yml
 ```
@@ -148,17 +155,17 @@ services:
 ```
 编辑 orderer 部分
 ```
-  orderer.kevin.kongyixueyuan.com:
+  orderer.demo.btcu.com:
     image: hyperledger/fabric-orderer
-    container_name: orderer.kevin.kongyixueyuan.com
+    container_name: orderer.demo.btcu.com
     environment:
       - ORDERER_GENERAL_LOGLEVEL=debug
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
       - ORDERER_GENERAL_LISTENPORT=7050
-      - ORDERER_GENERAL_GENESISPROFILE=kongyixueyuan
+      - ORDERER_GENERAL_GENESISPROFILE=btcu
       - ORDERER_GENERAL_GENESISMETHOD=file
       - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/genesis.block
-      - ORDERER_GENERAL_LOCALMSPID=kevin.kongyixueyuan.com
+      - ORDERER_GENERAL_LOCALMSPID=demo.btcu.com
       - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
       - ORDERER_GENERAL_TLS_ENABLED=true
       - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
@@ -168,215 +175,131 @@ services:
     command: orderer
     volumes:
       - ./artifacts/genesis.block:/var/hyperledger/orderer/genesis.block
-      - ./crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/msp:/var/hyperledger/orderer/msp
-      - ./crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/tls:/var/hyperledger/orderer/tls
+      - ./crypto-config/ordererOrganizations/demo.btcu.com/orderers/orderer.demo.btcu.com/msp:/var/hyperledger/orderer/msp
+      - ./crypto-config/ordererOrganizations/demo.btcu.com/orderers/orderer.demo.btcu.com/tls:/var/hyperledger/orderer/tls
     ports:
       - 7050:7050
     networks:
       default:
         aliases:
-          - orderer.kevin.kongyixueyuan.com
+          - orderer.demo.btcu.com
 ```
 
-编辑 ca 部分 
-  
-网络环境准备
-Hyperledger Fabric 处理交易时需要大量的证书来确保在整个端到端流程（TSL，身份验证，签名块......）期间进行加密。 为了直接了解问题的核心，我们已经在 github 上为您的网络环境准备了所有相关的内容， 不在此教程中讲解。
-
-Crypto 材料已使用 Hyperledger Fabric 中的 cryptogen 工具生成，并保存在 hf-fixtures/crypto-config 目录中。有关 cryptogen 工具的更多详细信息，请 点击此处。
-
-初始区块（genesis.block）和通道配置事务（channel.tx）已使用 Hyperledger Fabric中 的 configtxgen 工具生成，并保存在 hf-fixtures/artifacts 目录中。有关 configtxgen 工具的更多详细信息，请 点击此处。
-
-在GOPATH的src文件夹中新建一个目录如下：
-```
-$ mkdir -p $GOPATH/src/github.com/kongyixueyuan.com/kongyixueyuan 
-$ cd $GOPATH/src/github.com/kongyixueyuan.com/kongyixueyuan
-```
-使用 git 命令克隆 hf-fixtures 目录当前路径
-```
-$ git clone https://github.com/kevin-hf/hf-fixtures.git
-```
-将 hf-fixtures 文件夹重命名为 fixtures
-```
-$ mv hf-fixtures/ fixtures
-```
-修改fixtures 文件夹的所属关系为当前用户
-```
-$ sudo chown -R kevin:kevin ./fixtures
-```
-提示： kevin 为安装 Ubuntu 16.04 系统时创建的用户
-
-进入 fixtures 目录
-```
-$ cd fixtures
-```
-为了构建区块链网络，使用 docker 构建处理不同角色的虚拟计算机。 在这里我们将尽可能保持简单。如果确定您的系统中已经存在相关的所需容器，或可以使用其它方式获取，则无需执行如下命令。否则请将 fixtures 目录下的 pull_images.sh 文件添加可执行权限后直接执行。
-```
-$ chmod 777 ./pull_images.sh
-$ ./pull_images.sh
-```
-提示：pull_images.sh 文件是下载 Fabric 环境所需容器的一个可执行脚本，下载过程需要一段时间（视网速情况而定），请耐心等待。另：请确定您的系统支持虚拟技术。
-
-### 配置docker-compose.yml文件
-在 fixtures 目录下创建一个 docker-compose.yml 文件并编辑
-```
-$ vim docker-compose.yml
-```
-将 network下的basic 修改为 default
-```
-version: '2'
-
-networks:
-  default:
-
-services:
-```
-编辑 orderer 部分
-```
-  orderer.kevin.kongyixueyuan.com:
-    image: hyperledger/fabric-orderer
-    container_name: orderer.kevin.kongyixueyuan.com
-    environment:
-      - ORDERER_GENERAL_LOGLEVEL=debug
-      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
-      - ORDERER_GENERAL_LISTENPORT=7050
-      - ORDERER_GENERAL_GENESISPROFILE=kongyixueyuan
-      - ORDERER_GENERAL_GENESISMETHOD=file
-      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/genesis.block
-      - ORDERER_GENERAL_LOCALMSPID=kevin.kongyixueyuan.com
-      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
-      - ORDERER_GENERAL_TLS_ENABLED=true
-      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
-      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
-      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
-    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
-    command: orderer
-    volumes:
-      - ./artifacts/genesis.block:/var/hyperledger/orderer/genesis.block
-      - ./crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/msp:/var/hyperledger/orderer/msp
-      - ./crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/tls:/var/hyperledger/orderer/tls
-    ports:
-      - 7050:7050
-    networks:
-      default:
-        aliases:
-          - orderer.kevin.kongyixueyuan.com
-```
 编辑 ca 部分
 ```
-  ca.org1.kevin.kongyixueyuan.com:
+  ca.org1.demo.btcu.com:
     image: hyperledger/fabric-ca
-    container_name: ca.org1.kevin.kongyixueyuan.com
+    container_name: ca.org1.demo.btcu.com
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca.org1.kevin.kongyixueyuan.com
-      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.kevin.kongyixueyuan.com-cert.pem
+      - FABRIC_CA_SERVER_CA_NAME=ca.org1.demo.btcu.com
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.demo.btcu.com-cert.pem
       - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/727e69ed4a01a204cd53bf4a97c2c1cb947419504f82851f6ae563c3c96dea3a_sk
       - FABRIC_CA_SERVER_TLS_ENABLED=true
-      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.kevin.kongyixueyuan.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.demo.btcu.com-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/727e69ed4a01a204cd53bf4a97c2c1cb947419504f82851f6ae563c3c96dea3a_sk
     ports:
       - 7054:7054
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
-      - ./crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ./crypto-config/peerOrganizations/org1.demo.btcu.com/ca/:/etc/hyperledger/fabric-ca-server-config
     networks:
       default:
         aliases:
-          - ca.org1.kevin.kongyixueyuan.com
+          - ca.org1.demo.btcu.com
 ```
 编辑Peer部分
 
 peer0.org1.example.com 内容如下
 ```
-  peer0.org1.kevin.kongyixueyuan.com:
+
+  peer0.org1.demo.btcu.com:
     image: hyperledger/fabric-peer
-    container_name: peer0.org1.kevin.kongyixueyuan.com
+    container_name: peer0.org1.demo.btcu.com
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_VM_DOCKER_ATTACHSTDOUT=true
       - CORE_LOGGING_LEVEL=DEBUG
-      - CORE_PEER_NETWORKID=kongyixueyuan
+      - CORE_PEER_NETWORKID=btcu
       - CORE_PEER_PROFILE_ENABLED=true
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/var/hyperledger/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/var/hyperledger/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/var/hyperledger/tls/ca.crt
-      - CORE_PEER_ID=peer0.org1.kevin.kongyixueyuan.com
+      - CORE_PEER_ID=peer0.org1.demo.btcu.com
       - CORE_PEER_ADDRESSAUTODETECT=true
-      - CORE_PEER_ADDRESS=peer0.org1.kevin.kongyixueyuan.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.kevin.kongyixueyuan.com:7051
+      - CORE_PEER_ADDRESS=peer0.org1.demo.btcu.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.demo.btcu.com:7051
       - CORE_PEER_GOSSIP_USELEADERELECTION=true
       - CORE_PEER_GOSSIP_ORGLEADER=false
       - CORE_PEER_GOSSIP_SKIPHANDSHAKE=true
-      - CORE_PEER_LOCALMSPID=org1.kevin.kongyixueyuan.com
+      - CORE_PEER_LOCALMSPID=org1.demo.btcu.com
       - CORE_PEER_MSPCONFIGPATH=/var/hyperledger/msp
-      - CORE_PEER_TLS_SERVERHOSTOVERRIDE=peer0.org1.kevin.kongyixueyuan.com
+      - CORE_PEER_TLS_SERVERHOSTOVERRIDE=peer0.org1.demo.btcu.com
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
       - /var/run/:/host/var/run/
-      - ./crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp:/var/hyperledger/msp
-      - ./crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/tls:/var/hyperledger/tls
+      - ./crypto-config/peerOrganizations/org1.demo.btcu.com/peers/peer0.org1.demo.btcu.com/msp:/var/hyperledger/msp
+      - ./crypto-config/peerOrganizations/org1.demo.btcu.com/peers/peer0.org1.demo.btcu.com/tls:/var/hyperledger/tls
     ports:
       - 7051:7051
       - 7053:7053
     depends_on:
-      - orderer.kevin.kongyixueyuan.com
+      - orderer.demo.btcu.com
     networks:
       default:
         aliases:
-          - peer0.org1.kevin.kongyixueyuan.com
-
+          - peer0.org1.demo.btcu.com
 ```
 peer1.org1.example.com 内容如下
 ```
-  peer1.org1.kevin.kongyixueyuan.com:
+
+  peer1.org1.demo.btcu.com:
     image: hyperledger/fabric-peer
-    container_name: peer1.org1.kevin.kongyixueyuan.com
+    container_name: peer1.org1.demo.btcu.com
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_VM_DOCKER_ATTACHSTDOUT=true
       - CORE_LOGGING_LEVEL=DEBUG
-      - CORE_PEER_NETWORKID=kongyixueyuan
+      - CORE_PEER_NETWORKID=btcu
       - CORE_PEER_PROFILE_ENABLED=true
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/var/hyperledger/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/var/hyperledger/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/var/hyperledger/tls/ca.crt
-      - CORE_PEER_ID=peer1.org1.kevin.kongyixueyuan.com
+      - CORE_PEER_ID=peer1.org1.demo.btcu.com
       - CORE_PEER_ADDRESSAUTODETECT=true
-      - CORE_PEER_ADDRESS=peer1.org1.kevin.kongyixueyuan.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org1.kevin.kongyixueyuan.com:7051
+      - CORE_PEER_ADDRESS=peer1.org1.demo.btcu.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org1.demo.btcu.com:7051
       - CORE_PEER_GOSSIP_USELEADERELECTION=true
       - CORE_PEER_GOSSIP_ORGLEADER=false
       - CORE_PEER_GOSSIP_SKIPHANDSHAKE=true
-      - CORE_PEER_LOCALMSPID=org1.kevin.kongyixueyuan.com
+      - CORE_PEER_LOCALMSPID=org1.demo.btcu.com
       - CORE_PEER_MSPCONFIGPATH=/var/hyperledger/msp
-      - CORE_PEER_TLS_SERVERHOSTOVERRIDE=peer1.org1.kevin.kongyixueyuan.com
+      - CORE_PEER_TLS_SERVERHOSTOVERRIDE=peer1.org1.demo.btcu.com
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
       - /var/run/:/host/var/run/
-      - ./crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/msp:/var/hyperledger/msp
-      - ./crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/tls:/var/hyperledger/tls
+      - ./crypto-config/peerOrganizations/org1.demo.btcu.com/peers/peer1.org1.demo.btcu.com/msp:/var/hyperledger/msp
+      - ./crypto-config/peerOrganizations/org1.demo.btcu.com/peers/peer1.org1.demo.btcu.com/tls:/var/hyperledger/tls
     ports:
       - 7151:7051
       - 7153:7053
     depends_on:
-      - orderer.kevin.kongyixueyuan.com
+      - orderer.demo.btcu.com
     networks:
       default:
         aliases:
-          - peer1.org1.kevin.kongyixueyuan.com
-
+          - peer1.org1.demo.btcu.com
 ```
-其余可根据实际情况进行添加
 
 ### 测试网络环境
 为了检查网络是否正常工作，使用docker-compose同时启动或停止所有容器。 进入fixtures文件夹，运行：
 ```
-$ cd $GOPATH/src/github.com/kongyixueyuan.com/kongyixueyuan/fixtures
+$ cd $GOPATH/src/github.com//btcu-pro/btcu/fixtures
+
 $ docker-compose up
 ```
 如果在您的系统中没有相关的容器，那么会自动下载docker镜像。下载完毕后自动启动，控制台会输出很多不同颜色的日志（红色不等于错误）
@@ -397,7 +320,8 @@ $ docker-compose up
 
 最后在终端2中执行如下命令关闭网络：
 ```
-$ cd $GOPATH/src/github.com/kongyixueyuan.com/kongyixueyuan/fixtures
+$ cd $GOPATH/src/github.com/btcu-pro/btcu/fixtures
+
 $ docker-compose down
 ```
 关闭网络

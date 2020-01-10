@@ -23,12 +23,12 @@ GoLang(建议使用，JetBrain全家桶)
 
 #### 创建config.yml文件
 ```
-$ cd $GOPATH/src/github.com/surevil.com/surevil
+$ cd $GOPATH/src/github.com/btcu-pro/btcu
 $ vim config.yml
 ```
 config.yml内容
-```
-name: "surevil-network"
+```yml
+name: "btcu-network"
 #
 # Schema version of the content. Used by the SDK to apply the corresponding parsing rules.
 #
@@ -88,17 +88,17 @@ client:
 
   # Root of the MSP directories with keys and certs.
   cryptoconfig:
-    path: ${GOPATH}/src/github.com/surevil.com/surevil/fixtures/crypto-config
+    path: ${GOPATH}/src/github.com/btcu-pro/btcu/fixtures/crypto-config
 
   # Some SDKs support pluggable KV stores, the properties under "credentialStore"
   # are implementation specific
   credentialStore:
-    path: /tmp/surevil-store
+    path: /tmp/btcu-store
 
     # [Optional]. Specific to the CryptoSuite implementation used by GO SDK. Software-based implementations
     # requiring a key store. PKCS#11 based implementations does not.
     cryptoStore:
-      path: /tmp/surevil-msp
+      path: /tmp/btcu-msp
 
    # BCCSP config for the client. Used by GO SDK.
   BCCSP:
@@ -128,18 +128,18 @@ client:
 #
 channels:
   # name of the channel
-  parallelssurevil:
+  demobtcu:
     # Required. list of orderers designated by the application to use for transactions on this
     # channel. This list can be a result of access control ("org1" can only access "ordererA"), or
     # operational decisions to share loads from applications among the orderers.  The values must
     # be "names" of orgs defined under "organizations/peers"
     # deprecated: not recommended, to override any orderer configuration items, entity matchers should be used.
     # orderers:
-    #  - orderer.parallels.surevil.com
+    #  - orderer.demo.btcu-pro
 
     # Required. list of peers from participating orgs
     peers:
-      peer0.org1.parallels.surevil.com:
+      peer0.org1.demo.btcu.com:
         # [Optional]. will this peer be sent transaction proposals for endorsement? The peer must
         # have the chaincode installed. The app can also use this property to decide which peers
         # to send the chaincode install request. Default: true
@@ -159,7 +159,7 @@ channels:
         # Default: true
         eventSource: true
 
-      peer1.org1.parallels.surevil.com:
+      peer1.org1.demo.btcu.com:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
@@ -241,11 +241,11 @@ channels:
 #
 organizations:
   Org1:
-    mspid: org1.parallels.surevil.com
-    cryptoPath: peerOrganizations/org1.parallels.surevil.com/users/{userName}@org1.parallels.surevil.com/msp
+    mspid: org1.demo.btcu.com
+    cryptoPath: peerOrganizations/org1.demo.btcu.com/users/{userName}@org1.demo.btcu.com/msp
     peers:
-      - peer0.org1.parallels.surevil.com
-      - peer1.org1.parallels.surevil.com
+      - peer0.org1.demo.btcu.com
+      - peer1.org1.demo.btcu.com
 
     # [Optional]. Certificate Authorities issue certificates for identification purposes in a Fabric based
     # network. Typically certificates provisioning is done in a separate process outside of the
@@ -253,7 +253,7 @@ organizations:
     # dynamic certificate management (enroll, revoke, re-enroll). The following section is only for
     # Fabric-CA servers.
     certificateAuthorities:
-      - ca.org1.parallels.surevil.com
+      - ca.org1.demo.btcu.com
 
 #
 # List of orderers to send transaction and channel create/update requests to. For the time
@@ -261,13 +261,13 @@ organizations:
 # SDK is implementation specific. Consult each SDK's documentation for its handling of orderers.
 #
 orderers:
-  orderer.parallels.surevil.com:
+  orderer.demo.btcu.com:
     url: localhost:7050
 
     # these are standard properties defined by the gRPC library
     # they will be passed in as-is to gRPC client constructor
     grpcOptions:
-      ssl-target-name-override: orderer.parallels.surevil.com
+      ssl-target-name-override: orderer.demo.btcu.com
       # These parameters should be set in coordination with the keepalive policy on the server,
       # as incompatible settings can result in closing of connection.
       # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
@@ -280,21 +280,21 @@ orderers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: ${GOPATH}/src/github.com/surevil.com/surevil/fixtures/crypto-config/ordererOrganizations/parallels.surevil.com/tlsca/tlsca.parallels.surevil.com-cert.pem
+      path: ${GOPATH}/src/github.com/btcu-pro/btcu/fixtures/crypto-config/ordererOrganizations/demo.btcu.com/tlsca/tlsca.demo.btcu.com-cert.pem
 
 #
 # List of peers to send various requests to, including endorsement, query
 # and event listener registration.
 #
 peers:
-  peer0.org1.parallels.surevil.com:
+  peer0.org1.demo.btcu.com:
     # this URL is used to send endorsement and query requests
     url: localhost:7051
     # eventUrl is only needed when using eventhub (default is delivery service)
     eventUrl: localhost:7053
 
     grpcOptions:
-      ssl-target-name-override: peer0.org1.parallels.surevil.com
+      ssl-target-name-override: peer0.org1.demo.btcu.com
       # These parameters should be set in coordination with the keepalive policy on the server,
       # as incompatible settings can result in closing of connection.
       # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
@@ -307,16 +307,16 @@ peers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: ${GOPATH}/src/github.com/surevil.com/surevil/fixtures/crypto-config/peerOrganizations/org1.parallels.surevil.com/tlsca/tlsca.org1.parallels.surevil.com-cert.pem
+      path: ${GOPATH}/src/github.com/btcu-pro/btcu/fixtures/crypto-config/peerOrganizations/org1.demo.btcu.com/tlsca/tlsca.org1.demo.btcu.com-cert.pem
 
-  peer1.org1.parallels.surevil.com:
+  peer1.org1.demo.btcu.com:
     # this URL is used to send endorsement and query requests
     url: localhost:7151
     # eventUrl is only needed when using eventhub (default is delivery service)
     eventUrl: localhost:7153
 
     grpcOptions:
-      ssl-target-name-override: peer1.org1.parallels.surevil.com
+      ssl-target-name-override: peer1.org1.demo.btcu.com
       # These parameters should be set in coordination with the keepalive policy on the server,
       # as incompatible settings can result in closing of connection.
       # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
@@ -329,7 +329,7 @@ peers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: ${GOPATH}/src/github.com/surevil.com/surevil/fixtures/crypto-config/peerOrganizations/org1.parallels.surevil.com/tlsca/tlsca.org1.parallels.surevil.com-cert.pem
+      path: ${GOPATH}/src/github.com/btcu-pro/btcu/fixtures/crypto-config/peerOrganizations/org1.demo.btcu.com/tlsca/tlsca.org1.demo.btcu.com-cert.pem
 
 #
 # Fabric-CA is a special kind of Certificate Authority provided by Hyperledger Fabric which allows
@@ -337,11 +337,11 @@ peers:
 # Certificate Authority instead of Fabric-CA, in which case this section would not be specified.
 #
 certificateAuthorities:
-  ca.org1.parallels.surevil.com:
+  ca.org1.demo.btcu.com:
     url: http://localhost:7054
     tlsCACerts:
       # Certificate location absolute path
-      path: ${GOPATH}/src/github.com/surevil.com/surevil/fixtures/crypto-config/peerOrganizations/org1.parallels.surevil.com/ca/ca.org1.parallels.surevil.com-cert.pem
+      path: ${GOPATH}/src/github.com/btcu-pro/btcu/fixtures/crypto-config/peerOrganizations/org1.demo.btcu.com/ca/ca.org1.demo.btcu.com-cert.pem
 
     # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
     # needed to enroll and invoke new users.
@@ -349,32 +349,32 @@ certificateAuthorities:
       enrollId: admin
       enrollSecret: adminpw
     # [Optional] The optional name of the CA.
-    caName: ca.org1.parallels.surevil.com
+    caName: ca.org1.demo.btcu.com
 
 entityMatchers:
   peer:
-    - pattern: (\w*)peer0.org1.parallels.surevil.com(\w*)
+    - pattern: (\w*)peer0.org1.demo.btcu.com(\w*)
       urlSubstitutionExp: localhost:7051
       eventUrlSubstitutionExp: localhost:7053
-      sslTargetOverrideUrlSubstitutionExp: peer0.org1.parallels.surevil.com
-      mappedHost: peer0.org1.parallels.surevil.com
+      sslTargetOverrideUrlSubstitutionExp: peer0.org1.demo.btcu.com
+      mappedHost: peer0.org1.demo.btcu.com
 
-    - pattern: (\w*)peer1.org1.parallels.surevil.com(\w*)
+    - pattern: (\w*)peer1.org1.demo.btcu.com(\w*)
       urlSubstitutionExp: localhost:7151
       eventUrlSubstitutionExp: localhost:7153
-      sslTargetOverrideUrlSubstitutionExp: peer1.org1.parallels.surevil.com
-      mappedHost: peer1.org1.parallels.surevil.com
+      sslTargetOverrideUrlSubstitutionExp: peer1.org1.demo.btcu.com
+      mappedHost: peer1.org1.demo.btcu.com
 
   orderer:
-    - pattern: (\w*)orderer.parallels.surevil.com(\w*)
+    - pattern: (\w*)orderer.demo.btcu.com(\w*)
       urlSubstitutionExp: localhost:7050
-      sslTargetOverrideUrlSubstitutionExp: orderer.parallels.surevil.com
-      mappedHost: orderer.parallels.surevil.com
+      sslTargetOverrideUrlSubstitutionExp: orderer.demo.btcu.com
+      mappedHost: orderer.demo.btcu.com
 
   certificateAuthorities:
-    - pattern: (\w*)ca.org1.parallels.surevil.com(\w*)
+    - pattern: (\w*)ca.org1.demo.btcu.com(\w*)
       urlSubstitutionExp: http://localhost:7054
-      mappedHost: ca.org1.parallels.surevil.com
+      mappedHost: ca.org1.demo.btcu.com
 ```
 
 #### 定义所需结构体
@@ -386,7 +386,7 @@ $ mkdir sdkInit
 $ vim sdkInit/fabricInitInfo.go
 ```
 fabricInitInfo.go 源代码：
-```
+```golang
 package sdkInit
 
 import (
@@ -421,7 +421,7 @@ type InitInfo struct {
 首先，我们先来完成SDK的创建及通道的创建，通道创建完成之后，就可以将peers加入到该通道中。
 
 在 sdkInit 目录下新创建一个名为 start.go 的源代码文件利用 vim 编辑器进行编辑：
-```
+```golang
 import (
     "github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
     "github.com/hyperledger/fabric-sdk-go/pkg/core/config"
@@ -501,17 +501,17 @@ func CreateChannel(sdk *fabsdk.FabricSDK, info *InitInfo) error {
 #### 编写测试代码
 为了确保客户端能够初始化所有组件，将在启动网络的情况下进行简单的测试。 为了做到这一点，我们需要编写 Go 代码，在项目根目录下新创建一个 main.go 的主文件并编辑内容
 ```
-$ cd $GOPATH/src/github.com/surevil.com/surevil
+$ cd $GOPATH/src/github.com/btcu-pro/btcu
 $ vim main.go
 ```
 main.go源代码
-```
+```golang
 package main
 
 import (
     "os"
     "fmt"
-    "github.com/surevil.com/surevil/sdkInit"
+    "github.com/btcu-pro/btcu/sdkInit"
 )
 
 const (
@@ -524,12 +524,12 @@ func main() {
 
     initInfo := &sdkInit.InitInfo{
 
-        ChannelID: "parallelssurevil",
-        ChannelConfig: os.Getenv("GOPATH") + "/src/github.com/surevil.com/surevil/fixtures/artifacts/channel.tx",
+        ChannelID: "parallelsbtcu",
+        ChannelConfig: os.Getenv("GOPATH") + "/src/github.com/btcu-pro/btcu/fixtures/artifacts/channel.tx",
 
         OrgAdmin:"Admin",
         OrgName:"Org1",
-        OrdererOrgName: "orderer.parallels.surevil.com",
+        OrdererOrgName: "orderer.parallels.btcu-pro",
 
     }
 
@@ -577,7 +577,7 @@ $ source ~/.bashrc
 
 在Golang的新版本中没有自动加入 dep 工具，所以需要开发人员自行安装该工具。
 安装 dep 工具
-```
+```sh
 $ go get -u github.com/golang/dep/cmd/dep
 ```
 
@@ -589,8 +589,8 @@ dep 工具安装好之后我们来安装应用所需要的依赖
 vim Gopkg.toml
 ```
 Gopkg.toml内容
-```
-ignored = ["github.com/surevil.com/surevil/chaincode"]
+```toml
+ignored = ["github.com/btcu-pro/btcu/chaincode"]
 
 [[constraint]]
   # Release v1.0.0-alpha4
@@ -614,24 +614,24 @@ $ docker-compose up -d
 ```
 $ cd ..
 $ go build
-$ ./surevil
+$ ./btcu
 ```
 
 #### 关闭网络并清理环境
 测试成功之后即可以关闭Hypledger Fabric网络，但是我们在Fabric-SDK的配置文件config.yaml中指定了生成的密钥、证书的存储路径，关闭网络之后需要将其进行清理。
 1）首先关闭处于启动状态的网络环境：
 ```
-$ cd $GOPATH/src/github.com/surevil.com/surevil/fixtures 
+$ cd $GOPATH/src/github.com/btcu-pro/btcu/fixtures 
 $ docker-compose down
 ```
 2）然后删除证书存储（由config.yaml配置文件中的client.credentialStore定义）：
 ```
-$ rm -rf /tmp/surevil-*
+$ rm -rf /tmp/btcu-*
 ```
 3）最后删除一些不是由docker-compose命令生成的docker容器和docker镜像：
 ```
-$ docker rm -f -v `docker ps -a --no-trunc | grep "surevil" | cut -d ' ' -f 1` 2>/dev/null
-$ docker rmi `docker images --no-trunc | grep "surevil" | cut -d ' ' -f 1` 2>/dev/null
+$ docker rm -f -v `docker ps -a --no-trunc | grep "btcu" | cut -d ' ' -f 1` 2>/dev/null
+$ docker rmi `docker images --no-trunc | grep "btcu" | cut -d ' ' -f 1` 2>/dev/null
 ```
 
 #### 利用Makefile简化步骤
@@ -644,12 +644,12 @@ sudo apt install make
 
 然后进入到项目的根目录下并创建一个名为 Makefile 的文件进行编辑：
 ```
-$ cd $GOPATH/src/github.com/surevil.com/surevil
+$ cd $GOPATH/src/github.com/btcu-pro/btcu
 $ vim Makefile
 ```
 
 Makefile内容
-```
+```makefile
 .PHONY: all dev clean build env-up env-down run
 
 all: clean build env-up run
@@ -677,14 +677,14 @@ env-down:
 ##### RUN
 run:
     @echo "Start app ..."
-    @./surevil
+    @./btcu
 
 ##### CLEAN
 clean: env-down
     @echo "Clean up ..."
-    @rm -rf /tmp/surevil-* surevil
-    @docker rm -f -v `docker ps -a --no-trunc | grep "surevil" | cut -d ' ' -f 1` 2>/dev/null || true
-    @docker rmi `docker images --no-trunc | grep "surevil" | cut -d ' ' -f 1` 2>/dev/null || true
+    @rm -rf /tmp/btcu-* btcu
+    @docker rm -f -v `docker ps -a --no-trunc | grep "btcu" | cut -d ' ' -f 1` 2>/dev/null || true
+    @docker rmi `docker images --no-trunc | grep "btcu" | cut -d ' ' -f 1` 2>/dev/null || true
     @echo "Clean up done"
 ```
 定义的Makefile文件可以执行完成如下步骤的任务：
@@ -710,7 +710,7 @@ $ vim chaincode/main.go
 - get(stub shim.ChaincodeStubInterface, args []string)：根据用户指定的Key从分类账本中查询状态
 - main()：启动链码的主函数
 main.go 文件内容如下：
-```
+```golang
 package main
 
 import (
@@ -795,7 +795,7 @@ func main(){
 $ vim sdkInit/fabricInitInfo.go
 ```
 fabricInitInfo.go 文件完整内容如下：
-```
+```golang
 package sdkInit
 
 import (
@@ -832,7 +832,7 @@ $ vim sdkInit/start.go
 - 实例化链码
 - 创建客户端实例
 在 start.go 文件中添加如下InstallAndInstantiateCC 函数内容并导入相应的package：
-```
+```golang
 import (
     [......]
 
@@ -841,7 +841,7 @@ import (
     "github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
 )
 
-// surevil
+// btcu
 func InstallAndInstantiateCC(sdk *fabsdk.FabricSDK, info *InitInfo) (*channel.Client, error) {
     fmt.Println("开始安装链码......")
     // creates new go lang chaincode package
@@ -862,7 +862,7 @@ func InstallAndInstantiateCC(sdk *fabsdk.FabricSDK, info *InitInfo) (*channel.Cl
     fmt.Println("开始实例化链码......")
 
     //  returns a policy that requires one valid
-    ccPolicy := cauthdsl.SignedByAnyMember([]string{"org1.parallels.surevil.com"})
+    ccPolicy := cauthdsl.SignedByAnyMember([]string{"org1.parallels.btcu-pro"})
 
     instantiateCCReq := resmgmt.InstantiateCCRequest{Name: info.ChaincodeID, Path: info.ChaincodePath, Version: ChaincodeVersion, Args: [][]byte{[]byte("init")}, Policy: ccPolicy}
     // instantiates chaincode with optional custom options (specific peers, filtered peers, timeout). If peer(s) are not specified
@@ -892,13 +892,13 @@ func InstallAndInstantiateCC(sdk *fabsdk.FabricSDK, info *InitInfo) (*channel.Cl
 $ vim main.go
 ```
 main.go源码
-```
+```golang
 package main
 
 import (
     "os"
     "fmt"
-    "github.com/surevil.com/surevil/sdkInit"
+    "github.com/btcu-pro/btcu/sdkInit"
 )
 
 const (
@@ -911,16 +911,16 @@ func main() {
 
     initInfo := &sdkInit.InitInfo{
 
-        ChannelID: "parallelssurevil",
-        ChannelConfig: os.Getenv("GOPATH") + "/src/github.com/surevil.com/surevil/fixtures/artifacts/channel.tx",
+        ChannelID: "parallelsbtcu",
+        ChannelConfig: os.Getenv("GOPATH") + "/src/github.com/btcu-pro/btcu/fixtures/artifacts/channel.tx",
 
         OrgAdmin:"Admin",
         OrgName:"Org1",
-        OrdererOrgName: "orderer.parallels.surevil.com",
+        OrdererOrgName: "orderer.parallels.btcu-pro",
 
         ChaincodeID: SimpleCC,
         ChaincodeGoPath: os.Getenv("GOPATH"),
-        ChaincodePath: "github.com/surevil.com/surevil/chaincode/",
+        ChaincodePath: "github.com/btcu-pro/btcu/chaincode/",
         UserName:"User1",
     }
 
