@@ -1,4 +1,4 @@
-name: "kongyixueyuan-network"
+name: "btcu-network"
 #
 # Schema version of the content. Used by the SDK to apply the corresponding parsing rules.
 #
@@ -58,17 +58,17 @@ client:
 
   # Root of the MSP directories with keys and certs.
   cryptoconfig:
-    path: ${GOPATH}/src/github.com/kongyixueyuan.com/education/fixtures/crypto-config
+    path: ${GOPATH}/src/github.com/btcu-pro/education/fixtures/crypto-config
 
   # Some SDKs support pluggable KV stores, the properties under "credentialStore"
   # are implementation specific
   credentialStore:
-    path: /tmp/kongyixueyuan-store
+    path: /tmp/btcu-store
 
     # [Optional]. Specific to the CryptoSuite implementation used by GO SDK. Software-based implementations
     # requiring a key store. PKCS#11 based implementations does not.
     cryptoStore:
-      path: /tmp/kongyixueyuan-msp
+      path: /tmp/btcu-msp
 
    # BCCSP config for the client. Used by GO SDK.
   BCCSP:
@@ -98,18 +98,18 @@ client:
 #
 channels:
   # name of the channel
-  kevinkongyixueyuan:
+  demobtcu:
     # Required. list of orderers designated by the application to use for transactions on this
     # channel. This list can be a result of access control ("org1" can only access "ordererA"), or
     # operational decisions to share loads from applications among the orderers.  The values must
     # be "names" of orgs defined under "organizations/peers"
     # deprecated: not recommended, to override any orderer configuration items, entity matchers should be used.
     # orderers:
-    #  - orderer.kevin.kongyixueyuan.com
+    #  - orderer.demo.btcu.com
 
     # Required. list of peers from participating orgs
     peers:
-      peer0.org1.kevin.kongyixueyuan.com:
+      peer0.org1.demo.btcu.com:
         # [Optional]. will this peer be sent transaction proposals for endorsement? The peer must
         # have the chaincode installed. The app can also use this property to decide which peers
         # to send the chaincode install request. Default: true
@@ -129,7 +129,7 @@ channels:
         # Default: true
         eventSource: true
 
-      peer1.org1.kevin.kongyixueyuan.com:
+      peer1.org1.demo.btcu.com:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
@@ -211,11 +211,11 @@ channels:
 #
 organizations:
   Org1:
-    mspid: org1.kevin.kongyixueyuan.com
-    cryptoPath: peerOrganizations/org1.kevin.kongyixueyuan.com/users/{userName}@org1.kevin.kongyixueyuan.com/msp
+    mspid: org1.demo.btcu.com
+    cryptoPath: peerOrganizations/org1.demo.btcu.com/users/{userName}@org1.demo.btcu.com/msp
     peers:
-      - peer0.org1.kevin.kongyixueyuan.com
-      - peer1.org1.kevin.kongyixueyuan.com
+      - peer0.org1.demo.btcu.com
+      - peer1.org1.demo.btcu.com
 
     # [Optional]. Certificate Authorities issue certificates for identification purposes in a Fabric based
     # network. Typically certificates provisioning is done in a separate process outside of the
@@ -223,7 +223,7 @@ organizations:
     # dynamic certificate management (enroll, revoke, re-enroll). The following section is only for
     # Fabric-CA servers.
     certificateAuthorities:
-      - ca.org1.kevin.kongyixueyuan.com
+      - ca.org1.demo.btcu.com
 
 #
 # List of orderers to send transaction and channel create/update requests to. For the time
@@ -231,13 +231,13 @@ organizations:
 # SDK is implementation specific. Consult each SDK's documentation for its handling of orderers.
 #
 orderers:
-  orderer.kevin.kongyixueyuan.com:
+  orderer.demo.btcu.com:
     url: localhost:7050
 
     # these are standard properties defined by the gRPC library
     # they will be passed in as-is to gRPC client constructor
     grpcOptions:
-      ssl-target-name-override: orderer.kevin.kongyixueyuan.com
+      ssl-target-name-override: orderer.demo.btcu.com
       # These parameters should be set in coordination with the keepalive policy on the server,
       # as incompatible settings can result in closing of connection.
       # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
@@ -250,21 +250,21 @@ orderers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: ${GOPATH}/src/github.com/kongyixueyuan.com/education/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/tlsca/tlsca.kevin.kongyixueyuan.com-cert.pem
+      path: ${GOPATH}/src/github.com/btcu-pro/education/fixtures/crypto-config/ordererOrganizations/demo.btcu.com/tlsca/tlsca.demo.btcu.com-cert.pem
 
 #
 # List of peers to send various requests to, including endorsement, query
 # and event listener registration.
 #
 peers:
-  peer0.org1.kevin.kongyixueyuan.com:
+  peer0.org1.demo.btcu.com:
     # this URL is used to send endorsement and query requests
     url: localhost:7051
     # eventUrl is only needed when using eventhub (default is delivery service)
     eventUrl: localhost:7053
 
     grpcOptions:
-      ssl-target-name-override: peer0.org1.kevin.kongyixueyuan.com
+      ssl-target-name-override: peer0.org1.demo.btcu.com
       # These parameters should be set in coordination with the keepalive policy on the server,
       # as incompatible settings can result in closing of connection.
       # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
@@ -277,16 +277,16 @@ peers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: ${GOPATH}/src/github.com/kongyixueyuan.com/education/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/tlsca/tlsca.org1.kevin.kongyixueyuan.com-cert.pem
+      path: ${GOPATH}/src/github.com/btcu-pro/education/fixtures/crypto-config/peerOrganizations/org1.demo.btcu.com/tlsca/tlsca.org1.demo.btcu.com-cert.pem
 
-  peer1.org1.kevin.kongyixueyuan.com:
+  peer1.org1.demo.btcu.com:
     # this URL is used to send endorsement and query requests
     url: localhost:7151
     # eventUrl is only needed when using eventhub (default is delivery service)
     eventUrl: localhost:7153
 
     grpcOptions:
-      ssl-target-name-override: peer1.org1.kevin.kongyixueyuan.com
+      ssl-target-name-override: peer1.org1.demo.btcu.com
       # These parameters should be set in coordination with the keepalive policy on the server,
       # as incompatible settings can result in closing of connection.
       # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
@@ -299,7 +299,7 @@ peers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: ${GOPATH}/src/github.com/kongyixueyuan.com/education/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/tlsca/tlsca.org1.kevin.kongyixueyuan.com-cert.pem
+      path: ${GOPATH}/src/github.com/btcu-pro/education/fixtures/crypto-config/peerOrganizations/org1.demo.btcu.com/tlsca/tlsca.org1.demo.btcu.com-cert.pem
 
 #
 # Fabric-CA is a special kind of Certificate Authority provided by Hyperledger Fabric which allows
@@ -307,11 +307,11 @@ peers:
 # Certificate Authority instead of Fabric-CA, in which case this section would not be specified.
 #
 certificateAuthorities:
-  ca.org1.kevin.kongyixueyuan.com:
+  ca.org1.demo.btcu.com:
     url: http://localhost:7054
     tlsCACerts:
       # Certificate location absolute path
-      path: ${GOPATH}/src/github.com/kongyixueyuan.com/education/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/ca/ca.org1.kevin.kongyixueyuan.com-cert.pem
+      path: ${GOPATH}/src/github.com/btcu-pro/education/fixtures/crypto-config/peerOrganizations/org1.demo.btcu.com/ca/ca.org1.demo.btcu.com-cert.pem
 
     # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
     # needed to enroll and invoke new users.
@@ -319,29 +319,29 @@ certificateAuthorities:
       enrollId: admin
       enrollSecret: adminpw
     # [Optional] The optional name of the CA.
-    caName: ca.org1.kevin.kongyixueyuan.com
+    caName: ca.org1.demo.btcu.com
 
 entityMatchers:
   peer:
-    - pattern: (\w*)peer0.org1.kevin.kongyixueyuan.com(\w*)
+    - pattern: (\w*)peer0.org1.demo.btcu.com(\w*)
       urlSubstitutionExp: localhost:7051
       eventUrlSubstitutionExp: localhost:7053
-      sslTargetOverrideUrlSubstitutionExp: peer0.org1.kevin.kongyixueyuan.com
-      mappedHost: peer0.org1.kevin.kongyixueyuan.com
+      sslTargetOverrideUrlSubstitutionExp: peer0.org1.demo.btcu.com
+      mappedHost: peer0.org1.demo.btcu.com
 
-    - pattern: (\w*)peer1.org1.kevin.kongyixueyuan.com(\w*)
+    - pattern: (\w*)peer1.org1.demo.btcu.com(\w*)
       urlSubstitutionExp: localhost:7151
       eventUrlSubstitutionExp: localhost:7153
-      sslTargetOverrideUrlSubstitutionExp: peer1.org1.kevin.kongyixueyuan.com
-      mappedHost: peer1.org1.kevin.kongyixueyuan.com
+      sslTargetOverrideUrlSubstitutionExp: peer1.org1.demo.btcu.com
+      mappedHost: peer1.org1.demo.btcu.com
 
   orderer:
-    - pattern: (\w*)orderer.kevin.kongyixueyuan.com(\w*)
+    - pattern: (\w*)orderer.demo.btcu.com(\w*)
       urlSubstitutionExp: localhost:7050
-      sslTargetOverrideUrlSubstitutionExp: orderer.kevin.kongyixueyuan.com
-      mappedHost: orderer.kevin.kongyixueyuan.com
+      sslTargetOverrideUrlSubstitutionExp: orderer.demo.btcu.com
+      mappedHost: orderer.demo.btcu.com
 
   certificateAuthorities:
-    - pattern: (\w*)ca.org1.kevin.kongyixueyuan.com(\w*)
+    - pattern: (\w*)ca.org1.demo.btcu.com(\w*)
       urlSubstitutionExp: http://localhost:7054
-      mappedHost: ca.org1.kevin.kongyixueyuan.com
+      mappedHost: ca.org1.demo.btcu.com

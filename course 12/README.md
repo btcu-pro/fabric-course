@@ -21,13 +21,13 @@ GoLang(建议使用，JetBrain全家桶)
 ### 配置Fabric－SDK
 
 
-#### 创建config.yml文件
+#### 创建config.yaml文件
 ```
 $ cd $GOPATH/src/github.com/btcu-pro/btcu
-$ vim config.yml
+$ vim config.yaml
 ```
-config.yml内容
-```yml
+config.yaml内容
+```yaml
 name: "btcu-network"
 #
 # Schema version of the content. Used by the SDK to apply the corresponding parsing rules.
@@ -379,7 +379,7 @@ entityMatchers:
 
 #### 定义所需结构体
 配置文件完成指定的配置信息之后，我们开始编写代码。
-在项目的根目录下添加一个名为 sdkInit 的新目录，我们将在这个文件夹中创建 SDK，并根据配置信息创建应用通道
+在项目的根目录下($GOPATH/src/github.com/btcu-pro/btcu)添加一个名为 sdkInit 的新目录，我们将在这个文件夹中创建 SDK，并根据配置信息创建应用通道
 为了方便管理 Hyperledger Fabric 网络环境，我们将在 sdkInit 目录中创建一个 fabricInitInfo.go 的源代码文件，用于定义一个结构体，包括 Fabric SDK 所需的各项相关信息
 ```
 $ mkdir sdkInit

@@ -2,7 +2,7 @@ package web
 
 import (
 	"fmt"
-	"github.com/kongyixueyuan.com/education/web/controller"
+	"github.com/btcu-pro/education/web/controller"
 	"net/http"
 )
 

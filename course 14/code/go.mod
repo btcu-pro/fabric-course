@@ -1,4 +1,4 @@
-module github.com/kongyixueyuan.com/education
+module github.com/btcu-pro/education
 
 go 1.13
 

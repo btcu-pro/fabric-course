@@ -24,13 +24,13 @@ env-down:
 ##### RUN
 run:
     @echo "Start app ..."
-    @./kongyixueyuan
+    @./btcu
 
 ##### CLEAN
 clean: env-down
     @echo "Clean up ..."
    zhanglingzhe0820
-    go build@rm -rf /tmp/kongyixueyuan-* kongyixueyuan
-    @docker rm -f -v `docker ps -a --no-trunc | grep "kongyixueyuan" | cut -d ' ' -f 1` 2>/dev/null || true
-    @docker rmi `docker images --no-trunc | grep "kongyixueyuan" | cut -d ' ' -f 1` 2>/dev/null || true
+    go build@rm -rf /tmp/btcu-* btcu
+    @docker rm -f -v `docker ps -a --no-trunc | grep "btcu" | cut -d ' ' -f 1` 2>/dev/null || true
+    @docker rmi `docker images --no-trunc | grep "btcu" | cut -d ' ' -f 1` 2>/dev/null || true
     @echo "Clean up done"

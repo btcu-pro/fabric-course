@@ -3,10 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kongyixueyuan.com/education/sdkInit"
-	"github.com/kongyixueyuan.com/education/service"
-	"github.com/kongyixueyuan.com/education/web"
-	"github.com/kongyixueyuan.com/education/web/controller"
+	"github.com/btcu-pro/education/sdkInit"
+	"github.com/btcu-pro/education/service"
+	"github.com/btcu-pro/education/web"
+	"github.com/btcu-pro/education/web/controller"
 	"os"
 )
 
@@ -20,16 +20,16 @@ func main() {
 
 	initInfo := &sdkInit.InitInfo{
 
-		ChannelID:     "kevinkongyixueyuan",
-		ChannelConfig: os.Getenv("GOPATH") + "/src/github.com/kongyixueyuan.com/education/fixtures/artifacts/channel.tx",
+		ChannelID:     "demobtcu",
+		ChannelConfig: os.Getenv("GOPATH") + "/src/github.com/btcu-pro/education/fixtures/artifacts/channel.tx",
 
 		OrgAdmin:       "Admin",
 		OrgName:        "Org1",
-		OrdererOrgName: "orderer.kevin.kongyixueyuan.com",
+		OrdererOrgName: "orderer.demo.btcu.com",
 
 		ChaincodeID:     EduCC,
 		ChaincodeGoPath: os.Getenv("GOPATH"),
-		ChaincodePath:   "github.com/kongyixueyuan.com/education/chaincode/",
+		ChaincodePath:   "github.com/btcu-pro/education/chaincode/",
 		UserName:        "User1",
 	}
 

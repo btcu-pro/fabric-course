@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	web "github.com/kongyixueyuan.com/kongyixueyuan/hfsdkgoweb"
-	"github.com/kongyixueyuan.com/kongyixueyuan/hfsdkgoweb/controller"
-	"github.com/kongyixueyuan.com/kongyixueyuan/sdkInit"
-	"github.com/kongyixueyuan.com/kongyixueyuan/service"
+	web "github.com/btcu-pro/btcu/hfsdkgoweb"
+	"github.com/btcu-pro/btcu/hfsdkgoweb/controller"
+	"github.com/btcu-pro/btcu/sdkInit"
+	"github.com/btcu-pro/btcu/service"
 	"os"
 )
 
@@ -19,16 +19,16 @@ func main() {
 
 	initInfo := &sdkInit.InitInfo{
 
-		ChannelID:     "kevinkongyixueyuan",
-		ChannelConfig: os.Getenv("GOPATH") + "/src/github.com/kongyixueyuan.com/kongyixueyuan/fixtures/artifacts/channel.tx",
+		ChannelID:     "demobtcu",
+		ChannelConfig: os.Getenv("GOPATH") + "/src/github.com/btcu-pro/btcu/fixtures/artifacts/channel.tx",
 
 		OrgAdmin:       "Admin",
 		OrgName:        "Org1",
-		OrdererOrgName: "orderer.kevin.kongyixueyuan.com",
+		OrdererOrgName: "orderer.demo.btcu.com",
 
 		ChaincodeID:     SimpleCC,
 		ChaincodeGoPath: os.Getenv("GOPATH"),
-		ChaincodePath:   "github.com/kongyixueyuan.com/kongyixueyuan/chaincode/",
+		ChaincodePath:   "github.com/btcu-pro/btcu/chaincode/",
 		UserName:        "User1",
 	}
 
@@ -60,7 +60,7 @@ func main() {
 		Client:      channelClient,
 	}
 
-	msg, err := serviceSetup.SetInfo("hanxiaodong", "kongyixueyuan")
+	msg, err := serviceSetup.SetInfo("hanxiaodong", "btcu")
 	if err != nil {
 		fmt.Println(err)
 	} else {

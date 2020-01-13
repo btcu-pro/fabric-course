@@ -99,7 +99,7 @@ func InstallAndInstantiateCC(sdk *fabsdk.FabricSDK, info *InitInfo) (*channel.Cl
 	fmt.Println("开始实例化链码......")
 
 	//  returns a policy that requires one valid
-	ccPolicy := cauthdsl.SignedByAnyMember([]string{"org1.kevin.kongyixueyuan.com"})
+	ccPolicy := cauthdsl.SignedByAnyMember([]string{"org1.demo.btcu.com"})
 
 	instantiateCCReq := resmgmt.InstantiateCCRequest{Name: info.ChaincodeID, Path: info.ChaincodePath, Version: ChaincodeVersion, Args: [][]byte{[]byte("init")}, Policy: ccPolicy}
 	// instantiates chaincode with optional custom options (specific peers, filtered peers, timeout). If peer(s) are not specified

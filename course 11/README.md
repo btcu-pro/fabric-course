@@ -10,6 +10,7 @@
 本应用实现是在基于 Ubuntu 16.04（推荐） 系统的基础上完成的，但 Hyperledger Fabric 与Mac OS X、Windows和其他Linux发行版相兼容。
 
 ### 所需环境及工具
+
 ```
 Ubuntu 16.04
 vim、git
@@ -52,8 +53,9 @@ docker-compose版本
 
 将当前用户添加到 docker 组
 ```
-$ sudo usermod -aG docker kevin
+$ sudo usermod -aG docker flyq
 ```
+这里我的系统的用户名是 flyq，其他人的把它替换为自己系统的用户名。
 添加成功后必须注销/退出并重新登录(退出终端重新连接即可)
 
 如果没有将当前用户添加到 docker 组中，在后期执行make命令时会造成错误: ERROR: Couldn't connect to Docker daemon at http+docker://localunixsocket - is it running?

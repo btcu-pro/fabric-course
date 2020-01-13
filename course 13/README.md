@@ -79,7 +79,7 @@ fabric-sdk 不仅提供了相应的强大功能，而且还给开发人员设计
 #### 事件处理
 在项目根目录下创建一个 service 目录作为业务层，在业务层中，我们使用 Fabric-SDK-Go 提供的接口对象调用相应的 API 以实现对链码的访问，最终实现对分类账本中的状态进行操作。
 ```
-$ cd $GOPATH/src/github.com/kongyixueyuan.com/kongyixueyuan
+$ cd $GOPATH/src/github.com/btcu-pro/btcu
 $ mkdir service
 ```
 在 service 目录下创建 domain.go 文件并进行编辑， 声明一个结构体及对事件相关而封装的源代码
@@ -168,7 +168,7 @@ package main
 
 import (
     [......]
-    "github.com/kongyixueyuan.com/kongyixueyuan/service"
+    "github.com/btcu-pro/btcu/service"
 )
 
 [......]
@@ -179,7 +179,7 @@ import (
         Client:channelClient,
     }
 
-    msg, err := serviceSetup.SetInfo("hanxiaodong", "kongyixueyuan")
+    msg, err := serviceSetup.SetInfo("hanxiaodong", "btcu")
     if err != nil {
         fmt.Println(err)
     } else {
@@ -259,7 +259,7 @@ Go 语言本身提供了一个 Web 服务器来处理 HTTP 请求，并为 HTML 
 - web/static：包含所有静态CSS，Javascript，图片等文件
 - web/controllers ：包含将呈现模板的所有函数
 ```
-$ cd $GOPATH/src/github.com/kongyixueyuan.com/kongyixueyuan
+$ cd $GOPATH/src/github.com/btcu-pro/btcu
 ```
 clone现成的代码：
 ```
@@ -298,8 +298,8 @@ $ vim main.go
 ```
 import(
     [......]
-    "github.com/kongyixueyuan.com/kongyixueyuan/web"
-    "github.com/kongyixueyuan.com/kongyixueyuan/web/controller"
+    "github.com/btcu-pro/btcu/web"
+    "github.com/btcu-pro/btcu/web/controller"
 )
 
 func main(){}

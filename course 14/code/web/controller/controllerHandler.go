@@ -3,7 +3,7 @@ package controller
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kongyixueyuan.com/education/service"
+	"github.com/btcu-pro/education/service"
 	"net/http"
 )
 

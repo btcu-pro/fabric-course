@@ -29,7 +29,7 @@
 
 ## 1.2 架构设计
 
-我们在 [从零到壹构建基于 Fabric-SDK-Go 的Web项目实战](https://github.com/kevin-hf/kongyixueyuan) 中已经完成了一个完整的基于 `fabric-sdk-go` 的应用示例，所以我们现在使用之前的应用架构，不同的是在此应用中需要编写实现完整的链码并通过业务层调用链码中的各个函数，以实现对数据状态的操作。界面为了方便用户操作使用，仍然使用Web浏览器的方式实现。而且在此应用中我们将 `Hyperledger Fabric` 默认的状态数据库由 `LevelDB` 替换为 `CouchDB` 来实现
+我们在 [从零到壹构建基于 Fabric-SDK-Go 的Web项目实战](https://github.com/demo-hf/btcu) 中已经完成了一个完整的基于 `fabric-sdk-go` 的应用示例，所以我们现在使用之前的应用架构，不同的是在此应用中需要编写实现完整的链码并通过业务层调用链码中的各个函数，以实现对数据状态的操作。界面为了方便用户操作使用，仍然使用Web浏览器的方式实现。而且在此应用中我们将 `Hyperledger Fabric` 默认的状态数据库由 `LevelDB` 替换为 `CouchDB` 来实现
 
 
 
@@ -82,19 +82,19 @@
 
 ### 1.4.1 设置环境
 
-我们在 [从零到壹构建基于 Fabric-SDK-Go 的Web项目实战](https://github.com/kevin-hf/kongyixueyuan) （如果没有看过《从零到壹构建基于 Fabric-SDK-Go 的Web项目实战》，建议先将其学习实现，然后再学习此案例）说明了如何构建fabric网络环境，现在我们要重新完成一个新的应用，所以网络环境可以使用之前的内容，但是因为**状态数据库使用 `CouchDB` 来实现**，所以需要做出部分修改，新增与 `CouchDB` 相关的内容。为了方便起见，我们重新搭建一个应用所需的网络环境。
+我们在 [从零到壹构建基于 Fabric-SDK-Go 的Web项目实战](https://github.com/demo-hf/btcu) （如果没有看过《从零到壹构建基于 Fabric-SDK-Go 的Web项目实战》，建议先将其学习实现，然后再学习此案例）说明了如何构建fabric网络环境，现在我们要重新完成一个新的应用，所以网络环境可以使用之前的内容，但是因为**状态数据库使用 `CouchDB` 来实现**，所以需要做出部分修改，新增与 `CouchDB` 相关的内容。为了方便起见，我们重新搭建一个应用所需的网络环境。
 
 在`GOPATH`的`src`文件夹中新建一个目录如下：
 
 ```shell
-$ mkdir -p $GOPATH/src/github.com/kongyixueyuan.com/education 
-$ cd $GOPATH/src/github.com/kongyixueyuan.com/education
+$ mkdir -p $GOPATH/src/github.com/btcu-pro/education 
+$ cd $GOPATH/src/github.com/btcu-pro/education
 ```
 
 使用 `git` 命令克隆 hf-fixtures 目录当前路径
 
 ```shell
-$ git clone https://github.com/kevin-hf/hf-fixtures.git
+$ git clone https://github.com/demo-hf/hf-fixtures.git
 ```
 
 将 hf-fixtures 文件夹重命名为 fixtures
@@ -106,10 +106,10 @@ $ mv hf-fixtures/fixtures
 修改`fixtures`  文件夹的所属关系为当前用户
 
 ```shell
-$ sudo chown -R kevin:kevin ./fixtures
+$ sudo chown -R demo:demo ./fixtures
 ```
 
-> 提示： kevin 为安装 Ubuntu 16.04 系统时创建的用户
+> 提示： demo 为安装 Ubuntu 16.04 系统时创建的用户
 
 进入 `fixtures` 目录
 
@@ -148,17 +148,17 @@ $ vim docker-compose.yml
 2. 编辑  orderer 部分
 
    ```yaml
-     orderer.kevin.kongyixueyuan.com:
+     orderer.demo.btcu.com:
        image: hyperledger/fabric-orderer
-       container_name: orderer.kevin.kongyixueyuan.com
+       container_name: orderer.demo.btcu.com
        environment:
          - ORDERER_GENERAL_LOGLEVEL=debug
          - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
          - ORDERER_GENERAL_LISTENPORT=7050
-         - ORDERER_GENERAL_GENESISPROFILE=kongyixueyuan
+         - ORDERER_GENERAL_GENESISPROFILE=btcu
          - ORDERER_GENERAL_GENESISMETHOD=file
          - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/genesis.block
-         - ORDERER_GENERAL_LOCALMSPID=kevin.kongyixueyuan.com
+         - ORDERER_GENERAL_LOCALMSPID=demo.btcu.com
          - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
          - ORDERER_GENERAL_TLS_ENABLED=true
          - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
@@ -168,39 +168,39 @@ $ vim docker-compose.yml
        command: orderer
        volumes:
          - ./artifacts/genesis.block:/var/hyperledger/orderer/genesis.block
-         - ./crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/msp:/var/hyperledger/orderer/msp
-         - ./crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/orderers/orderer.kevin.kongyixueyuan.com/tls:/var/hyperledger/orderer/tls
+         - ./crypto-config/ordererOrganizations/demo.btcu.com/orderers/orderer.demo.btcu.com/msp:/var/hyperledger/orderer/msp
+         - ./crypto-config/ordererOrganizations/demo.btcu.com/orderers/orderer.demo.btcu.com/tls:/var/hyperledger/orderer/tls
        ports:
          - 7050:7050
        networks:
          default:
            aliases:
-             - orderer.kevin.kongyixueyuan.com
+             - orderer.demo.btcu.com
    ```
 
 3. 编辑 ca 部分
 
    ```yaml
-     ca.org1.kevin.kongyixueyuan.com:
+     ca.org1.demo.btcu.com:
        image: hyperledger/fabric-ca
-       container_name: ca.org1.kevin.kongyixueyuan.com
+       container_name: ca.org1.demo.btcu.com
        environment:
          - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-         - FABRIC_CA_SERVER_CA_NAME=ca.org1.kevin.kongyixueyuan.com
-         - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.kevin.kongyixueyuan.com-cert.pem
+         - FABRIC_CA_SERVER_CA_NAME=ca.org1.demo.btcu.com
+         - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.demo.btcu.com-cert.pem
          - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/727e69ed4a01a204cd53bf4a97c2c1cb947419504f82851f6ae563c3c96dea3a_sk
          - FABRIC_CA_SERVER_TLS_ENABLED=true
-         - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.kevin.kongyixueyuan.com-cert.pem
+         - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.demo.btcu.com-cert.pem
          - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/727e69ed4a01a204cd53bf4a97c2c1cb947419504f82851f6ae563c3c96dea3a_sk
        ports:
          - 7054:7054
        command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
        volumes:
-         - ./crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/ca/:/etc/hyperledger/fabric-ca-server-config
+         - ./crypto-config/peerOrganizations/org1.demo.btcu.com/ca/:/etc/hyperledger/fabric-ca-server-config
        networks:
          default:
            aliases:
-             - ca.org1.kevin.kongyixueyuan.com
+             - ca.org1.demo.btcu.com
    ```
 
 4. 声明 CouchDB 部分：
@@ -225,29 +225,29 @@ $ vim docker-compose.yml
    1. `peer0.org1.example.com`  内容如下
 
       ```yaml
-        peer0.org1.kevin.kongyixueyuan.com:
+        peer0.org1.demo.btcu.com:
           image: hyperledger/fabric-peer
-          container_name: peer0.org1.kevin.kongyixueyuan.com
+          container_name: peer0.org1.demo.btcu.com
           environment:
             - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
             - CORE_VM_DOCKER_ATTACHSTDOUT=true
             - CORE_LOGGING_LEVEL=DEBUG
-            - CORE_PEER_NETWORKID=kongyixueyuan
+            - CORE_PEER_NETWORKID=btcu
             - CORE_PEER_PROFILE_ENABLED=true
             - CORE_PEER_TLS_ENABLED=true
             - CORE_PEER_TLS_CERT_FILE=/var/hyperledger/tls/server.crt
             - CORE_PEER_TLS_KEY_FILE=/var/hyperledger/tls/server.key
             - CORE_PEER_TLS_ROOTCERT_FILE=/var/hyperledger/tls/ca.crt
-            - CORE_PEER_ID=peer0.org1.kevin.kongyixueyuan.com
+            - CORE_PEER_ID=peer0.org1.demo.btcu.com
             - CORE_PEER_ADDRESSAUTODETECT=true
-            - CORE_PEER_ADDRESS=peer0.org1.kevin.kongyixueyuan.com:7051
-            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.kevin.kongyixueyuan.com:7051
+            - CORE_PEER_ADDRESS=peer0.org1.demo.btcu.com:7051
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.demo.btcu.com:7051
             - CORE_PEER_GOSSIP_USELEADERELECTION=true
             - CORE_PEER_GOSSIP_ORGLEADER=false
             - CORE_PEER_GOSSIP_SKIPHANDSHAKE=true
-            - CORE_PEER_LOCALMSPID=org1.kevin.kongyixueyuan.com
+            - CORE_PEER_LOCALMSPID=org1.demo.btcu.com
             - CORE_PEER_MSPCONFIGPATH=/var/hyperledger/msp
-            - CORE_PEER_TLS_SERVERHOSTOVERRIDE=peer0.org1.kevin.kongyixueyuan.com
+            - CORE_PEER_TLS_SERVERHOSTOVERRIDE=peer0.org1.demo.btcu.com
             - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
             - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb:5984
             - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
@@ -256,46 +256,46 @@ $ vim docker-compose.yml
           command: peer node start
           volumes:
             - /var/run/:/host/var/run/
-            - ./crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/msp:/var/hyperledger/msp
-            - ./crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer0.org1.kevin.kongyixueyuan.com/tls:/var/hyperledger/tls
+            - ./crypto-config/peerOrganizations/org1.demo.btcu.com/peers/peer0.org1.demo.btcu.com/msp:/var/hyperledger/msp
+            - ./crypto-config/peerOrganizations/org1.demo.btcu.com/peers/peer0.org1.demo.btcu.com/tls:/var/hyperledger/tls
           ports:
             - 7051:7051
             - 7053:7053
           depends_on:
-            - orderer.kevin.kongyixueyuan.com
+            - orderer.demo.btcu.com
             - couchdb
           networks:
             default:
               aliases:
-                - peer0.org1.kevin.kongyixueyuan.com
+                - peer0.org1.demo.btcu.com
       ```
 
    2. peer1.org1.example.com 内容如下
 
       ```yaml
-        peer1.org1.kevin.kongyixueyuan.com:
+        peer1.org1.demo.btcu.com:
           image: hyperledger/fabric-peer
-          container_name: peer1.org1.kevin.kongyixueyuan.com
+          container_name: peer1.org1.demo.btcu.com
           environment:
             - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
             - CORE_VM_DOCKER_ATTACHSTDOUT=true
             - CORE_LOGGING_LEVEL=DEBUG
-            - CORE_PEER_NETWORKID=kongyixueyuan
+            - CORE_PEER_NETWORKID=btcu
             - CORE_PEER_PROFILE_ENABLED=true
             - CORE_PEER_TLS_ENABLED=true
             - CORE_PEER_TLS_CERT_FILE=/var/hyperledger/tls/server.crt
             - CORE_PEER_TLS_KEY_FILE=/var/hyperledger/tls/server.key
             - CORE_PEER_TLS_ROOTCERT_FILE=/var/hyperledger/tls/ca.crt
-            - CORE_PEER_ID=peer1.org1.kevin.kongyixueyuan.com
+            - CORE_PEER_ID=peer1.org1.demo.btcu.com
             - CORE_PEER_ADDRESSAUTODETECT=true
-            - CORE_PEER_ADDRESS=peer1.org1.kevin.kongyixueyuan.com:7051
-            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org1.kevin.kongyixueyuan.com:7051
+            - CORE_PEER_ADDRESS=peer1.org1.demo.btcu.com:7051
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org1.demo.btcu.com:7051
             - CORE_PEER_GOSSIP_USELEADERELECTION=true
             - CORE_PEER_GOSSIP_ORGLEADER=false
             - CORE_PEER_GOSSIP_SKIPHANDSHAKE=true
-            - CORE_PEER_LOCALMSPID=org1.kevin.kongyixueyuan.com
+            - CORE_PEER_LOCALMSPID=org1.demo.btcu.com
             - CORE_PEER_MSPCONFIGPATH=/var/hyperledger/msp
-            - CORE_PEER_TLS_SERVERHOSTOVERRIDE=peer1.org1.kevin.kongyixueyuan.com
+            - CORE_PEER_TLS_SERVERHOSTOVERRIDE=peer1.org1.demo.btcu.com
             - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
             - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb:5984
             - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
@@ -304,18 +304,18 @@ $ vim docker-compose.yml
           command: peer node start
           volumes:
             - /var/run/:/host/var/run/
-            - ./crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/msp:/var/hyperledger/msp
-            - ./crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/peers/peer1.org1.kevin.kongyixueyuan.com/tls:/var/hyperledger/tls
+            - ./crypto-config/peerOrganizations/org1.demo.btcu.com/peers/peer1.org1.demo.btcu.com/msp:/var/hyperledger/msp
+            - ./crypto-config/peerOrganizations/org1.demo.btcu.com/peers/peer1.org1.demo.btcu.com/tls:/var/hyperledger/tls
           ports:
             - 7151:7051
             - 7153:7053
           depends_on:
-            - orderer.kevin.kongyixueyuan.com
+            - orderer.demo.btcu.com
             - couchdb
           networks:
             default:
               aliases:
-                - peer1.org1.kevin.kongyixueyuan.com
+                - peer1.org1.demo.btcu.com
       ```
 
 ## 1.5 测试网络环境
@@ -323,7 +323,7 @@ $ vim docker-compose.yml
 为了检查网络是否正常工作，使用`docker-compose`同时启动或停止所有容器。 进入`fixtures`文件夹，运行：
 
 ```shell
-$ cd $GOPATH/src/github.com/kongyixueyuan.com/education/fixtures
+$ cd $GOPATH/src/github.com/btcu-pro/education/fixtures
 $ docker-compose up
 ```
 
@@ -348,7 +348,7 @@ $ docker-compose up
 最后在终端2中执行如下命令关闭网络：
 
 ```shell
-$ cd $GOPATH/src/github.com/kongyixueyuan.com/education/fixtures
+$ cd $GOPATH/src/github.com/btcu-pro/education/fixtures
 $ docker-compose down
 ```
 
@@ -371,14 +371,14 @@ $ docker-compose down
 进入项目的根目录中创建一个 `config.yaml` 文件并编辑
 
 ```shell
-$ cd $GOPATH/src/github.com/kongyixueyuan.com/education
+$ cd $GOPATH/src/github.com/btcu-pro/education
 $ vim config.yaml
 ```
 
 config.yaml 配置文件完整内容如下:
 
 ```yaml
-name: "kongyixueyuan-network"
+name: "btcu-network"
 #
 # Schema version of the content. Used by the SDK to apply the corresponding parsing rules.
 #
@@ -438,17 +438,17 @@ client:
 
   # Root of the MSP directories with keys and certs.
   cryptoconfig:
-    path: ${GOPATH}/src/github.com/kongyixueyuan.com/education/fixtures/crypto-config
+    path: ${GOPATH}/src/github.com/btcu-pro/education/fixtures/crypto-config
 
   # Some SDKs support pluggable KV stores, the properties under "credentialStore"
   # are implementation specific
   credentialStore:
-    path: /tmp/kongyixueyuan-store
+    path: /tmp/btcu-store
 
     # [Optional]. Specific to the CryptoSuite implementation used by GO SDK. Software-based implementations
     # requiring a key store. PKCS#11 based implementations does not.
     cryptoStore:
-      path: /tmp/kongyixueyuan-msp
+      path: /tmp/btcu-msp
 
    # BCCSP config for the client. Used by GO SDK.
   BCCSP:
@@ -478,18 +478,18 @@ client:
 #
 channels:
   # name of the channel
-  kevinkongyixueyuan:
+  demobtcu:
     # Required. list of orderers designated by the application to use for transactions on this
     # channel. This list can be a result of access control ("org1" can only access "ordererA"), or
     # operational decisions to share loads from applications among the orderers.  The values must
     # be "names" of orgs defined under "organizations/peers"
     # deprecated: not recommended, to override any orderer configuration items, entity matchers should be used.
     # orderers:
-    #  - orderer.kevin.kongyixueyuan.com
+    #  - orderer.demo.btcu.com
 
     # Required. list of peers from participating orgs
     peers:
-      peer0.org1.kevin.kongyixueyuan.com:
+      peer0.org1.demo.btcu.com:
         # [Optional]. will this peer be sent transaction proposals for endorsement? The peer must
         # have the chaincode installed. The app can also use this property to decide which peers
         # to send the chaincode install request. Default: true
@@ -509,7 +509,7 @@ channels:
         # Default: true
         eventSource: true
 
-      peer1.org1.kevin.kongyixueyuan.com:
+      peer1.org1.demo.btcu.com:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
@@ -591,11 +591,11 @@ channels:
 #
 organizations:
   Org1:
-    mspid: org1.kevin.kongyixueyuan.com
-    cryptoPath: peerOrganizations/org1.kevin.kongyixueyuan.com/users/{userName}@org1.kevin.kongyixueyuan.com/msp
+    mspid: org1.demo.btcu.com
+    cryptoPath: peerOrganizations/org1.demo.btcu.com/users/{userName}@org1.demo.btcu.com/msp
     peers:
-      - peer0.org1.kevin.kongyixueyuan.com
-      - peer1.org1.kevin.kongyixueyuan.com
+      - peer0.org1.demo.btcu.com
+      - peer1.org1.demo.btcu.com
 
     # [Optional]. Certificate Authorities issue certificates for identification purposes in a Fabric based
     # network. Typically certificates provisioning is done in a separate process outside of the
@@ -603,7 +603,7 @@ organizations:
     # dynamic certificate management (enroll, revoke, re-enroll). The following section is only for
     # Fabric-CA servers.
     certificateAuthorities:
-      - ca.org1.kevin.kongyixueyuan.com
+      - ca.org1.demo.btcu.com
 
 #
 # List of orderers to send transaction and channel create/update requests to. For the time
@@ -611,13 +611,13 @@ organizations:
 # SDK is implementation specific. Consult each SDK's documentation for its handling of orderers.
 #
 orderers:
-  orderer.kevin.kongyixueyuan.com:
+  orderer.demo.btcu.com:
     url: localhost:7050
 
     # these are standard properties defined by the gRPC library
     # they will be passed in as-is to gRPC client constructor
     grpcOptions:
-      ssl-target-name-override: orderer.kevin.kongyixueyuan.com
+      ssl-target-name-override: orderer.demo.btcu.com
       # These parameters should be set in coordination with the keepalive policy on the server,
       # as incompatible settings can result in closing of connection.
       # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
@@ -630,21 +630,21 @@ orderers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: ${GOPATH}/src/github.com/kongyixueyuan.com/education/fixtures/crypto-config/ordererOrganizations/kevin.kongyixueyuan.com/tlsca/tlsca.kevin.kongyixueyuan.com-cert.pem
+      path: ${GOPATH}/src/github.com/btcu-pro/education/fixtures/crypto-config/ordererOrganizations/demo.btcu.com/tlsca/tlsca.demo.btcu.com-cert.pem
 
 #
 # List of peers to send various requests to, including endorsement, query
 # and event listener registration.
 #
 peers:
-  peer0.org1.kevin.kongyixueyuan.com:
+  peer0.org1.demo.btcu.com:
     # this URL is used to send endorsement and query requests
     url: localhost:7051
     # eventUrl is only needed when using eventhub (default is delivery service)
     eventUrl: localhost:7053
 
     grpcOptions:
-      ssl-target-name-override: peer0.org1.kevin.kongyixueyuan.com
+      ssl-target-name-override: peer0.org1.demo.btcu.com
       # These parameters should be set in coordination with the keepalive policy on the server,
       # as incompatible settings can result in closing of connection.
       # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
@@ -657,16 +657,16 @@ peers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: ${GOPATH}/src/github.com/kongyixueyuan.com/education/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/tlsca/tlsca.org1.kevin.kongyixueyuan.com-cert.pem
+      path: ${GOPATH}/src/github.com/btcu-pro/education/fixtures/crypto-config/peerOrganizations/org1.demo.btcu.com/tlsca/tlsca.org1.demo.btcu.com-cert.pem
 
-  peer1.org1.kevin.kongyixueyuan.com:
+  peer1.org1.demo.btcu.com:
     # this URL is used to send endorsement and query requests
     url: localhost:7151
     # eventUrl is only needed when using eventhub (default is delivery service)
     eventUrl: localhost:7153
 
     grpcOptions:
-      ssl-target-name-override: peer1.org1.kevin.kongyixueyuan.com
+      ssl-target-name-override: peer1.org1.demo.btcu.com
       # These parameters should be set in coordination with the keepalive policy on the server,
       # as incompatible settings can result in closing of connection.
       # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
@@ -679,7 +679,7 @@ peers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: ${GOPATH}/src/github.com/kongyixueyuan.com/education/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/tlsca/tlsca.org1.kevin.kongyixueyuan.com-cert.pem
+      path: ${GOPATH}/src/github.com/btcu-pro/education/fixtures/crypto-config/peerOrganizations/org1.demo.btcu.com/tlsca/tlsca.org1.demo.btcu.com-cert.pem
 
 #
 # Fabric-CA is a special kind of Certificate Authority provided by Hyperledger Fabric which allows
@@ -687,11 +687,11 @@ peers:
 # Certificate Authority instead of Fabric-CA, in which case this section would not be specified.
 #
 certificateAuthorities:
-  ca.org1.kevin.kongyixueyuan.com:
+  ca.org1.demo.btcu.com:
     url: http://localhost:7054
     tlsCACerts:
       # Certificate location absolute path
-      path: ${GOPATH}/src/github.com/kongyixueyuan.com/education/fixtures/crypto-config/peerOrganizations/org1.kevin.kongyixueyuan.com/ca/ca.org1.kevin.kongyixueyuan.com-cert.pem
+      path: ${GOPATH}/src/github.com/btcu-pro/education/fixtures/crypto-config/peerOrganizations/org1.demo.btcu.com/ca/ca.org1.demo.btcu.com-cert.pem
 
     # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
     # needed to enroll and invoke new users.
@@ -699,32 +699,32 @@ certificateAuthorities:
       enrollId: admin
       enrollSecret: adminpw
     # [Optional] The optional name of the CA.
-    caName: ca.org1.kevin.kongyixueyuan.com
+    caName: ca.org1.demo.btcu.com
 
 entityMatchers:
   peer:
-    - pattern: (\w*)peer0.org1.kevin.kongyixueyuan.com(\w*)
+    - pattern: (\w*)peer0.org1.demo.btcu.com(\w*)
       urlSubstitutionExp: localhost:7051
       eventUrlSubstitutionExp: localhost:7053
-      sslTargetOverrideUrlSubstitutionExp: peer0.org1.kevin.kongyixueyuan.com
-      mappedHost: peer0.org1.kevin.kongyixueyuan.com
+      sslTargetOverrideUrlSubstitutionExp: peer0.org1.demo.btcu.com
+      mappedHost: peer0.org1.demo.btcu.com
 
-    - pattern: (\w*)peer1.org1.kevin.kongyixueyuan.com(\w*)
+    - pattern: (\w*)peer1.org1.demo.btcu.com(\w*)
       urlSubstitutionExp: localhost:7151
       eventUrlSubstitutionExp: localhost:7153
-      sslTargetOverrideUrlSubstitutionExp: peer1.org1.kevin.kongyixueyuan.com
-      mappedHost: peer1.org1.kevin.kongyixueyuan.com
+      sslTargetOverrideUrlSubstitutionExp: peer1.org1.demo.btcu.com
+      mappedHost: peer1.org1.demo.btcu.com
 
   orderer:
-    - pattern: (\w*)orderer.kevin.kongyixueyuan.com(\w*)
+    - pattern: (\w*)orderer.demo.btcu.com(\w*)
       urlSubstitutionExp: localhost:7050
-      sslTargetOverrideUrlSubstitutionExp: orderer.kevin.kongyixueyuan.com
-      mappedHost: orderer.kevin.kongyixueyuan.com
+      sslTargetOverrideUrlSubstitutionExp: orderer.demo.btcu.com
+      mappedHost: orderer.demo.btcu.com
 
   certificateAuthorities:
-    - pattern: (\w*)ca.org1.kevin.kongyixueyuan.com(\w*)
+    - pattern: (\w*)ca.org1.demo.btcu.com(\w*)
       urlSubstitutionExp: http://localhost:7054
-      mappedHost: ca.org1.kevin.kongyixueyuan.com
+      mappedHost: ca.org1.demo.btcu.com
 ```
 
 
@@ -1154,7 +1154,7 @@ func (t *EducationChaincode) delEdu(stub shim.ChaincodeStubInterface, args []str
 在 `sdkInit` 目录下新创建一个名为 `start.go` 的go文件利用 vim 编辑器进行编辑：
 
 ```shell
-$ cd $GOPATH/src/github.com/kongyixueyuan.com/education
+$ cd $GOPATH/src/github.com/btcu-pro/education
 $ vim sdkInit/start.go 
 ```
 
@@ -1247,7 +1247,7 @@ func CreateChannel(sdk *fabsdk.FabricSDK, info *InitInfo) error {
 为了确保客户端能够初始化所有组件，将在启动网络的情况下进行简单的测试。 为了做到这一点，我们需要编写 Go 代码，在项目根目录下新创建一个 `main.go` 的主文件并编辑内容
 
 ```shell
-$ cd $GOPATH/src/github.com/kongyixueyuan.com/education
+$ cd $GOPATH/src/github.com/btcu-pro/education
 $ vim main.go
 ```
 
@@ -1262,7 +1262,7 @@ package main
 import (
 	"os"
 	"fmt"
-	"github.com/kongyixueyuan.com/education/sdkInit"
+	"github.com/btcu-pro/education/sdkInit"
 )
 
 const (
@@ -1275,12 +1275,12 @@ func main() {
 
 	initInfo := &sdkInit.InitInfo{
 
-		ChannelID: "kevinkongyixueyuan",
-		ChannelConfig: os.Getenv("GOPATH") + "/src/github.com/kongyixueyuan.com/education/fixtures/artifacts/channel.tx",
+		ChannelID: "demobtcu",
+		ChannelConfig: os.Getenv("GOPATH") + "/src/github.com/btcu-pro/education/fixtures/artifacts/channel.tx",
 
 		OrgAdmin:"Admin",
 		OrgName:"Org1",
-		OrdererOrgName: "orderer.kevin.kongyixueyuan.com",
+		OrdererOrgName: "orderer.demo.btcu.com",
 
 	}
 
@@ -1340,7 +1340,7 @@ $ vim Gopkg.toml
 ```
 
 ```toml
-ignored = ["github.com/kongyixueyuan.com/education/chaincode"]
+ignored = ["github.com/btcu-pro/education/chaincode"]
 
 [[constraint]]
   # Release v1.0.0-alpha4
@@ -1391,22 +1391,22 @@ Fabric SDK生成一些文件，如证书，二进制文件和临时文件。 关
 - 关闭你的网络： 
 
   ```shell
-  $ cd $GOPATH/src/github.com/kongyixueyuan.com/education/fixtures 
+  $ cd $GOPATH/src/github.com/btcu-pro/education/fixtures 
   $ docker-compose down
   ```
 
 - 删除证书存储（在配置文件中，`client.credentialStore`中定义）：
 
   ```shell
-  $ rm -rf /tmp/kongyixueyuan-*
+  $ rm -rf /tmp/btcu-*
   ```
 
 - 删除一些不是由`docker-compose`命令生成的docker容器和docker镜像： 
 
   ```shell
-  $ docker rm -f -v `docker ps -a --no-trunc | grep "kongyixueyuan" | cut -d ' ' -f 1` 2>/dev/null
+  $ docker rm -f -v `docker ps -a --no-trunc | grep "btcu" | cut -d ' ' -f 1` 2>/dev/null
   和 
-  $ docker rmi `docker images --no-trunc | grep "kongyixueyuan" | cut -d ' ' -f 1` 2>/dev/null
+  $ docker rmi `docker images --no-trunc | grep "btcu" | cut -d ' ' -f 1` 2>/dev/null
   ```
 
 *如何更有效率？*
@@ -1426,7 +1426,7 @@ $ make --version
 然后使用以下内容在项目的根目录下创建一个名为`Makefile`的文件并进行编辑：
 
 ```shell
-$ cd $GOPATH/src/github.com/kongyixueyuan.com/education
+$ cd $GOPATH/src/github.com/btcu-pro/education
 $ vim Makefile
 ```
 
@@ -1465,9 +1465,9 @@ run:
 ##### CLEAN
 clean: env-down
 	@echo "Clean up ..."
-	@rm -rf /tmp/kongyixueyuan-* kongyixueyuan
-	@docker rm -f -v `docker ps -a --no-trunc | grep "kongyixueyuan" | cut -d ' ' -f 1` 2>/dev/null || true
-	@docker rmi `docker images --no-trunc | grep "kongyixueyuan" | cut -d ' ' -f 1` 2>/dev/null || true
+	@rm -rf /tmp/btcu-* btcu
+	@docker rm -f -v `docker ps -a --no-trunc | grep "btcu" | cut -d ' ' -f 1` 2>/dev/null || true
+	@docker rmi `docker images --no-trunc | grep "btcu" | cut -d ' ' -f 1` 2>/dev/null || true
 	@echo "Clean up done"
 ```
 
@@ -1533,7 +1533,7 @@ func InstallAndInstantiateCC(sdk *fabsdk.FabricSDK, info *InitInfo) (*channel.Cl
 	fmt.Println("开始实例化链码......")
 
 	//  returns a policy that requires one valid
-	ccPolicy := cauthdsl.SignedByAnyMember([]string{"org1.kevin.kongyixueyuan.com"})
+	ccPolicy := cauthdsl.SignedByAnyMember([]string{"org1.demo.btcu.com"})
 
 	instantiateCCReq := resmgmt.InstantiateCCRequest{Name: info.ChaincodeID, Path: info.ChaincodePath, Version: ChaincodeVersion, Args: [][]byte{[]byte("init")}, Policy: ccPolicy}
 	// instantiates chaincode with optional custom options (specific peers, filtered peers, timeout). If peer(s) are not specified
@@ -1576,7 +1576,7 @@ package main
 import (
 	"os"
 	"fmt"
-	"github.com/kongyixueyuan.com/education/sdkInit"
+	"github.com/btcu-pro/education/sdkInit"
 )
 
 const (
@@ -1589,16 +1589,16 @@ func main() {
 
 	initInfo := &sdkInit.InitInfo{
 
-		ChannelID: "kevinkongyixueyuan",
-		ChannelConfig: os.Getenv("GOPATH") + "/src/github.com/kongyixueyuan.com/education/fixtures/artifacts/channel.tx",
+		ChannelID: "demobtcu",
+		ChannelConfig: os.Getenv("GOPATH") + "/src/github.com/btcu-pro/education/fixtures/artifacts/channel.tx",
 
 		OrgAdmin:"Admin",
 		OrgName:"Org1",
-		OrdererOrgName: "orderer.kevin.kongyixueyuan.com",
+		OrdererOrgName: "orderer.demo.btcu.com",
 
 		ChaincodeID: SimpleCC,
 		ChaincodeGoPath: os.Getenv("GOPATH"),
-		ChaincodePath: "github.com/kongyixueyuan.com/education/chaincode/",
+		ChaincodePath: "github.com/btcu-pro/education/chaincode/",
 		UserName:"User1",
 	}
 
@@ -1649,7 +1649,7 @@ $ make
 在项目根目录下创建一个 `service` 目录作为业务层，在业务层中，我们使用 `Fabric-SDK-Go` 提供的接口对象调用相应的 API 以实现对链码的访问，最终实现对分类账本中的状态进行操作。 
 
 ```shell
-$ cd $GOPATH/src/github.com/kongyixueyuan.com/education
+$ cd $GOPATH/src/github.com/btcu-pro/education
 $ mkdir service
 ```
 
@@ -1800,7 +1800,7 @@ package main
 
 import (
 	[......]
-	"github.com/kongyixueyuan.com/education/service"
+	"github.com/btcu-pro/education/service"
 )
 
 [......]
@@ -2214,7 +2214,7 @@ $ make
 在项目根目录下新创建一个名为 `web`  的目录，用来存放Web应用层的所有内容
 
 ```shell
-$ cd $GOPATH/src/github.com/kongyixueyuan.com/education
+$ cd $GOPATH/src/github.com/btcu-pro/education
 $ mkdir -p web/controller
 ```
 
@@ -2235,7 +2235,7 @@ $ vim web/controller/userInfo.go
 
 package controller
 
-import "github.com/kongyixueyuan.com/education/service"
+import "github.com/btcu-pro/education/service"
 
 type Application struct {
 	Setup *service.ServiceSetup
@@ -2343,7 +2343,7 @@ package controller
 import (
 	"net/http"
 	"encoding/json"
-	"github.com/kongyixueyuan.com/education/service"
+	"github.com/btcu-pro/education/service"
 	"fmt"
 )
 
@@ -2623,7 +2623,7 @@ package web
 import (
 	"net/http"
 	"fmt"
-	"github.com/kongyixueyuan.com/education/web/controller"
+	"github.com/btcu-pro/education/web/controller"
 )
 
 
@@ -2674,7 +2674,7 @@ func WebStart(app controller.Application)  {
 在项目的web目录下新创建一个名为 `static`  的目录，用来存放Web应用视图层的所有静态内容
 
 ```shell
-$ cd $GOPATH/src/github.com/kongyixueyuan.com/education
+$ cd $GOPATH/src/github.com/btcu-pro/education
 $ mkdir web/static
 ```
 
@@ -2719,45 +2719,45 @@ $ mkdir web/tpl
 
 CSS 部分：
 
-[web/static/css/addEdu.css](https://github.com/kevin-hf/education/blob/master/web/static/css/addEdu.css)
+[web/static/css/addEdu.css](https://github.com/demo-hf/education/blob/master/web/static/css/addEdu.css)
 
-[web/static/css/bootstrap.min.css](https://github.com/kevin-hf/education/blob/master/web/static/css/bootstrap.min.css)
+[web/static/css/bootstrap.min.css](https://github.com/demo-hf/education/blob/master/web/static/css/bootstrap.min.css)
 
-[web/static/css/help.css](https://github.com/kevin-hf/education/blob/master/web/static/css/help.css)
+[web/static/css/help.css](https://github.com/demo-hf/education/blob/master/web/static/css/help.css)
 
-[web/static/css/index.css](https://github.com/kevin-hf/education/blob/master/web/static/css/index.css)
+[web/static/css/index.css](https://github.com/demo-hf/education/blob/master/web/static/css/index.css)
 
-[web/static/css/login.css](https://github.com/kevin-hf/education/blob/master/web/static/css/login.css)
+[web/static/css/login.css](https://github.com/demo-hf/education/blob/master/web/static/css/login.css)
 
-[web/static/css/query.css](https://github.com/kevin-hf/education/blob/master/web/static/css/query.css)
+[web/static/css/query.css](https://github.com/demo-hf/education/blob/master/web/static/css/query.css)
 
-[web/static/css/queryResult.css](https://github.com/kevin-hf/education/blob/master/web/static/css/queryResult.css)
+[web/static/css/queryResult.css](https://github.com/demo-hf/education/blob/master/web/static/css/queryResult.css)
 
-[web/static/css/reset.css](https://github.com/kevin-hf/education/blob/master/web/static/css/reset.css)
+[web/static/css/reset.css](https://github.com/demo-hf/education/blob/master/web/static/css/reset.css)
 
 JavaScript 部分
 
-[web/static/js/bootstrap.min.js](https://github.com/kevin-hf/education/blob/master/web/static/js/bootstrap.min.js)
+[web/static/js/bootstrap.min.js](https://github.com/demo-hf/education/blob/master/web/static/js/bootstrap.min.js)
 
-[web/static/js/jquery.min.js](https://github.com/kevin-hf/education/blob/master/web/static/js/jquery.min.js)
+[web/static/js/jquery.min.js](https://github.com/demo-hf/education/blob/master/web/static/js/jquery.min.js)
 
 HTML 页面模板部分：
 
-[web/tpl/addEdu.html](https://github.com/kevin-hf/education/blob/master/web/tpl/addEdu.html)
+[web/tpl/addEdu.html](https://github.com/demo-hf/education/blob/master/web/tpl/addEdu.html)
 
-[web/tpl/help.html](https://github.com/kevin-hf/education/blob/master/web/tpl/help.html)
+[web/tpl/help.html](https://github.com/demo-hf/education/blob/master/web/tpl/help.html)
 
-[web/tpl/index.html](https://github.com/kevin-hf/education/blob/master/web/tpl/index.html)
+[web/tpl/index.html](https://github.com/demo-hf/education/blob/master/web/tpl/index.html)
 
-[web/tpl/login.html](https://github.com/kevin-hf/education/blob/master/web/tpl/login.html)
+[web/tpl/login.html](https://github.com/demo-hf/education/blob/master/web/tpl/login.html)
 
-[web/tpl/modify.html](https://github.com/kevin-hf/education/blob/master/web/tpl/modify.html)
+[web/tpl/modify.html](https://github.com/demo-hf/education/blob/master/web/tpl/modify.html)
 
-[web/tpl/query.html](https://github.com/kevin-hf/education/blob/master/web/tpl/query.html)
+[web/tpl/query.html](https://github.com/demo-hf/education/blob/master/web/tpl/query.html)
 
-[web/tpl/query2.html](https://github.com/kevin-hf/education/blob/master/web/tpl/query2.html)
+[web/tpl/query2.html](https://github.com/demo-hf/education/blob/master/web/tpl/query2.html)
 
-[web/tpl/queryResult.html](https://github.com/kevin-hf/education/blob/master/web/tpl/queryResult.html)
+[web/tpl/queryResult.html](https://github.com/demo-hf/education/blob/master/web/tpl/queryResult.html)
 
 
 
@@ -2936,8 +2936,8 @@ $ vim main.go
 ```go
 import(
 	[......]
-	"github.com/kongyixueyuan.com/education/web/controller"
-	"github.com/kongyixueyuan.com/education/web"
+	"github.com/btcu-pro/education/web/controller"
+	"github.com/btcu-pro/education/web"
 )
 
 func main(){}
@@ -3006,5 +3006,5 @@ $ make
 
 
 
-项目完整源代码，请 [点击此处](https://github.com/kevin-hf/education)
+项目完整源代码，请 [点击此处](https://github.com/demo-hf/education)
 

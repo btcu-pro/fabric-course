@@ -1,8 +1,8 @@
 NodeOUs:
   Enable: true
   ClientOUIdentifier:
-    Certificate: cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem
+    Certificate: cacerts/ca.org1.demo.btcu.com-cert.pem
     OrganizationalUnitIdentifier: client
   PeerOUIdentifier:
-    Certificate: cacerts/ca.org1.kevin.kongyixueyuan.com-cert.pem
+    Certificate: cacerts/ca.org1.demo.btcu.com-cert.pem
     OrganizationalUnitIdentifier: peer

@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/kongyixueyuan.com/kongyixueyuan/sdkInit"
+	"github.com/btcu-pro/btcu/sdkInit"
 	"os"
 )
 
@@ -16,16 +16,16 @@ func main() {
 
 	initInfo := &sdkInit.InitInfo{
 
-		ChannelID:     "kevinkongyixueyuan",
-		ChannelConfig: os.Getenv("GOPATH") + "/src/github.com/kongyixueyuan.com/kongyixueyuan/fixtures/artifacts/channel.tx",
+		ChannelID:     "demobtcu",
+		ChannelConfig: os.Getenv("GOPATH") + "/src/github.com/btcu-pro/btcu/fixtures/artifacts/channel.tx",
 
 		OrgAdmin:       "Admin",
 		OrgName:        "Org1",
-		OrdererOrgName: "orderer.kevin.kongyixueyuan.com",
+		OrdererOrgName: "orderer.demo.btcu.com",
 
 		ChaincodeID:     SimpleCC,
 		ChaincodeGoPath: os.Getenv("GOPATH"),
-		ChaincodePath:   "github.com/kongyixueyuan.com/kongyixueyuan/chaincode/",
+		ChaincodePath:   "github.com/btcu-pro/btcu/chaincode/",
 		UserName:        "User1",
 	}
 

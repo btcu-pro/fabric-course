@@ -1,4 +1,4 @@
-module github.com/kongyixueyuan.com/kongyixueyuan
+module github.com/btcu-pro/btcu
 
 go 1.13
 
