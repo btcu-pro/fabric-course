@@ -91,16 +91,16 @@ $ mkdir -p $GOPATH/src/github.com/btcu-pro/education
 $ cd $GOPATH/src/github.com/btcu-pro/education
 ```
 
-使用 `git` 命令克隆 hf-fixtures 目录当前路径
+使用 `git` 命令克隆 fc_fixtures 目录当前路径
 
 ```shell
-$ git clone https://github.com/demo-hf/hf-fixtures.git
+$ git clone https://github.com/demo-hf/fc_fixtures.git
 ```
 
-将 hf-fixtures 文件夹重命名为 fixtures
+将 fc_fixtures 文件夹重命名为 fixtures
 
 ```shell
-$ mv hf-fixtures/fixtures
+$ mv fc_fixtures/fixtures
 ```
 
 修改`fixtures`  文件夹的所属关系为当前用户

@@ -99,20 +99,20 @@ $ go version
 ### 网络环境准备
 Hyperledger Fabric 处理交易时需要大量的证书来确保在整个端到端流程（TSL，身份验证，签名块......）期间进行加密。 为了直接了解问题的核心，我们已经在 github 上为您的网络环境准备了所有相关的内容， 不在此教程中讲解。
 
-Crypto 材料已使用 Hyperledger Fabric 中的 cryptogen 工具生成，并保存在 hf-fixtures/crypto-config 目录中。有关 cryptogen 工具的更多详细信息，请 点击此处。
+Crypto 材料已使用 Hyperledger Fabric 中的 cryptogen 工具生成，并保存在 fc_fixtures/crypto-config 目录中。有关 cryptogen 工具的更多详细信息，请 点击此处。
 
-初始区块（genesis.block）和通道配置事务（channel.tx）已使用 Hyperledger Fabric中 的 configtxgen 工具生成，并保存在 hf-fixtures/artifacts 目录中。有关 configtxgen 工具的更多详细信息，请 点击此处。
+初始区块（genesis.block）和通道配置事务（channel.tx）已使用 Hyperledger Fabric中 的 configtxgen 工具生成，并保存在 fc_fixtures/artifacts 目录中。有关 configtxgen 工具的更多详细信息，请 点击此处。
 
 在GOPATH的src文件夹中新建一个目录如下：
 ```
 $ mkdir -p $GOPATH/src/github.com/btcu-pro/btcu
 $ cd $GOPATH/src/github.com/btcu-pro/btcu
 ```
-使用 git 命令克隆 hf-fixtures 目录当前路径
+使用 git 命令克隆 fc_fixtures 目录当前路径
 ```
 $ git clone https://github.com/btcu-pro/fc_fixtures.git
 ```
-将 hf-fixtures 文件夹重命名为 fixtures
+将 fc_fixtures 文件夹重命名为 fixtures
 ```
 $ mv fc_fixtures/ fixtures
 ```
