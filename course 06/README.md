@@ -984,7 +984,7 @@ return shim.Success([]byte(result))
         sudo docker exec -it chaincode bash
         ```
     * 2.2 编译  
-        进入 test 目录编译 chaincode
+        进入 payment 目录编译 chaincode
         ```shell
         cd payment
         go build
